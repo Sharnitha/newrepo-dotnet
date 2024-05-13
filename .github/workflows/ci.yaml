@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+jobs:
+  Docker_Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker build using Dockerfile
+        run: |
+          docker build -t githubcipractice.azurecr.io/demoenv:${{ github.run_id }} .
+          docker images
+      - name: Docker build using Dockerfile
+        run: |
+          docker login githubcipractice.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}          
+          docker push githubcipractice.azurecr.io/demoenv:${{ github.run_id }}  
