@@ -27,4 +27,5 @@ jobs:
         uses: Azure/webapps-deploy@v3.0.1
         with:
           app-name: Sharni 
+          slot: production
           images: githubcipractice.azurecr.io/demoenv:${{ github.run_id }}
