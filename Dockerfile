@@ -8,4 +8,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
-ENTRYPOINT ["dotnet", "demodotnet.dll"]
+ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
