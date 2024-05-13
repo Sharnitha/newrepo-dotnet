@@ -1,0 +1,7 @@
+/home/Sharnitha/newrepo-dotnet/output/dotnet-folder
+/home/Sharnitha/newrepo-dotnet/output/appsettings.Development.json
+/home/Sharnitha/newrepo-dotnet/output/appsettings.json
+/home/Sharnitha/newrepo-dotnet/output/dotnet-folder.dll
+/home/Sharnitha/newrepo-dotnet/output/dotnet-folder.deps.json
+/home/Sharnitha/newrepo-dotnet/output/dotnet-folder.runtimeconfig.json
+/home/Sharnitha/newrepo-dotnet/output/dotnet-folder.pdb
