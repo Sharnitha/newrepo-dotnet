@@ -20,7 +20,9 @@ jobs:
           docker login githubcipractice.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}          
           docker push githubcipractice.azurecr.io/demoenv:${{ github.run_id }}  
 
-      
+      - name: az cli
+        run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}
+        
       - name: Azure WebApp
         uses: Azure/webapps-deploy@v3.0.1
         with:
