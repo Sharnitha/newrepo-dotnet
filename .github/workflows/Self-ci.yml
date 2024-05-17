@@ -26,8 +26,8 @@ jobs:
       with:
         dotnet-version: 6.0.422
       
-    - name: SonarScanner tool installed
-      run: dotnet tool install --global dotnet-sonarscanner
+    # - name: SonarScanner tool installed
+    #   run: dotnet tool install --global dotnet-sonarscanner
     - name: Begin SonarQube analysis
       run: |
         dotnet sonarscanner begin /k:"demoprij" \
