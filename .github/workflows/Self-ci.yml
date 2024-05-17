@@ -5,7 +5,7 @@ on:
   push:
     branches:
     - feature-private
-  
+   
 jobs:
   Sonar_Setup01:
     runs-on: self-hosted
