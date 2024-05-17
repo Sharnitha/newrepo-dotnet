@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - feature-private
+  
+jobs:
+  Sonar_Setup01:
+    runs-on: self-hosted
+    steps: 
+    - name: Checkout code
+      uses: actions/checkout@v4      
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4.2.1
+      with:
+        java-version: 17
+        distribution: temurin
+        
+    - name: Verify Java version
+      run: java --version
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.422
+      
+    - name: SonarScanner tool installed
+      run: dotnet tool install --global dotnet-sonarscanner
+    - name: Begin SonarQube analysis
+      run: |
+        cd DependencyInjectionExampleSolution/DepedencyInjectionUsingMVC
+        dotnet sonarscanner begin /k:"demoprij" \
+        /d:sonar.login="admin" \
+        /d:sonar.password="Sonar@123" \
+        /d:sonar.host.url="http://172.212.80.62:9000/" \
+        /v:"${{ github.run_number }}" \
+        /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
+        /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
+    - name: Build project
+      run: |
+        cd DependencyInjectionExampleSolution/DepedencyInjectionUsingMVC
+        dotnet build -c release -o app/publish
+        cd app/publish && ls
+        
+    - name: End SonarQube analysis
+      run: |
+        cd DependencyInjectionExampleSolution/DepedencyInjectionUsingMVC
+        dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Sonar@123"
