@@ -30,7 +30,6 @@ jobs:
       run: dotnet tool install --global dotnet-sonarscanner
     - name: Begin SonarQube analysis
       run: |
-        cd DependencyInjectionExampleSolution/DepedencyInjectionUsingMVC
         dotnet sonarscanner begin /k:"demoprij" \
         /d:sonar.login="admin" \
         /d:sonar.password="Sonar@123" \
@@ -40,11 +39,9 @@ jobs:
         /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
     - name: Build project
       run: |
-        cd DependencyInjectionExampleSolution/DepedencyInjectionUsingMVC
         dotnet build -c release -o app/publish
         cd app/publish && ls
         
     - name: End SonarQube analysis
       run: |
-        cd DependencyInjectionExampleSolution/DepedencyInjectionUsingMVC
         dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Sonar@123"
