@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-java@v4.2.1
       with:
         java-version: 17
-        distribution: temurin
+        distribution: temurin 
         
     - name: Verify Java version
       run: java --version
