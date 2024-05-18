@@ -3,7 +3,7 @@ name: Self-Hosted CI
 on:
   push:
     branches:
-    - feature-private
+    - feature-private 
 
 env: 
   DOTNET_VERSION: '6.0.422'
