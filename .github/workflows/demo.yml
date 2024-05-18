@@ -1,8 +1,11 @@
 name: Self-Hosted CI
 
 on:
-  workflow_dispatch
-
+  pull_request:
+    branches:
+      - main
+    paths:
+    - Pages/*
 
 env:  
   DOTNET_VERSION: '6.0.422' 
