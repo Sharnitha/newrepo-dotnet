@@ -6,7 +6,7 @@ on:
     - feature-private 
 
 env:  
-  DOTNET_VERSION: '6.0.422'
+  DOTNET_VERSION: '6.0.422' 
   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
