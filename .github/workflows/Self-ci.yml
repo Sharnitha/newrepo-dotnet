@@ -1,28 +1,35 @@
-name: CI
+name: Self-Hosted CI
 
 on:
-  workflow_dispatch:
   push:
     branches:
     - feature-private
-   
+
+env: 
+  DOTNET_VERSION: '6.0.422'
+  DOTNET_INSTALL_DIR: "./.dotnet"
+
 jobs:
-  Sonar_Setup01:
-    runs-on: self-hosted
-    steps: 
+  Dotnet_Build:
+    runs-on: self-hosted  
+    # outputs:
+    #   run_next: ${{ steps.job1.outputs.run_next }}
+    steps:
     - name: Checkout code
-      uses: actions/checkout@v4  
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/checkout@v4
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.0.x' # Change to your required version
-
-    - name: Restore dependencies
+        dotnet-version: ${{ secrets.DOTNET_VERSION }}
+  
+    - name: Checking Dotnet version
+      run: dotnet --version
+    - name: Install Dependency
       run: dotnet restore
-
-    - name: Build
-      run: dotnet build --configuration Release
+    - name: Dotnet build
+      run: dotnet build -c release
+    - name: Dotnet publish
+      run: dotnet publish -c release
            
     #    - name: Begin SonarQube analysis
     #   run: |
