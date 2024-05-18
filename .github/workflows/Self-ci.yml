@@ -12,19 +12,18 @@ jobs:
     steps: 
     - name: Checkout code
       uses: actions/checkout@v4      
-    # - name: Setup Java JDK
-    #   uses: actions/setup-java@v4.2.1
-    #   with:
-    #     java-version: 17
-    #     distribution: temurin 
+    - name: Dotnet restore
+      run: dotnet restore
+    - name: Building Dotnet
+      run: dotnet build
         
     - name: Verify Java version
       run: java --version
 
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.422
+    # - name: Setup .NET Core SDK
+    #   uses: actions/setup-dotnet@v3
+    #   with:
+    #     dotnet-version: 6.0.422
       
     # - name: SonarScanner tool installed
     #   run: dotnet tool install --global dotnet-sonarscanner
