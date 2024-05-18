@@ -28,6 +28,8 @@ jobs:
       run: dotnet build -c release
     - name: Dotnet publish
       run: dotnet publish -c release
+    - name: remove _diag and _work
+      run: rm -rf _diag/ _work/
            
     #    - name: Begin SonarQube analysis
     #   run: |
