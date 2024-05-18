@@ -1,11 +1,7 @@
 name: Self-Hosted CI
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-    - Pages/*
+  workflow_dispatch
 
 
 env:  
