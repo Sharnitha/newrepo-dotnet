@@ -1,0 +1,32 @@
+name: Self-Hosted CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+    - Pages/*
+
+
+env:  
+  DOTNET_VERSION: '6.0.422' 
+  DOTNET_INSTALL_DIR: "./.dotnet"
+
+jobs:
+  Dotnet_Build:
+    runs-on: self-hosted  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4 
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+  
+    - name: Checking Dotnet version
+      run: dotnet --version
+    - name: Install Dependency
+      run: dotnet restore
+    - name: Dotnet build
+      run: dotnet build -c release
+ 
