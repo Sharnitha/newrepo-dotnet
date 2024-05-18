@@ -12,36 +12,32 @@ jobs:
     steps: 
     - name: Checkout code
       uses: actions/checkout@v4  
-           
-    - name: Dotnet restore
-      run: dotnet restore
-    - name: Building Dotnet
-      run: dotnet build
-        
-    - name: Verify Java version
-      run: java --version
-
-    # - name: Setup .NET Core SDK
-    #   uses: actions/setup-dotnet@v3
-    #   with:
-    #     dotnet-version: 6.0.422
       
-    # - name: SonarScanner tool installed
-    #   run: dotnet tool install --global dotnet-sonarscanner
-    - name: Begin SonarQube analysis
-      run: |
-        dotnet sonarscanner begin /k:"demoprij" \
-        /d:sonar.login="admin" \
-        /d:sonar.password="Sonar@123" \
-        /d:sonar.host.url="http://172.212.80.62:9000/" \
-        /v:"${{ github.run_number }}" \
-        /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
-        /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
-    - name: Build project
-      run: |
-        dotnet build -c release -o app/publish
-        cd app/publish && ls
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # Change to your required version
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+           
+    #    - name: Begin SonarQube analysis
+    #   run: |
+    #     dotnet sonarscanner begin /k:"demoprij" \
+    #     /d:sonar.login="admin" \
+    #     /d:sonar.password="Sonar@123" \
+    #     /d:sonar.host.url="http://172.212.80.62:9000/" \
+    #     /v:"${{ github.run_number }}" \
+    #     /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
+    #     /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
+    # - name: Build project
+    #   run: |
+    #     dotnet build -c release -o app/publish
+    #     cd app/publish && ls
         
-    - name: End SonarQube analysis
-      run: |
-        dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Sonar@123"
+    # - name: End SonarQube analysis
+    #   run: |
+    #     dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Sonar@123"
