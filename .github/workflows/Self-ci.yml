@@ -12,8 +12,6 @@ env:
 jobs:
   Dotnet_Build:
     runs-on: self-hosted  
-    outputs:
-      run_next: ${{ steps.job1.outputs.run_next }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
