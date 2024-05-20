@@ -61,7 +61,7 @@ jobs:
    
     - name: Check .sonarqube Directory
       run: |
-        ls -la /mnt/.sonarqube
+        dotnet build -c release -o app/publish
         
     - name: End SonarQube analysis
       run: |
