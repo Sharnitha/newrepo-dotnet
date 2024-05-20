@@ -45,8 +45,9 @@ jobs:
       
     - name: SonarScanner tool installed
       run: |
-        dotnet tool install --global dotnet-sonarscanner
         echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+      # dotnet tool install --global dotnet-sonarscanner
+        
       
     - name: Begin SonarQube analysis
       run: |
