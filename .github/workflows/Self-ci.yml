@@ -54,7 +54,7 @@ jobs:
         dotnet sonarscanner begin /k:"demoproject" \
         /d:sonar.login="admin" \
         /d:sonar.password="Admin@123" \
-        /d:sonar.host.url="http://20.55.36.68:9000//" \
+        /d:sonar.host.url="http://20.55.36.68:9000/" \
         /v:"${{ github.run_number }}" \
         /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
         /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
