@@ -28,41 +28,50 @@ jobs:
     - name: Dotnet build
       run: dotnet build -c release
 
-  Sonar:
+  Docker_Build:
     runs-on: self-hosted
-    needs: Dotnet_Build
-    steps: 
-    - name: Checkout code
-      uses: actions/checkout@v4      
-        
-    - name: Verify Java version
-      run: java --version
+    steps:
+    - name: List Docker images
+      run: |
+        docker images
+        docker login nonprodfrontendacr.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ steps.DOCKER_PASSWORD }} 
+    
 
-    - name: Setup .NET version
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
+  # Sonar:
+  #   runs-on: self-hosted
+  #   needs: Dotnet_Build
+  #   steps: 
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4      
+        
+  #   - name: Verify Java version
+  #     run: java --version
+
+  #   - name: Setup .NET version
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: 6.0.x
       
-    - name: SonarScanner tool installed
-      run: |
-        echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-      # dotnet tool install --global dotnet-sonarscanner
+  #   - name: SonarScanner tool installed
+  #     run: |
+  #       echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+  #     # dotnet tool install --global dotnet-sonarscanner
         
       
-    - name: Begin SonarQube analysis
-      run: |
-        dotnet sonarscanner begin /k:"demoproject" \
-        /d:sonar.login="admin" \
-        /d:sonar.password="Admin@123" \
-        /d:sonar.host.url="http://20.55.36.68:9000/" \
-        /v:"${{ github.run_number }}" \
-        /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
-        /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
+  #   - name: Begin SonarQube analysis
+  #     run: |
+  #       dotnet sonarscanner begin /k:"demoproject" \
+  #       /d:sonar.login="admin" \
+  #       /d:sonar.password="Admin@123" \
+  #       /d:sonar.host.url="http://20.55.36.68:9000/" \
+  #       /v:"${{ github.run_number }}" \
+  #       /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
+  #       /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
    
-    - name: Check .sonarqube Directory
-      run: |
-        dotnet build -c release -o app/publish
+  #   - name: Check .sonarqube Directory
+  #     run: |
+  #       dotnet build -c release -o app/publish
         
-    - name: End SonarQube analysis
-      run: |
-        dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Admin@123"
+  #   - name: End SonarQube analysis
+  #     run: |
+  #       dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Admin@123"
