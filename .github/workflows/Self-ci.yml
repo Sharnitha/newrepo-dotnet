@@ -30,7 +30,7 @@ jobs:
 
   Docker_Build:
     runs-on: self-hosted
-    # needs: Docker_Login
+    needs: Dotnet_Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
