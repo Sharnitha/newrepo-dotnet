@@ -30,11 +30,22 @@ jobs:
 
   Docker_Build:
     runs-on: self-hosted
+    # needs: Docker_Login
     steps:
-    - name: List Docker images
-      run: |
-        docker images
-        docker login nonprodfrontendacr.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ steps.DOCKER_PASSWORD }} 
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker build using Dockerfile
+        run: |
+          docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+          docker images
+      - name: Azure CLI
+        run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
+
+      - name: Docker build using Dockerfile
+        run: |
+          docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
+          docker history githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
     
 
   # Sonar:
