@@ -45,7 +45,7 @@ jobs:
           exit-code: 0
           severity: LOW,MEDIUM,HIGH,CRITICAL
           format: table
-          image-ref: githubregistring.azurecr.io/demoenv:${{ github.run_id }}
+          image-ref: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
           
       # - name: Azure CLI
       #   run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
