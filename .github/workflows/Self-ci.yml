@@ -11,32 +11,34 @@ env:
   DOTNET_INSTALL_DIR: "./.dotnet"
 
 jobs:
-  Dotnet_Build:
-    runs-on: self-hosted  
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v4 
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+  # Dotnet_Build:
+  #   runs-on: self-hosted  
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
+  #   - name: Setup .NET Core SDK
+  #     uses: actions/setup-dotnet@v4 
+  #     with:
+  #       dotnet-version: ${{ env.DOTNET_VERSION }}
   
-    - name: Checking Dotnet version
-      run: dotnet --version
-    - name: Install Dependency
-      run: dotnet restore
-    - name: Dotnet build
-      run: dotnet build -c release
+  #   - name: Checking Dotnet version
+  #     run: dotnet --version
+  #   - name: Install Dependency
+  #     run: dotnet restore
+  #   - name: Dotnet build
+  #     run: dotnet build -c release
 
   Docker_Build:
     runs-on: self-hosted
-    needs: Dotnet_Build
+    # needs: Dotnet_Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
       - name: Docker build using Dockerfile
         run: |
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+          
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.18.0
         with:   
