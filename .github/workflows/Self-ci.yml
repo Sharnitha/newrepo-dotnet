@@ -37,15 +37,22 @@ jobs:
       - name: Docker build using Dockerfile
         run: |
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-          docker images
-      - name: Azure CLI
-        run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
+      - name: Aqua Security Trivy
+        uses: aquasecurity/trivy-action@0.18.0
+        with:   
+          exit-code: 0
+          severity: LOW,MEDIUM,HIGH,CRITICAL
+          format: table
+          image-ref: githubregistring.azurecr.io/demoenv:${{ github.run_id }}
+          
+      # - name: Azure CLI
+      #   run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
 
-      - name: Docker build using Dockerfile
-        run: |
-          docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
-          docker history githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+      # - name: Docker build using Dockerfile
+      #   run: |
+      #     docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #     docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
+      #     docker history githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
     
 
   # Sonar:
