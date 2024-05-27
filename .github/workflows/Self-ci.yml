@@ -8,12 +8,12 @@ on:
       # Trigger only when changes are made in the Pages directory
     branches:
       - feature-private
-  pull_request:
-    paths:
-      - 'Pages/**'
-      # Trigger only when changes are made in the Pages directory
-    branches:
-      - feature-private
+  # pull_request:
+  #   paths:
+  #     - 'Pages/**'
+  #     # Trigger only when changes are made in the Pages directory
+  #   branches:
+  #     - feature-private
 
 env:   
   DOTNET_VERSION: '6.0.422' 
@@ -21,8 +21,6 @@ env:
 
 jobs:
   Dotnet_Build:
-    if: github.event_name == 'pull_request' && contains(github.event.pull_request.changed_files, 'Pages/')
-    # if: ${{ github.event_name == 'pull_request' || startsWith(github.event_name, 'push') }
     runs-on: self-hosted  
     steps:
       - name: Checkout code
@@ -39,8 +37,6 @@ jobs:
         run: dotnet build -c release
 
   Docker_Build:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged && github.event.pull_request.base.ref == 'feature-private'
-    # if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged }}
     runs-on: self-hosted
     needs: Dotnet_Build
     steps:
