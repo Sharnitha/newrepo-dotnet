@@ -1,0 +1,24 @@
+name: Self-Hosted CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'Pages/**'
+      # Trigger only when changes are made in the Pages directory
+    branches:
+      - feature-private
+
+env:   
+  DOTNET_VERSION: '6.0.422' 
+  DOTNET_INSTALL_DIR: "./.dotnet" 
+
+jobs:
+  Docker_Build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker build using Dockerfile
+        run: |
+          docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
