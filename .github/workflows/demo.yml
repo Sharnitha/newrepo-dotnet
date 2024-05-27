@@ -3,7 +3,7 @@ name: Self-Hosted CI
 on:
   pull_request:
     branches:
-      - main
+      - features
     paths:
     - Pages/*
 
