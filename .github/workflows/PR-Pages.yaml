@@ -1,0 +1,26 @@
+name: PR for Pages directory
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'Pages/**'
+    branches:
+      - develop
+      
+jobs:    
+  Frontend_Dotnet_Build:
+    runs-on: self-hosted  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4 
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Checking Dotnet version
+        run: dotnet --version
+      - name: Install Dependency
+        run: dotnet restore
+      - name: Dotnet build
+        run: dotnet build -c release
