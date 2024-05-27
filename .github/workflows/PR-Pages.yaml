@@ -8,7 +8,11 @@ on:
     branches:
       - develop
       
-jobs:    
+env:   
+  DOTNET_VERSION: '6.0.422' 
+  DOTNET_INSTALL_DIR: "./.dotnet" 
+
+jobs:
   Frontend_Dotnet_Build:
     runs-on: self-hosted  
     steps:
