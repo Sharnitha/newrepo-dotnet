@@ -18,43 +18,34 @@ env:
   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  Frontend_Dotnet_Build:
-    runs-on: self-hosted  
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v4 
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: Checking Dotnet version
-        run: dotnet --version
-      - name: Install Dependency
-        run: dotnet restore
-      - name: Dotnet build
-        run: dotnet build -c release
+  # Frontend_Dotnet_Build:
+  #   runs-on: self-hosted  
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: Setup .NET Core SDK
+  #       uses: actions/setup-dotnet@v4 
+  #       with:
+  #         dotnet-version: ${{ env.DOTNET_VERSION }}
+  #     - name: Checking Dotnet version
+  #       run: dotnet --version
+  #     - name: Install Dependency
+  #       run: dotnet restore
+  #     - name: Dotnet build
+  #       run: dotnet build -c release
 
   Frontend_Docker_Build:
     runs-on: self-hosted
-    needs: Frontend_Dotnet_Build
+    # needs: Frontend_Dotnet_Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Docker build using Dockerfile
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-      # docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-          # docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-          # docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
-
-      - name: Azure Container Apps Build and Deploy
-        uses: Azure/container-apps-deploy-action@v2
-        with: 
-          appSourcePath: .   
-          acrName: githubcisharni
-          containerAppName: containerapps
-          resourceGroup: sharnitha-poc
-
+          docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+          docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
           
 
 # name: Self-Hosted CI
