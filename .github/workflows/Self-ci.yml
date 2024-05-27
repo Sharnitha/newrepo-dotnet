@@ -3,40 +3,35 @@ name: Self-Hosted CI
 on:
   workflow_dispatch:
   push:
-    # paths:
-    #   - 'Pages/**'
+    paths:
+      - 'Pages/**'
     branches:
-      - feature-private
-  # pull_request:
-  #   paths: 
-  #     - 'Pages/**'
-  #   branches:
-  #     - feature-private
-
+      - develop
+      
 env:   
   DOTNET_VERSION: '6.0.422' 
   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  # Frontend_Dotnet_Build:
-  #   runs-on: self-hosted  
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #     - name: Setup .NET Core SDK
-  #       uses: actions/setup-dotnet@v4 
-  #       with:
-  #         dotnet-version: ${{ env.DOTNET_VERSION }}
-  #     - name: Checking Dotnet version
-  #       run: dotnet --version
-  #     - name: Install Dependency
-  #       run: dotnet restore
-  #     - name: Dotnet build
-  #       run: dotnet build -c release
+  Frontend_Dotnet_Build:
+    runs-on: self-hosted  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4 
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Checking Dotnet version
+        run: dotnet --version
+      - name: Install Dependency
+        run: dotnet restore
+      - name: Dotnet build
+        run: dotnet build -c release
 
   Frontend_Docker_Build:
     runs-on: self-hosted
-    # needs: Frontend_Dotnet_Build
+    needs: Frontend_Dotnet_Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
