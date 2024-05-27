@@ -3,15 +3,15 @@ name: Self-Hosted CI
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'Pages/**'
+    # paths:
+    #   - 'Pages/**'
     branches:
       - feature-private
-  pull_request:
-    paths:
-      - 'Pages/**'
-    branches:
-      - feature-private
+  # pull_request:
+  #   paths:
+  #     - 'Pages/**'
+  #   branches:
+  #     - feature-private
 
 env:   
   DOTNET_VERSION: '6.0.422' 
