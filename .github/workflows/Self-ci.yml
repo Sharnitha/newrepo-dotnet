@@ -1,0 +1,45 @@
+name: Self-Hosted CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'Pages/**'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'Pages/**'
+    branches:
+      - main
+
+env:   
+  DOTNET_VERSION: '6.0.422' 
+  DOTNET_INSTALL_DIR: "./.dotnet" 
+
+jobs:
+  Frontend_Dotnet_Build:
+    runs-on: self-hosted  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4 
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Checking Dotnet version
+        run: dotnet --version
+      - name: Install Dependency
+        run: dotnet restore
+      - name: Dotnet build
+        run: dotnet build -c release
+
+  Frontend_Docker_Build:
+    runs-on: self-hosted
+    needs: Frontend_Dotnet_Build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker build using Dockerfile
+        run: |
+          docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
