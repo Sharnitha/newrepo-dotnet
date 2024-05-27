@@ -50,7 +50,7 @@ jobs:
       - name: Azure Container Apps Build and Deploy
         uses: Azure/container-apps-deploy-action@v2
         with: 
-          appSourcePath: .  
+          appSourcePath: .   
           acrName: githubcisharni
           containerAppName: containerapps
           resourceGroup: sharnitha-poc
