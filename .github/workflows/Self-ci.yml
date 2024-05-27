@@ -5,22 +5,20 @@ on:
   push:
     paths:
       - 'Pages/**'
-      # Trigger only when changes are made in the Pages directory
     branches:
       - feature-private
-  # pull_request:
-  #   paths:
-  #     - 'Pages/**'
-  #     # Trigger only when changes are made in the Pages directory
-  #   branches:
-  #     - feature-private
+  pull_request:
+    paths:
+      - 'Pages/**'
+    branches:
+      - feature-private
 
 env:   
   DOTNET_VERSION: '6.0.422' 
   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  Dotnet_Build:
+  Frontend_Dotnet_Build:
     runs-on: self-hosted  
     steps:
       - name: Checkout code
@@ -36,9 +34,9 @@ jobs:
       - name: Dotnet build
         run: dotnet build -c release
 
-  Docker_Build:
+  Frontend_Docker_Build:
     runs-on: self-hosted
-    needs: Dotnet_Build
+    needs: Frontend_Dotnet_Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
