@@ -1,20 +1,16 @@
-name: Self-Hosted CI
+name: Self-Hosted 
 
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - 'Pages/**'
+  push:
+    # paths:
+    #   - 'Pages/**'
       # Trigger only when changes are made in the Pages directory
     branches:
       - feature-private
 
-env:   
-  DOTNET_VERSION: '6.0.422' 
-  DOTNET_INSTALL_DIR: "./.dotnet" 
-
 jobs:
-  PR_Docker_Build:
+  Docker_Builds:
     runs-on: self-hosted
     steps:
       - name: Checkout code
