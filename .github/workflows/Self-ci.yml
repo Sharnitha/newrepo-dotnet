@@ -21,9 +21,8 @@ env:
 
 jobs:
   Dotnet_Build:
-    # if: github.ref == github.event.pull_request.head.ref || github.ref == 'refs/heads/feature-private'
-    # if: ${{ github.event_name == 'pull_request' || startsWith(github.event_name, 'push') }}
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.changed_files, 'Pages/')
+    # if: ${{ github.event_name == 'pull_request' || startsWith(github.event_name, 'push') }
     runs-on: self-hosted  
     steps:
       - name: Checkout code
@@ -40,7 +39,7 @@ jobs:
         run: dotnet build -c release
 
   Docker_Build:
-    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'Pages/')
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged && github.event.pull_request.base.ref == 'feature-private'
     # if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged }}
     runs-on: self-hosted
     needs: Dotnet_Build
