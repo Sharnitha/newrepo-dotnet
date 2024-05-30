@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'Pages/**'
+      - 'Properties/**'
     branches:
       - develop
       
