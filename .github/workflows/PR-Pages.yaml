@@ -8,8 +8,12 @@ on:
       - 'Properties/**'
     branches:
       - develop
-jobs:       
-  Dotnet_Build:
+env:   
+  DOTNET_VERSION: '6.0.422' 
+  DOTNET_INSTALL_DIR: "./.dotnet" 
+
+jobs:
+  pr_Dotnet_Build:
     runs-on: self-hosted  
     steps:
       - name: Checkout code
@@ -24,4 +28,5 @@ jobs:
         run: dotnet restore
       - name: Dotnet build
         run: dotnet build -c release
+
    
