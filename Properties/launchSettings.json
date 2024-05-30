@@ -9,7 +9,7 @@
   },
   "profiles": {
     "dotnet_folder": {
-      "commandName": "Project",
+      "commandName": "Proj",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7225;http://localhost:5189",
