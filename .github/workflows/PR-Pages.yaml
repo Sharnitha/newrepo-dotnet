@@ -1,31 +1,81 @@
-name: PR for Pages directory
+name: Conditional PR Build
 
 on:
   pull_request:
-    paths:
-      - 'Pages/*'
-      - 'Properties/*'
     branches:
       - develop
-env:   
-  DOTNET_VERSION: '6.0.422' 
-  DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  pr_Dotnet_Build:
-    runs-on: self-hosted  
+  check_and_build:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v4 
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: Checking Dotnet version
-        run: dotnet --version
-      - name: Install Dependency
-        run: dotnet restore
-      - name: Dotnet build
-        run: dotnet build -c release
+
+      - name: Check if changes are in Pages directory
+        id: check_pages_changes
+        run: |
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Pages/')
+          if [[ -n "$changed_files" ]]; then
+            echo "::set-output name=pages_changes::true"
+          else
+            echo "::set-output name=pages_changes::false"
+          fi
+
+      - name: Check if changes are in bin directory
+        id: check_bin_changes
+        run: |
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^bin')
+          if [[ -n "$changed_files" ]]; then
+            echo "::set-output name=bin_changes::true"
+          else
+            echo "::set-output name=bin_changes::false"
+          fi
+
+      - name: Build based on changes
+        if: steps.check_pages_changes.outputs.pages_changes == 'true'
+        run: |
+           - name: Checkout code
+             uses: actions/checkout@v4
+           - name: runing
+             run:
+               echo "Hello-pages"
+
+      - name: Build based on changes
+        if: steps.check_bin_changes.outputs._changes == 'true'
+        run: |
+           - name: runing
+             run:
+               echo "Hello-World-bin"
+
+# name: PR for Pages directory
+
+# on:
+#   pull_request:
+#     paths:
+#       - 'Pages/*'
+#       - 'Properties/*'
+#     branches:
+#       - develop
+# env:   
+#   DOTNET_VERSION: '6.0.422' 
+#   DOTNET_INSTALL_DIR: "./.dotnet" 
+
+# jobs:
+#   pr_Dotnet_Build:
+#     runs-on: self-hosted  
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+#       - name: Setup .NET Core SDK
+#         uses: actions/setup-dotnet@v4 
+#         with:
+#           dotnet-version: ${{ env.DOTNET_VERSION }}
+#       - name: Checking Dotnet version
+#         run: dotnet --version
+#       - name: Install Dependency
+#         run: dotnet restore
+#       - name: Dotnet build
+#         run: dotnet build -c release
 
    
