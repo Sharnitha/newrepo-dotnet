@@ -13,7 +13,7 @@ env:
   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  Frontend_Dotnet_Build:
+  Backend_Dotnet_Build:
     runs-on: self-hosted  
     steps:
       - name: Checkout code
@@ -28,3 +28,28 @@ jobs:
         run: dotnet restore
       - name: Dotnet build
         run: dotnet build -c release
+        
+      - name: Verify Java version
+        run: java --version
+  
+      - name: SonarScanner tool installed
+        run: dotnet tool install --global dotnet-sonarscanner
+        
+      - name: Begin SonarQube analysis
+        run: |
+          dotnet sonarscanner begin /k:"demo1" \
+          /d:sonar.login="admin" \
+          /d:sonar.password="Sharni" \
+          /d:sonar.host.url="http://74.235.205.8:9000/" \
+          /v:"${{ github.run_number }}" \
+        # /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
+          # /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
+  
+      - name: Build project
+        run: |
+          dotnet build -c release -o app/publish
+          cd app/publish && ls
+          
+      - name: End SonarQube analysis
+        run: |
+          dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Sharni"
