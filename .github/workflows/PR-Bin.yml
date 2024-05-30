@@ -6,6 +6,8 @@ on:
     paths:
       - 'Pages/**'
       - 'bin/**'
+      - 'wwwroot/**'
+      - 'output/**'
     branches:
       - develop
 env:   
