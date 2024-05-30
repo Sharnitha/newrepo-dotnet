@@ -1,4 +1,4 @@
-name: Self-Hosted CI
+name: Self-Hosted CI- Develop
 
 on:
   workflow_dispatch:
