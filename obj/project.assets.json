@@ -11,7 +11,7 @@
     "/home/Sharnitha/.nuget/packages/": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.0.0", 
     "restore": {
       "projectUniqueName": "/home/Sharnitha/newrepo-dotnet/dotnet-folder.csproj",
       "projectName": "dotnet-folder",
