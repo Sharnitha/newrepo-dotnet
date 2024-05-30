@@ -1,16 +1,16 @@
-# name: CI
+name: CI
 
-# on:
-#   workflow_dispatch:
-#   push:
-#     branches:
-#     - main
-# jobs:
-#   Docker_Build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+jobs:
+  Docker_Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 #       - name: Docker build using Dockerfile
 #         run: |
 #           docker build -t githubcipractice.azurecr.io/demoenv:${{ github.run_id }} .
