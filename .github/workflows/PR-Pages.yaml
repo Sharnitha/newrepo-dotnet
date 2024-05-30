@@ -1,7 +1,6 @@
 name: PR for Pages directory
 
 on:
-  push:
   pull_request:
     paths:
       - 'Pages/*'
