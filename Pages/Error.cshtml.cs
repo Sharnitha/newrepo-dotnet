@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace dotnet_folder.Pages;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-[IgnoreAntiforgeryToken]
+[IgnoreAntiforgeryToken] 
 public class ErrorModel : PageModel
 {
     public string? RequestId { get; set; }
