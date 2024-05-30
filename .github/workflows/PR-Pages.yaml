@@ -18,13 +18,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v4 
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: Checking Dotnet version
-        run: dotnet --version
-      - name: Install Dependency
-        run: dotnet restore
-      - name: Dotnet build
-        run: dotnet build -c release
+      - name: Begin SonarQube analysis
+        run: |
+          dotnet sonarscanner begin /k:"demoproject" \
+          /d:sonar.login="admin" \
+          /d:sonar.password="Admin@123" \
+          /d:sonar.host.url="http://20.55.36.68:9000/" \
+          /v:"${{ github.run_number }}" \
+          /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
+          /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
