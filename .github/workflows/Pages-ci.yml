@@ -14,7 +14,7 @@ env:
   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  Frontend_Dotnet_Build:
+  Dotnet_Build:
     runs-on: self-hosted  
     steps:
       - name: Checkout code
