@@ -8,16 +8,25 @@ on:
     branches:
       - develop
 jobs:       
-  Real_Sonar:
-      runs-on: self-hosted
-      steps:      
+  Dotnet_Build:
+    runs-on: self-hosted  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4 
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Checking Dotnet version
+        run: dotnet --version
+      - name: Install Dependency
+        run: dotnet restore
+      - name: Dotnet build
+        run: dotnet build -c release
+   
       - name: Verify Java version
         run: java --version
   
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 3.1.426
       - name: SonarScanner tool installed
         run: dotnet tool install --global dotnet-sonarscanner
         
@@ -39,5 +48,3 @@ jobs:
       - name: End SonarQube analysis
         run: |
           dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Sharni"
-
-        
