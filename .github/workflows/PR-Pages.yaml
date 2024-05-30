@@ -7,23 +7,37 @@ on:
       - 'Pages/**'
     branches:
       - develop
-      
-env:   
-  DOTNET_VERSION: '6.0.422' 
-  DOTNET_INSTALL_DIR: "./.dotnet" 
-
-jobs:
-  Frontend_Dotnet_Build:
-    runs-on: self-hosted  
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+jobs:       
+  Real_Sonar:
+      runs-on: self-hosted
+      steps:      
+      - name: Verify Java version
+        run: java --version
+  
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 3.1.426
+      - name: SonarScanner tool installed
+        run: dotnet tool install --global dotnet-sonarscanner
+        
       - name: Begin SonarQube analysis
         run: |
-          dotnet sonarscanner begin /k:"demoproject" \
+          dotnet sonarscanner begin /k:"demo1" \
           /d:sonar.login="admin" \
-          /d:sonar.password="Admin@123" \
-          /d:sonar.host.url="http://20.55.36.68:9000/" \
+          /d:sonar.password="Sharni" \
+          /d:sonar.host.url="http://74.235.205.8:9000/" \
           /v:"${{ github.run_number }}" \
-          /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
-          /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
+        # /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
+          # /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
+  
+      - name: Build project
+        run: |
+          dotnet build -c release -o app/publish
+          cd app/publish && ls
+          
+      - name: End SonarQube analysis
+        run: |
+          dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Sharni"
+
+        
