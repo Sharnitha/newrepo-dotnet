@@ -3,21 +3,31 @@ name: Self-Hosted CI
 on:
   workflow_dispatch:
   push:
-    # paths:
-    #   - 'Pages/**'
     branches:
       - feature-private
-  # pull_request:
-  #   paths: 
-  #     - 'Pages/**'
-  #   branches:
-  #     - feature-private
 
-env:   
-  DOTNET_VERSION: '6.0.422' 
-  DOTNET_INSTALL_DIR: "./.dotnet" 
+# env:   
+#   DOTNET_VERSION: '6.0.422' 
+#   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
+  Dotnet_Task:
+    runs-on: self-hosted 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup .NET version
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Listing Dotnet version
+      run: dotnet --version
+    - name: listing files
+      run: ls
+    - name: dotnet restore
+      run: 
+        dotnet restore
+        
   # Frontend_Dotnet_Build:
   #   runs-on: self-hosted  
   #   steps:
