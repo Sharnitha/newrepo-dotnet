@@ -14,7 +14,7 @@ env:
   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  pr_Dotnet_Build:
+  ppo_Dotnet_Build:
     runs-on: self-hosted  
     steps:
       - name: Checkout code
