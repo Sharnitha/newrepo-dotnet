@@ -7,7 +7,6 @@ on:
       - 'Pages/**'
       - 'bin/**'
       - 'wwwroot/**'
-      - 'output/**'
     branches:
       - develop
 env:   
