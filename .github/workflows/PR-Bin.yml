@@ -1,4 +1,4 @@
-name: PR for Pages directory
+name: PR for Bin directory
 
 on:
   workflow_dispatch:
