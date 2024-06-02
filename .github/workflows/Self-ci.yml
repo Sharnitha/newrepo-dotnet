@@ -11,22 +11,22 @@ on:
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
 
 jobs:
-  Dotnet_Task:
-    runs-on: self-hosted 
-    steps:
-    - name: Checkout code 
-      uses: actions/checkout@v4
-    - name: Setup .NET version
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-    - name: Listing Dotnet version
-      run: dotnet --version
-    - name: listing files
-      run: ls
-    - name: dotnet restore
-      run: 
-        dotnet restore
+  # Dotnet_Task:
+  #   runs-on: self-hosted 
+  #   steps:
+  #   - name: Checkout code 
+  #     uses: actions/checkout@v4
+  #   - name: Setup .NET version
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: 6.0.x
+  #   - name: Listing Dotnet version
+  #     run: dotnet --version
+  #   - name: listing files
+  #     run: ls
+  #   - name: dotnet restore
+  #     run: 
+  #       dotnet restore
         
   # Frontend_Dotnet_Build:
   #   runs-on: self-hosted  
@@ -44,18 +44,18 @@ jobs:
   #     - name: Dotnet build
   #       run: dotnet build -c release
 
-  # Frontend_Docker_Build:
-  #   runs-on: self-hosted
-  #   # needs: Frontend_Dotnet_Build
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #     - name: Docker build using Dockerfile
-  #       run: |
-  #         az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-  #         docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-  #         docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-  #         docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
+  Frontend_Docker_Build:
+    runs-on: self-hosted
+    # needs: Frontend_Dotnet_Build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker build using Dockerfile
+        run: |
+          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+          docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+          docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
           
 
 # name: Self-Hosted CI
