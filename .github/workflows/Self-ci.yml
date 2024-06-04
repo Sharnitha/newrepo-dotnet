@@ -56,7 +56,14 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
-          
+
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: githubcisharni
+          containerAppName: containeraps
+          resourceGroup: sharnitha-poc
+          imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
 # name: Self-Hosted CI
 
