@@ -1,0 +1,40 @@
+name: cd on GitHub
+on:
+  workflow_run:
+    workflows: 
+      - Self-Hosted CI
+    types:
+      - completed
+jobs:
+    update-deployment:
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
+      environment:
+        name: Dev
+      runs-on: self-hosted
+      steps:
+        - name: az cli
+          run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}
+  
+        - name: Azure CLI script
+          id: step_one
+          uses: azure/CLI@v1
+          with:
+            inlineScript: |
+              echo secret=$(az keyvault secret show --vault-name Pracvault123 --name MySecret --query value) >> $GITHUB_ENV
+              
+        - name: Use the value
+          id: step_two
+          run: |
+              echo "${{ env.secret }}"
+
+      # - uses: cschleiden/replace-tokens@v1
+      #   with:
+      #     tokenPrefix: '{'
+      #     tokenSuffix: '}'
+      #     files: 'appsettings.json'
+              
+      # - name: Azure WebApp
+      #   uses: Azure/webapps-deploy@v3.0.1
+      #   with:
+      #       app-name: Sharni 
+      #       images: githubcipractice.azurecr.io/demoenv:${{ github.run_id }}
