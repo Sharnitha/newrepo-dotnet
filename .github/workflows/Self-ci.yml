@@ -57,6 +57,18 @@ jobs:
           # docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           # docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
 
+      - name: Azure CLI script
+        id: step_one
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            echo secret=$(az keyvault secret show --vault-name Pracvault123 --name MySecret --query value) >> $GITHUB_ENV
+              
+      - name: Use the value
+        id: step_two
+        run: |
+            echo "${{ env.secret }}"
+
       # - name: Build and deploy Container App
       #   uses: azure/container-apps-deploy-action@v1
       #   with:
