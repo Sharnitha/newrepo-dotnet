@@ -1,13 +1,10 @@
 name: Self-Hosted CI
 
-env:
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
-
 on:
   workflow_dispatch:
   push:
     branches:
-      - feature-private 
+      - feature
 
 # env:   
 #   DOTNET_VERSION: '6.0.422' 
