@@ -63,10 +63,10 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with:
-            app-name: 'demovmaps'
+            app-name: 'kuyyhb'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            # images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
-            package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+            images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       # - name: Azure CLI script
       #   id: step_one
