@@ -60,9 +60,6 @@ jobs:
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
 
-      - name: list files
-        run: cd app/publish && ls
-      
 
       - uses: azure/webapps-deploy@v2
         with:
