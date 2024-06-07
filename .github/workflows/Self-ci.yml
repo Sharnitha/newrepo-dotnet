@@ -1,5 +1,8 @@
 name: Self-Hosted CI
 
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+
 on:
   workflow_dispatch:
   push:
@@ -57,11 +60,16 @@ jobs:
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
 
+      - name: list files
+        run: cd app/publish && ls
+      
+
       - uses: azure/webapps-deploy@v2
         with:
             app-name: 'demovmaps'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            # images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       # - name: Azure CLI script
       #   id: step_one
