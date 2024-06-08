@@ -58,21 +58,21 @@ jobs:
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
 
 
-      # - uses: azure/webapps-deploy@v2
-      #   with:
-      #       app-name: 'kuyyhb'
-      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
-      #       # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-
-      - name: Build and deploy Container App
-        uses: azure/container-apps-deploy-action@v1
+      - uses: azure/webapps-deploy@v2
         with:
-          acrName: githubcisharni
-          containerAppName: cintainerapps
-          resourceGroup: sharnitha-poc
-          imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+            app-name: 'tryingtobest'
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+
+      # - name: Build and deploy Container App
+      #   uses: azure/container-apps-deploy-action@v1
+      #   with:
+      #     acrName: githubcisharni
+      #     containerAppName: cintainerapps
+      #     resourceGroup: sharnitha-poc
+      #     imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
       # - name: Azure CLI script
       #   id: step_one
