@@ -66,13 +66,13 @@ jobs:
       #       # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
 
-      # - name: Build and deploy Container App
-      #   uses: azure/container-apps-deploy-action@v1
-      #   with:
-      #     acrName: githubcisharni
-      #     containerAppName: cintainerapps
-      #     resourceGroup: sharnitha-poc
-      #     imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: githubcisharni
+          containerAppName: democontainerapp
+          resourceGroup: sharnitha-poc
+          imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
       # - name: Azure CLI script
       #   id: step_one
