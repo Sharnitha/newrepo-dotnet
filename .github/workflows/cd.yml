@@ -10,7 +10,8 @@ jobs:
    runs-on: self-hosted
    steps: 
     - name: AZ login
-      run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
+      run: |
+        az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
 
     - name: Fetch secrets from Key Vault
       run: |
