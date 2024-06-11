@@ -2,9 +2,9 @@ name: Self-Hosted CI
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature-private
+  # push:
+  #   branches:
+  #     - feature-private
 
 # env:   
 #   DOTNET_VERSION: '6.0.422' 
