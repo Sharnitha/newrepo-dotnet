@@ -2,9 +2,9 @@ name: CI
 
 on:
   workflow_dispatch:
-  # push: 
-  #   branches:
-  #   - feature-private
+  push: 
+    branches:
+    - feature-private
 jobs:
   cd_deployment:
    runs-on: self-hosted
@@ -12,13 +12,34 @@ jobs:
     - name: AZ login
       run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
 
-    - uses: Azure/get-keyvault-secrets@v1
-      with:
-          keyvault: "Sharnikeyvault"
-          secrets: 'LOGGING-DEFAULT, LOGGING-MICROSOFT, ALLOWED-HOSTS'
-      id: DemoSecretAction
-        
+    - name: Fetch secrets from Key Vault
+      run: |
+        logLevel=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
+        microsoft=$(az keyvault secret show --name Microsoft-AspNetCore --vault-name keyvault110624 --query value -o tsv)
+        echo "LOGLEVEL=${logLevel}" >> $GITHUB_ENV
+        echo "MICROSOFT=${microsoft}" >> $GITHUB_ENV
+ 
     - name: Replace tokens in appsettings.json
-      uses: microsoft/replace-tokens@v2
-      with:
-        files: appsettings.json
+      run: |
+        sed -i 's|{{logLevel-default}}|'"$LOGLEVEL"'|g' appsettings.json
+        sed -i 's|{{microsoft-AspNetCore}}|'"$MICROSOFT"'|g' appsettings.json
+        sed -i 's|{{allowedhost}}|'"${{ secrets.ENV_SECRETS }}"'|g' appsettings.json
+ 
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'sharnitha'
+        git config --global user.email 'sharnitha@github.com'
+        git add appsettings.json
+        git commit -m 'Update appsettings.json with secrets'
+        git push
+
+    # - uses: Azure/get-keyvault-secrets@v1
+    #   with:
+    #       keyvault: "Sharnikeyvault"
+    #       secrets: 'LOGGING-DEFAULT, LOGGING-MICROSOFT, ALLOWED-HOSTS'
+    #   id: DemoSecretAction
+        
+    # - name: Replace tokens in appsettings.json
+    #   uses: microsoft/replace-tokens@v2
+    #   with:
+    #     files: appsettings.json
