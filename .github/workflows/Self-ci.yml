@@ -55,7 +55,11 @@ jobs:
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
+          docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+          LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
+          MICROSOFT=$(az keyvault secret show --name microsoft-AspNetCore --vault-name keyvault110624 --query value -o tsv)
+          sed -i "s/{__logLevel-default__}/$LOG_DEFAULT/g" appsettings.json
+          sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json
 
 
       # - uses: azure/webapps-deploy@v2
