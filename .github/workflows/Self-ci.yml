@@ -83,7 +83,7 @@ jobs:
           acrName:  githubcisharni         
           acrUsername: githubcisharni          
           acrPassword: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
-          containerAppName: containerapps-consumption       
+          containerAppName: containerappname      
           resourceGroup: sharnitha-poc
           imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
