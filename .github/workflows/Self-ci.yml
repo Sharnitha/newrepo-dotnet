@@ -76,8 +76,10 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          acrName: githubcisharni
-          containerAppName: containerapps-consumption
+          acrName:  githubcisharni         
+          acrUsername: githubcisharni          
+          acrPassword: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
+          containerAppName: containerapps-consumption       
           resourceGroup: sharnitha-poc
           imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
