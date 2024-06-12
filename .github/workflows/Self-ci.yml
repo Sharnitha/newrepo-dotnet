@@ -70,7 +70,7 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           acrName: githubcisharni
-          containerAppName: containerapps1
+          containerAppName: containerapps-consumption
           resourceGroup: sharnitha-poc
           imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
