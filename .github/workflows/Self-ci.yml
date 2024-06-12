@@ -61,9 +61,12 @@ jobs:
           LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
           echo $LOG_DEFAULT
           MICROSOFT=$(az keyvault secret show --name microsoft-AspNetCore --vault-name keyvault110624 --query value -o tsv)
+          echo "Appsettings logdefault"
           sed -i "s/{__logLevel-default__}/$LOG_DEFAULT/g" appsettings.json
-          sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json
-
+          cat appsettings.json
+          echo "microsoft asp"
+          sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json  
+          cat appsettings.json
 
       # - uses: azure/webapps-deploy@v2
       #   with:
