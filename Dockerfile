@@ -7,7 +7,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY add_hosts_entry.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/add_hosts_entry.sh
-RUN apt update && apt install -y vim 
+RUN apt update && apt install -y vim
+RUN /usr/local/bin/add_hosts_entry.sh
 EXPOSE 80
 COPY --from=build /src/app/publish .
 RUN ls
