@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "198.76.197.23 demo" >> /etc/hosts
+sed -i '$ a\6.12.16.11 AL01' /etc/hosts
