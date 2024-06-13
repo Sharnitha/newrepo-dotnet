@@ -56,7 +56,7 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
-          az containerapp update  -n containerappname  -g sharnitha-poc --yaml back.yaml
+       # az containerapp update  -n containerappname  -g sharnitha-poc --yaml back.yaml
           
       # - name: Replace token
       #   run: |
