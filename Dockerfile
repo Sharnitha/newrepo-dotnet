@@ -11,8 +11,24 @@ RUN apt update && apt install -y vim
 EXPOSE 80
 COPY --from=build /src/app/publish .
 RUN ls
-CMD sh /usr/local/bin/add_hosts_entry.sh
-ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["dotnet", "dotnet-folder.dll"]
+
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# WORKDIR /src
+# COPY . /src
+# RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+# RUN cd app/publish && ls
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+# WORKDIR /app
+# COPY add_hosts_entry.sh /usr/local/bin/
+# RUN chmod +x /usr/local/bin/add_hosts_entry.sh
+# RUN apt update && apt install -y vim
+# EXPOSE 80
+# COPY --from=build /src/app/publish .
+# RUN ls
+# CMD sh /usr/local/bin/add_hosts_entry.sh
+# ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
 
 # # Stage 1: Build the application
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
