@@ -14,7 +14,7 @@
 # RUN ls
 # CMD ["dotnet", "dotnet-folder.dll"]
 
-# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
