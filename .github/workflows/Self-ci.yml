@@ -70,12 +70,12 @@ jobs:
       #     sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json  
       #     cat appsettings.json
 
-      # - uses: azure/webapps-deploy@v2
-      #   with:
-      #       app-name: 'tryingtobest'
-      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
-      #       # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - uses: azure/webapps-deploy@v2
+        with:
+            app-name: 'tryingtobest'
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
 
       # - name: Fetch secrets from Azure Key Vault
