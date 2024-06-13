@@ -70,11 +70,11 @@ jobs:
       #     sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json  
       #     cat appsettings.json
 
-      - uses: azure/webapps-deploy@v2
-        with:
-            app-name: 'webapp130624'
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+      # - uses: azure/webapps-deploy@v2
+      #   with:
+      #       app-name: 'webapp130624'
+      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
             # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
 
@@ -86,15 +86,15 @@ jobs:
       #     export SECRET_2=$(az keyvault secret show --vault-name 'keyvault110624' --name 'microsoft-AspNetCore' --query 'value' -o tsv)
       #     echo $SECRET_2
 
-      # - name: Build and deploy Container App
-      #   uses: azure/container-apps-deploy-action@v1
-      #   with:
-      #     acrName:  githubcisharni         
-      #     acrUsername: githubcisharni          
-      #     acrPassword: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
-      #     containerAppName: containerappname      
-      #     resourceGroup: sharnitha-poc
-      #     imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName:  githubcisharni         
+          acrUsername: githubcisharni          
+          acrPassword: t7/XMWigN+CfwFE5BC+i671BCPYToWQXGf3c0G5uQV+ACRCystt1
+          containerAppName: containerapps      
+          resourceGroup: sharnitha-poc
+          imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
       #     replace_env_vars: true
       #     env: |
       #       SECRET_1=$SECRET_1
