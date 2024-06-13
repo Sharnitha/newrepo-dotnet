@@ -57,17 +57,17 @@ jobs:
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
           
-      - name: Replace token
-        run: |
-          LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
-          echo $LOG_DEFAULT
-          MICROSOFT=$(az keyvault secret show --name microsoft-AspNetCore --vault-name keyvault110624 --query value -o tsv)
-          echo "Appsettingslogdefault"
-          sed -i "s/{__logLevel-default__}/$LOG_DEFAULT/g" appsettings.json
-          cat appsettings.json
-          echo "microsoft asp"
-          sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json  
-          cat appsettings.json
+      # - name: Replace token
+      #   run: |
+      #     LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
+      #     echo $LOG_DEFAULT
+      #     MICROSOFT=$(az keyvault secret show --name microsoft-AspNetCore --vault-name keyvault110624 --query value -o tsv)
+      #     echo "Appsettingslogdefault"
+      #     sed -i "s/{__logLevel-default__}/$LOG_DEFAULT/g" appsettings.json
+      #     cat appsettings.json
+      #     echo "microsoft asp"
+      #     sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json  
+      #     cat appsettings.json
 
       # - uses: azure/webapps-deploy@v2
       #   with:
@@ -76,6 +76,14 @@ jobs:
       #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
       #       # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
+
+      - name: Fetch secrets from Azure Key Vault
+        id: fetch-secrets
+        run: |
+          export SECRET_1=$(az keyvault secret show --vault-name 'keyvault110624' --name 'logleveldefault' --query 'value' -o tsv)
+          echo $SECRET_1
+          export SECRET_2=$(az keyvault secret show --vault-name 'keyvault110624' --name 'microsoft-AspNetCore' --query 'value' -o tsv)
+          echo $SECRET_2
 
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
@@ -86,6 +94,11 @@ jobs:
           containerAppName: containerappname      
           resourceGroup: sharnitha-poc
           imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+          replace_env_vars: true
+          env: |
+            SECRET_1=$SECRET_1
+            SECRET_2=$SECRET_2
+
 
       # - name: Azure CLI script
       #   id: step_one
