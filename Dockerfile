@@ -27,8 +27,9 @@ RUN apt update && apt install -y vim
 EXPOSE 80
 COPY --from=build /src/app/publish .
 RUN ls
-CMD sh /usr/local/bin/add_hosts_entry.sh
-ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
+CMD [ "/bin/bash", "-c", "/usr/local/bin/add_hosts_entry.sh; dotnet dotnet-folder.dll" ]
+
+# ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
 
 # # Stage 1: Build the application
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
