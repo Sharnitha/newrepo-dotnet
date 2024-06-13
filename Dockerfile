@@ -6,10 +6,11 @@ RUN cd app/publish && ls
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY add_hosts_entry.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/add_hosts_entry.sh
+COPY --from=build /src/app/publish .
 RUN apt update && apt install -y vim
 EXPOSE 80
-COPY --from=build /src/app/publish .
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/add_hosts_entry.sh
 RUN ls
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["dotnet", "dotnet-folder.dll"]
