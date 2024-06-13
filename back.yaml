@@ -1,66 +1,37 @@
-location: eastus 
-
-name: containerappname   #this is the name of the container app 
-
-resourceGroup: sharnitha-poc 
-
-type: Microsoft.App/containerApps 
-
-properties: 
-
-  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/environmehtame
-
-  workloadProfileName: "Consumption" #your workload profile name 
-
-  configuration: 
-
-    activeRevisionsMode: Single 
-
-    ingress: 
-
-      external: true
-
-      allowInsecure: false 
-
-      targetPort: 80 
-
-      traffic: 
-
-      - latestRevision: true 
-
-        weight: 100 
-
-      transport: HTTP/1
-      
-    registries:
-    
-      - password: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
-    
-        server: githubcisharni.azurecr.io
-      
-        username: githubcisharni
-
-  template: 
-
-    revisionSuffix: 1233
-
-    containers: 
-
-    - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
-
-      name: containerappname   #this is the name of the container executed in aca.  
-
+location: eastus
+name: containerappname
+resourceGroup: sharnitha-poc
+type: Microsoft.App/containerApps
+properties:
+  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/environmehtame
+  workloadProfileName: "Consumption"
+  configuration:
+    activeRevisionsMode: Single
+    ingress:
+      external: true
+      allowInsecure: false
+      targetPort: 80
+      traffic:
+        - latestRevision: true
+          weight: 100
+    transport: HTTP/1
+  registries:
+    - password: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
+      server: githubcisharni.azurecr.io
+      username: githubcisharni
+  template:
+    revisionSuffix: 1233
+  containers:
+    - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+      name: containerappname  # this is the name of the container executed in aca
       env:
-      - name: logleveldefault
-        value: "{{__logleveldefault__}}" 
-      - name: microsoft-AspNetCore
-        value: "{{__microsoft-AspNetCore__}}"
-          
-      resources: 
-        cpu: 1.5
-        memory: 3Gi 
-        
-    scale:
-          minReplicas: 1
-          maxReplicas: 10      
-    
+        - name: logleveldefault
+          value: "{{__logleveldefault__}}" 
+        - name: microsoft-AspNetCore
+          value: "{{__microsoft-AspNetCore__}}"
+      resources:
+        cpu: 1.5
+        memory: 3Gi
+  scale:
+    minReplicas: 1
+    maxReplicas: 10
