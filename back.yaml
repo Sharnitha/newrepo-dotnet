@@ -36,7 +36,7 @@ properties:
 
     revisionSuffix: 1233
     
-    registries:
+  registries:
     
     - password: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
     
@@ -44,7 +44,7 @@ properties:
       
       username: githubcisharni
 
-    containers: 
+  containers: 
 
       - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
 
