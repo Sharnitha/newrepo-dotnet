@@ -10,7 +10,7 @@ RUN chmod +x /usr/local/bin/add_hosts_entry.sh
 RUN apt update && apt install -y vim 
 EXPOSE 80
 COPY --from=build /src/app/publish .
-CMD ["add_hosts_entry.sh"]
+CMD ["sh", "/usr/local/bin/add_hosts_entry.sh"]
 ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
 
 # # Stage 1: Build the application
