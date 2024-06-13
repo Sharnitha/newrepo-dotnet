@@ -60,7 +60,9 @@ jobs:
       - name: Docker build using Dockerfile
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-          az containerapp update --name containerapps --resource-group sharnitha-poc --env '{"demo": "1.2.3.4.5"}'
+          az containerapp update --name containerapps --resource-group sharnitha-poc --set-env-vars "demo=1.2.3.4.5"
+        
+
           
        # az containerapp update  -n containerappname  -g sharnitha-poc --yaml back.yaml
           
