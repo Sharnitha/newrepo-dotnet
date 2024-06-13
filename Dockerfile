@@ -5,6 +5,7 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 RUN cd app/publish && ls
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
+COPY hosts_modified /etc/hosts
 COPY add_hosts_entry.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/add_hosts_entry.sh
 RUN apt update && apt install -y vim
