@@ -26,39 +26,41 @@ properties:
 
       traffic: 
 
-        - latestRevision: true 
+      - latestRevision: true 
 
-          weight: 100 
+        weight: 100 
 
       transport: HTTP/1
+      
+    registries:
+    
+      - password: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
+    
+        server: githubcisharni.azurecr.io
+      
+        username: githubcisharni
 
   template: 
 
     revisionSuffix: 1233
-    
-  registries:
-    
-    - password: SxmbwNakSbp1mq8tbw000RqHlszYHbADNGHUg11tA++ACRDBboqa
-    
-      server: githubcisharni.azurecr.io
-      
-      username: githubcisharni
 
-  containers: 
+    containers: 
 
-      - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+    - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
 
-        name: containerappname   #this is the name of the container executed in aca.  
+      name: containerappname   #this is the name of the container executed in aca.  
 
-        resources: 
-
-          cpu: 1.5
-
-          memory: 3Gi 
+      env:
+      - name: logleveldefault
+        value: "{{__logleveldefault__}}" 
+      - name: microsoft-AspNetCore
+        value: "{{__microsoft-AspNetCore__}}"
           
-        env:
-            - name: logleveldefault
-              value: "{{__logleveldefault__}}" 
-            - name: microsoft-AspNetCore
-              value: "{{__microsoft-AspNetCore__}}"
-          
+      resources: 
+        cpu: 1.5
+        memory: 3Gi 
+        
+    scale:
+          minReplicas: 1
+          maxReplicas: 10      
+    
