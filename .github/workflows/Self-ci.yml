@@ -63,7 +63,7 @@ jobs:
           CUSTOM_DNS_IP=1.2.3.4
       
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-          az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --dns-servers $CUSTOM_DNS_IP
+          az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --dns-server $CUSTOM_DNS_IP
 
 
           
