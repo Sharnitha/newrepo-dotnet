@@ -12,7 +12,7 @@ sed -i "s|#{__microsoft__}#|$API_KEY|g" appsettings.json
 cat <<EOF > backend.yaml
 kind: containerapp
 location: East US
-name: Containerappsdemo
+name: containerapps
 resourceGroup: sharnitha-poc
 type: Microsoft.App/containerApps
 properties:
