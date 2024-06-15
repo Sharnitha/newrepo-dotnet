@@ -48,4 +48,4 @@ properties:
           minReplicas: 1
           maxReplicas: 10
 EOF
-az containerapp update  -n containerapps -g sharnitha-poc --image githubcisharni.azurecr.io/demoenv:9527388884 --yaml backend.yaml
+az containerapp update  -n containerapps -g sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --yaml backend.yaml
