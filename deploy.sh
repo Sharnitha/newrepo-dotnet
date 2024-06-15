@@ -5,8 +5,8 @@ DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" -
 API_KEY=$(az keyvault secret show --name "Microsoft-AspNetCore" --vault-name "keyvaulttest1506" --query "value" -o tsv)
 
 # Replace placeholders in appsetting.json with fetched secrets
-sed -i "s|#{logLevel}#|$DATABASE_CONNECTION_STRING|g" appsetting.json
-sed -i "s|#{microsoft}#|$API_KEY|g" appsetting.json
+sed -i "s|#{logLevel}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
+sed -i "s|#{microsoft}#|$API_KEY|g" appsettings.json
 
 # Define backend.yaml content dynamically with fetched secrets
 cat <<EOF | az containerapp update -n $BACKEND_APP_NAME -g $RESOURCE_GROUP --yaml -
