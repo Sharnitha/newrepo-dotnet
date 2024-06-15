@@ -58,7 +58,7 @@ jobs:
           LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
           echo "The log value:" $LOG_DEFAULT
           echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
-          az container list --resource-group sharnitha-poc
+          az containerapp list --resource-group sharnitha-poc
         # az container exec --exec-command "/bin/bash" --name githubcisharni --resource-group sharnitha-poc
         # az containerapp restart \
         #   --name containerapps \
