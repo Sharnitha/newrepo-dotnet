@@ -55,6 +55,14 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+
+      - name: Set environment variables
+        id: set_env_vars
+        run: |
+          VAR1=$(jq -r .logLevel appsettings.json)
+          VAR2=$(jq -r .microsoft appsettings.json)
+          echo "::set-output name=var1::$VAR1"
+          echo "::set-output name=var2::$VAR2"
           
       - name: Replace tokens
         run: |
@@ -66,7 +74,8 @@ jobs:
           sed -i "s/{__microsoft__}/$MICROSOFT/g" appsettings.json
           cat appsettings.json
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-          az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --set-env-vars "logLevel__Default=$LOG_DEFAULT" "microsoft__AspNetCore=$MICROSOFT"
+          az containerapp update --name containerapps --resource-group sharnitha-poc \
+            --set-env-vars logLevel=$VAR1 microsoft=$VAR2
          
        # az containerapp update  -n containerappname  -g sharnitha-poc --yaml back.yaml
           
