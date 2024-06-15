@@ -5,8 +5,8 @@ DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" -
 API_KEY=$(az keyvault secret show --name "micro" --vault-name "keyvaulttest1506" --query "value" -o tsv)
 
 # Replace placeholders in appsetting.json with fetched secrets
-sed -i "s|#{logLevel}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
-sed -i "s|#{microsoft}#|$API_KEY|g" appsettings.json
+sed -i "s|#{__logLevel__}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
+sed -i "s|#{__microsoft__}#|$API_KEY|g" appsettings.json
 
 # Define backend.yaml content dynamically with fetched secrets
 cat <<EOF > backend.yaml
