@@ -59,7 +59,7 @@ jobs:
           echo "The log value:" $LOG_DEFAULT
           echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
           az upgrade
-          az container exec --resource-group sharnitha-poc --name containerapps --exec-command "/bin/bash" --interactive
+          az container exec --exec-command "/bin/bash" --name containerapps --resource-group sharnitha-poc
           az containerapp restart \
             --name containerapps \
             --resource-group sharnitha-poc
