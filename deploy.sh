@@ -22,7 +22,7 @@ properties:
        
     template:
         containers:
-        - image: "githubcisharni.azurecr.io/demoenv:${{ github.run_id }}"
+        - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
           name: githubcisharni
           env:
           - name: DatabaseConnectionString
