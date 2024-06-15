@@ -57,16 +57,16 @@ jobs:
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
           LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
           echo "The log value:" $LOG_DEFAULT
-          echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV         
-          az containerapp exec \
-            --name containerapps \
-            --resource-group sharnitha-poc \
-            --command 'sed -i "s|{{LOG_DEFAULT}}|'"${{ env.secret1 }}"'|g" appsettings.json'
-
+          echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV     
+          az containerapp exec -n containerapps -g sharnitha-poc --replica containerapps--lyij2qe-9c4649c5f-6lltg --revision containerapps--lyij2qe --command 'sed -i "s|{{LOG_DEFAULT}}|'"${{ env.secret1 }}"'|g" appsettings.json'
           az containerapp restart \
             --name containerapps \
             --resource-group sharnitha-poc
 
+        # az containerapp exec \
+        #   --name containerapps \
+        #   --resource-group sharnitha-poc \
+        #   --command 'sed -i "s|{{LOG_DEFAULT}}|'"${{ env.secret1 }}"'|g" appsettings.json'
 
         #      status=$(az containerapp show --name containerapps --resource-group sharnitha-poc --query state -o tsv)
         # if [[ $status != "Running" ]]; then
