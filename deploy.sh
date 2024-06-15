@@ -1,5 +1,7 @@
 #!/bin/bash
 
+GITHUB_RUN_ID=$1
+
 # Fetch secrets from Azure Key Vault
 DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" --vault-name "keyvaulttest1506" --query "value" -o tsv)
 API_KEY=$(az keyvault secret show --name "micro" --vault-name "keyvaulttest1506" --query "value" -o tsv)
@@ -7,6 +9,8 @@ API_KEY=$(az keyvault secret show --name "micro" --vault-name "keyvaulttest1506"
 # Replace placeholders in appsetting.json with fetched secrets
 sed -i "s|#{__logLevel__}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
 sed -i "s|#{__microsoft__}#|$API_KEY|g" appsettings.json
+
+IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 
 # Define backend.yaml content dynamically with fetched secrets 
 cat <<EOF > backend.yaml
@@ -22,7 +26,7 @@ properties:
        
     template:
         containers:
-        - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+        - image: $IMAGE_TAG
           name: githubcisharni
           env:
           - name: DatabaseConnectionString
@@ -48,4 +52,4 @@ properties:
           minReplicas: 1
           maxReplicas: 10
 EOF
-az containerapp update  -n containerapps -g sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --yaml backend.yaml
+az containerapp update  -n containerapps -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
