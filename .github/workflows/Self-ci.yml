@@ -59,7 +59,7 @@ jobs:
           echo "The log value:" $LOG_DEFAULT
           echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
           az upgrade
-          az containerapp exec -n containerapps -g sharnitha-poc --replica containerapps--lyij2qe-9c4649c5f-6lltg --revision containerapps--lyij2qe --command 'sed -i "s|{{LOG_DEFAULT}}|'"${{ env.secret1 }}"'|g" appsettings.json'
+          az container exec --resource-group sharnitha-poc --name containerapps --exec-command "/bin/bash" --interactive
           az containerapp restart \
             --name containerapps \
             --resource-group sharnitha-poc
