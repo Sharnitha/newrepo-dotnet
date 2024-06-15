@@ -60,7 +60,7 @@ jobs:
           echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV
           status=$(az containerapp show --name containerapps --resource-group sharnitha-poc --query state -o tsv)
           if [[ $status != "Running" ]]; then
-          az containerapp start --name containerapps --resource-group sharnitha-poc
+          az containerapp revision activate --revision --name containerapps --resource-group sharnitha-poc
           sleep 30 
           fi
           
