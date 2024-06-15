@@ -19,20 +19,13 @@ jobs:
         microsoft=$(az keyvault secret show --name Microsoft-AspNetCore --vault-name keyvault110624 --query value -o tsv)
         echo "LOGLEVEL=${logLevel}" >> $GITHUB_ENV
         echo "MICROSOFT=${microsoft}" >> $GITHUB_ENV
- 
-    - name: Replace tokens in appsettings.json
-      run: |
-        sed -i 's|{{logLevel-default}}|'"$LOGLEVEL"'|g' appsettings.json
-        sed -i 's|{{microsoft-AspNetCore}}|'"$MICROSOFT"'|g' appsettings.json
-        sed -i 's|{{allowedhost}}|'"${{ secrets.ENV_SECRETS }}"'|g' appsettings.json
- 
-    - name: Commit and push changes
-      run: |
-        git config --global user.name 'sharnitha'
-        git config --global user.email 'sharnitha@github.com'
-        git add appsettings.json
-        git commit -m 'Update appsettings.json with secrets'
-        git push
+        
+    - uses: cschleiden/replace-tokens@v1
+      with:
+          tokenPrefix: '#{'
+          tokenSuffix: '}#'
+          files: '["appsetting.json"]'
+    
 
     # - uses: Azure/get-keyvault-secrets@v1
     #   with:
