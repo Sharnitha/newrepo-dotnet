@@ -1,6 +1,6 @@
 kind: containerapp
 location: East US
-name: Containerappsdemo
+name: containerapps
 resourceGroup: sharnitha-poc
 type: Microsoft.App/containerApps
 properties:
