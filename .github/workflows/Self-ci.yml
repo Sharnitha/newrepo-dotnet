@@ -2,9 +2,9 @@ name: Self-Hosted CI
 
 on:
   workflow_dispatch:
-  push:
-    branches: 
-      - feature-private
+  # push:
+  #   branches: 
+  #     - feature-private
     # env:   
 #   DOTNET_VERSION: '6.0.422' 
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
@@ -59,7 +59,8 @@ jobs:
       - name: Re-Contaimer Apps
         run: |
            chmod +x deploy.sh
-           ./deploy.sh
+           GITHUB_RUN_ID=${{ github.run_id }}
+           ./deploy.sh $GITHUB_RUN_ID
            
       # - name: Replace tokens
       #   run: |
