@@ -8,7 +8,7 @@ API_KEY=$(az keyvault secret show --name "micro" --vault-name "keyvaulttest1506"
 sed -i "s|#{__logLevel__}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
 sed -i "s|#{__microsoft__}#|$API_KEY|g" appsettings.json
 
-# Define backend.yaml content dynamically with fetched secrets
+# Define backend.yaml content dynamically with fetched secrets 
 cat <<EOF > backend.yaml
 kind: containerapp
 location: East US
