@@ -9,7 +9,7 @@ sed -i "s|#{logLevel}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
 sed -i "s|#{microsoft}#|$API_KEY|g" appsettings.json
 
 # Define backend.yaml content dynamically with fetched secrets
-cat <<EOF | az containerapp update -n $BACKEND_APP_NAME -g $RESOURCE_GROUP --yaml -
+cat <<EOF > backend.yaml
 kind: containerapp
 location: East US
 name: Containerappsdemo
