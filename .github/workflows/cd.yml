@@ -1,10 +1,10 @@
-name: CI
+name: CD
 
 on:
   workflow_dispatch:
-  # push: 
-  #   branches:
-  #   - feature-private
+  push: 
+    branches:
+    - feature-private
 jobs:
   cd_deployment:
    runs-on: self-hosted
