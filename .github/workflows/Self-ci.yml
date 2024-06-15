@@ -59,8 +59,9 @@ jobs:
           echo "The log value:" $LOG_DEFAULT
           echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
           cat appsettings.json
+          cat /mnt/actions-runner/_work/_temp/*.sh
           script -q -c 'az containerapp exec --name containerapps --resource-group sharnitha-poc --command "sed -i \"s|{LOG_DEFAULT}|'"Information\"'|g\" appsettings.json"'
-          vim /mnt/actions-runner/_work/_temp/*.sh
+          cat /mnt/actions-runner/_work/_temp/*.sh
        # script -q -c 'az containerapp exec --name containerapps --resource-group sharnitha-poc --command "sed -i \"s|{LOG_DEFAULT}|'"${{ env.secret1 }}\"'|g\" appsettings.json"'
 
        # az containerapp exec --exec-command "/bin/bash" --name containerapps --resource-group sharnitha-poc
