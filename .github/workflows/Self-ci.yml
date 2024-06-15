@@ -59,8 +59,7 @@ jobs:
       - name: Re-Contaimer Apps
         run: |
            chmod +x deploy.sh
-           ./deploy.sh 
-           az containerapp update  -n containerapps -g sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --yaml backend.yaml
+           ./deploy.sh
            
       # - name: Replace tokens
       #   run: |
