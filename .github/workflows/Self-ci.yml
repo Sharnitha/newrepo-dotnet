@@ -2,9 +2,9 @@ name: Self-Hosted CI
 
 on:
   workflow_dispatch:
-  push:
-    branches: 
-      - feature-private
+  # push:
+  #   branches: 
+  #     - feature-private
     # env:   
 #   DOTNET_VERSION: '6.0.422' 
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
@@ -60,8 +60,8 @@ jobs:
         run: |
            chmod +x deploy.sh
            ./deploy.sh 
-
-          
+           az containerapp update  -n containerappname -g sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --yaml backend.yaml
+           
       # - name: Replace tokens
       #   run: |
       #     LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
