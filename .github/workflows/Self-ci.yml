@@ -57,7 +57,8 @@ jobs:
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
           LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
           echo "The log value:" $LOG_DEFAULT
-          echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV     
+          echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
+          az upgrade
           az containerapp exec -n containerapps -g sharnitha-poc --replica containerapps--lyij2qe-9c4649c5f-6lltg --revision containerapps--lyij2qe --command 'sed -i "s|{{LOG_DEFAULT}}|'"${{ env.secret1 }}"'|g" appsettings.json'
           az containerapp restart \
             --name containerapps \
