@@ -10,7 +10,7 @@ properties:
        
     template:
         containers:
-        - image: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+        - image: githubcisharni.azurecr.io/demoenv:9527388884
           name: githubcisharni
           env:
           - name: DatabaseConnectionString
