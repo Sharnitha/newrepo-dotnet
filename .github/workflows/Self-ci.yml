@@ -55,12 +55,13 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+          az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
 
-      - name: Re-Contaimer Apps
-        run: |
-           chmod +x deploy.sh
-           GITHUB_RUN_ID=${{ github.run_id }}
-           ./deploy.sh $GITHUB_RUN_ID
+      # - name: Re-Contaimer Apps
+      #   run: |
+      #      chmod +x deploy.sh
+      #      GITHUB_RUN_ID=${{ github.run_id }}
+      #      ./deploy.sh $GITHUB_RUN_ID
            
       # - name: Replace tokens
       #   run: |
