@@ -2,11 +2,10 @@ name: Self-Hosted CI
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: 
-  #     - feature-private
- 
-# env:   
+  push:
+    branches: 
+      - feature-private
+    # env:   
 #   DOTNET_VERSION: '6.0.422' 
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
 
@@ -57,13 +56,18 @@ jobs:
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
           
-      # - name: Configure DNS for Container App
-      #   run: |
-      #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-      #     az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
-
-
-          
+      - name: Configure DNS for Container App
+        run: |
+          LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
+          echo $LOG_DEFAULT
+          MICROSOFT=$(az keyvault secret show --name Microsoft-AspNetCore --vault-name keyvaulttest1506 --query value -o tsv)
+          echo "Appsettingslogdefault"
+          sed -i "s/{__logLevel__}/$LOG_DEFAULT/g" appsettings.json
+          sed -i "s/{__microsoft__}/$LOG_DEFAULT/g" appsettings.json
+          cat appsettings.json
+          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+          az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --set-env-vars "logLevel__Default=$LOG_DEFAULT" "microsoft__AspNetCore=$MICROSOFT"
+         
        # az containerapp update  -n containerappname  -g sharnitha-poc --yaml back.yaml
           
       # - name: Replace token
