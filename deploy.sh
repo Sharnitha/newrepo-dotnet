@@ -1,42 +1,37 @@
 #!/bin/bash
 
 # Fetch secrets from Azure Key Vault
-DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "DatabaseConnectionString" --vault-name "my-keyvault" --query "value" -o tsv)
-API_KEY=$(az keyvault secret show --name "ApiKey" --vault-name "my-keyvault" --query "value" -o tsv)
-SERVICE_URL=$(az keyvault secret show --name "ServiceUrl" --vault-name "my-keyvault" --query "value" -o tsv)
+DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" --vault-name "keyvaulttest1506" --query "value" -o tsv)
+API_KEY=$(az keyvault secret show --name "Microsoft-AspNetCore" --vault-name "keyvaulttest1506" --query "value" -o tsv)
 
 # Replace placeholders in appsetting.json with fetched secrets
-sed -i "s|#{DatabaseConnectionString}#|$DATABASE_CONNECTION_STRING|g" appsetting.json
-sed -i "s|#{ApiKey}#|$API_KEY|g" appsetting.json
-sed -i "s|#{ServiceUrl}#|$SERVICE_URL|g" appsetting.json
+sed -i "s|#{logLevel}#|$DATABASE_CONNECTION_STRING|g" appsetting.json
+sed -i "s|#{microsoft}#|$API_KEY|g" appsetting.json
 
 # Define backend.yaml content dynamically with fetched secrets
 cat <<EOF | az containerapp update -n $BACKEND_APP_NAME -g $RESOURCE_GROUP --yaml -
 kind: containerapp
-location: $LOCATION
-name: $BACKEND_APP_NAME
-resourceGroup: $RESOURCE_GROUP
+location: East US
+name: Containerappsdemo
+resourceGroup: sharnitha-poc
 type: Microsoft.App/containerApps
 properties:
-    managedEnvironmentId: /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.App/managedEnvironments/$CONTAINERAPPS_ENVIRONMENT_NAME
+    managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/$CONTAINERAPPS_ENVIRONMENT_NAME
     configuration:
-        activeRevisionsMode: single  # Ensure only one revision is active
-        # Define other configuration settings as needed
+        activeRevisionsMode: single
+       
     template:
         containers:
-        - image: "$REGISTRY"
-          name: $BACKEND_APP_NAME
+        - image: "githubcisharni.azurecr.io/demoenv:${{ github.run_id }}"
+          name: githubcisharni
           env:
           - name: DatabaseConnectionString
             value: "$DATABASE_CONNECTION_STRING"
           - name: ApiKey
             value: "$API_KEY"
-          - name: ServiceUrl
-            value: "$SERVICE_URL"
-          # Add other environment variables as needed
           resources:
-              cpu: 2  # Adjust as per your application's requirements
-              memory: 4Gi  # Adjust as per your application's requirements
+              cpu: 2  
+              memory: 4Gi  
           probes:
           - type: liveness
             tcpSocket:
