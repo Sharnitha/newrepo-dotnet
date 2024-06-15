@@ -56,26 +56,23 @@ jobs:
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
-      - name: Set environment variables
-        id: set_env_vars
+      - name: Re-Contaimer Apps
         run: |
-          VAR1=$(jq -r .logLevel appsettings.json)
-          VAR2=$(jq -r .microsoft appsettings.json)
-          echo "::set-output name=var1::$VAR1"
-          echo "::set-output name=var2::$VAR2"
+           chmod +x deploy.sh
+           ./deploy.sh 
+
           
-      - name: Replace tokens
-        run: |
-          LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
-          echo $LOG_DEFAULT
-          MICROSOFT=$(az keyvault secret show --name micro --vault-name keyvaulttest1506 --query value -o tsv)
-          echo $MICROSOFT
-          sed -i "s/{__logLevel__}/$LOG_DEFAULT/g" appsettings.json
-          sed -i "s/{__microsoft__}/$MICROSOFT/g" appsettings.json
-          cat appsettings.json
-          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-          az containerapp update --name containerapps --resource-group sharnitha-poc \
-            --set-env-vars logLevel=$VAR1 microsoft=$VAR2
+      # - name: Replace tokens
+      #   run: |
+      #     LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
+      #     echo $LOG_DEFAULT
+      #     MICROSOFT=$(az keyvault secret show --name micro --vault-name keyvaulttest1506 --query value -o tsv)
+      #     echo $MICROSOFT
+      #     sed -i "s/{__logLevel__}/$LOG_DEFAULT/g" appsettings.json
+      #     sed -i "s/{__microsoft__}/$MICROSOFT/g" appsettings.json
+      #     cat appsettings.json
+      #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+      #     az containerapp update --name containerapps --resource-group sharnitha-poc --yaml 
          
        # az containerapp update  -n containerappname  -g sharnitha-poc --yaml back.yaml
           
