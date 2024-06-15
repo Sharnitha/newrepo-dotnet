@@ -2,7 +2,7 @@
 
 # Fetch secrets from Azure Key Vault
 DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" --vault-name "keyvaulttest1506" --query "value" -o tsv)
-API_KEY=$(az keyvault secret show --name "Microsoft-AspNetCore" --vault-name "keyvaulttest1506" --query "value" -o tsv)
+API_KEY=$(az keyvault secret show --name "micro" --vault-name "keyvaulttest1506" --query "value" -o tsv)
 
 # Replace placeholders in appsetting.json with fetched secrets
 sed -i "s|#{logLevel}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
