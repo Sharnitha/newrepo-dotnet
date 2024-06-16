@@ -21,14 +21,14 @@ properties:
             username: githubcisharni
     template:
         containers:
-        - image: githubcisharni.azurecr.io/demoenv:{{github.ci}}
+        - image: $IMAGE_TAG
           name: githubcisharni
           env:
           - name: LOG_DEFAULT
             value: {__LOG_DEFAULT__}
-		  resources:
+          resources:
               cpu: 2
               memory: 4Gi
-		scale:
-          minReplicas: 1
-          maxReplicas: 10
+        scale:
+	  minReplicas: 1
+	  maxReplicas: 10
