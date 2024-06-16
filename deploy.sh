@@ -5,7 +5,7 @@ GITHUB_RUN_ID=$1
 LOG_DEFAULT=Information
 echo $LOG_DEFAULT
 
-sed -i "s|#{__LOG_DEFAULT__}#|$LOG_DEFAULT|g" appsettings.json
+sed -i "s|#{LOG_DEFAULT}#|$LOG_DEFAULT|g" appsettings.json
 
 # Fetch secrets from Azure Key Vault
 # DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" --vault-name "keyvaulttest1506" --query "value" -o tsv)
@@ -46,7 +46,7 @@ properties:
           name: githubcisharni
           env:
           - name: LOG_DEFAULT
-            value: {__LOG_DEFAULT__}
+            value: {LOG_DEFAULT}
           resources:
               cpu: 2
               memory: 4Gi
