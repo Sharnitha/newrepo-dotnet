@@ -2,10 +2,10 @@
 
 GITHUB_RUN_ID=$1
 
-LOG_DEFAULT=Information
-echo $LOG_DEFAULT
+__LOG_DEFAULT__=Information
+echo $__LOG_DEFAULT__
 
-sed -i "s|#{LOG_DEFAULT}#|$LOG_DEFAULT|g" appsettings.json
+sed -i "s|#{LOG_DEFAULT}#|$__LOG_DEFAULT__|g" appsettings.json
 
 # Fetch secrets from Azure Key Vault
 # DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" --vault-name "keyvaulttest1506" --query "value" -o tsv)
