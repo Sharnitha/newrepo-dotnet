@@ -55,13 +55,31 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
-          LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
-          echo "The log value:" $LOG_DEFAULT
-          echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
-          cat appsettings.json
-          cat /mnt/actions-runner/_work/_temp/*.sh
-          script -q -c 'az containerapp exec --name containerapps --resource-group sharnitha-poc --command "sed -i \"s|{LOG_DEFAULT}|'"Information\"'|g\" appsettings.json"'
-          cat /mnt/actions-runner/_work/_temp/*.sh
+      # LOG_DEFA=${{ secrets.LOG }}
+          # chmod +x deploy.sh
+          # GITHUB_RUN_ID=${{ github.run_id }}
+          # ./deploy.sh $GITHUB_RUN_ID
+          
+
+  # Frontend_Docker_Build:
+  #   runs-on: self-hosted
+  #   # needs: Frontend_Dotnet_Build
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4 
+  #     - name: Docker build using Dockerfile
+  #       run: |
+  #         az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+  #         docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+  #         docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+  #         docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+  #         LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
+  #         echo "The log value:" $LOG_DEFAULT
+  #         echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
+  #         cat appsettings.json
+  #         cat /mnt/actions-runner/_work/_temp/*.sh
+  #         script -q -c 'az containerapp exec --name containerapps --resource-group sharnitha-poc --command "sed -i \"s|{LOG_DEFAULT}|'"Information\"'|g\" appsettings.json"'
+  #         cat /mnt/actions-runner/_work/_temp/*.sh
        # script -q -c 'az containerapp exec --name containerapps --resource-group sharnitha-poc --command "sed -i \"s|{LOG_DEFAULT}|'"${{ env.secret1 }}\"'|g\" appsettings.json"'
 
        # az containerapp exec --exec-command "/bin/bash" --name containerapps --resource-group sharnitha-poc
