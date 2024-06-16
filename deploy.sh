@@ -42,7 +42,7 @@ properties:
             username: githubcisharni
     template:
         containers:
-        - image: githubcisharni.azurecr.io/demoenv:{{github.ci}}
+        - image: $IMAGE_TAG
           name: githubcisharni
           env:
           - name: LOG_DEFAULT
