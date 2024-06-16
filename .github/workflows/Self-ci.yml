@@ -55,10 +55,9 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
-      # LOG_DEFA=${{ secrets.LOG }}
-          # chmod +x deploy.sh
-          # GITHUB_RUN_ID=${{ github.run_id }}
-          # ./deploy.sh $GITHUB_RUN_ID
+          chmod +x deploy.sh
+          GITHUB_RUN_ID=${{ github.run_id }}
+          ./deploy.sh $GITHUB_RUN_ID
           
 
   # Frontend_Docker_Build:
