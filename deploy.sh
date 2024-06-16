@@ -35,7 +35,7 @@ properties:
           name: githubcisharni
           env:
           - name: LOG_DEFAULT
-            value: "$LOG_DEFA"
+            value: "Information"
           resources:
               cpu: 2  
               memory: 4Gi  
