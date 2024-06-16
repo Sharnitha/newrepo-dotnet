@@ -47,11 +47,11 @@ properties:
           env:
           - name: LOG_DEFAULT
             value: {__LOG_DEFAULT__}
-		  resources:
+          resources:
               cpu: 2
               memory: 4Gi
-		scale:
-          minReplicas: 1
-          maxReplicas: 10
+        scale:
+	  minReplicas: 1
+	  maxReplicas: 10
 EOF
 az containerapp update  -n containerapps -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
