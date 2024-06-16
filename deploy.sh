@@ -2,7 +2,7 @@
 
 GITHUB_RUN_ID=$1
 
-LOG_DEFA=${{ secrets.LOG }}
+LOG_DEFA=Information
 echo $LOG_DEFA
 
 sed -i "s|#{LOG_DEFAULT}#|$LOG_DEFA|g" appsettings.json
