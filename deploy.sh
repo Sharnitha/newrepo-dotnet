@@ -2,10 +2,10 @@
 
 GITHUB_RUN_ID=$1
 
-LOG_DEFA=Information
-echo $LOG_DEFA
+LOG_DEFAULT=Information
+echo $LOG_DEFAULT
 
-sed -i "s|#{LOG_DEFAULT}#|$LOG_DEFA|g" appsettings.json
+sed -i "s|#{LOG_DEFAULT}#|$LOG_DEFAULT|g" appsettings.json
 
 # Fetch secrets from Azure Key Vault
 # DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" --vault-name "keyvaulttest1506" --query "value" -o tsv)
@@ -27,17 +27,31 @@ type: Microsoft.App/containerApps
 properties:
     managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-b20f
     configuration:
-        activeRevisionsMode: single
-       
+        activeRevisionsMode: Single
+        ingress:
+            external: true
+            allowInsecure: false
+            targetPort: 80
+            traffic:
+            - latestRevision: true
+              weight: 100
+            transport: Http
+        registries:
+          - passwordSecretRef: reg-pswd-39d6d968-bcc8
+            server: githubcisharni.azurecr.io
+            username: githubcisharni
     template:
         containers:
-        - image: $IMAGE_TAG
+        - image: githubcisharni.azurecr.io/demoenv:{{github.ci}}
           name: githubcisharni
           env:
           - name: LOG_DEFAULT
-            value: "Information"
-          resources:
-              cpu: 2  
-              memory: 4Gi  
+            value: {__LOG_DEFAULT__}
+		  resources:
+              cpu: 2
+              memory: 4Gi
+		scale:
+          minReplicas: 1
+          maxReplicas: 10
 EOF
 az containerapp update  -n containerapps -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
