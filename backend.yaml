@@ -1,24 +1,34 @@
-cat <<EOF > backend.yaml
 kind: containerapp
 location: East US
 name: containerapps
-resourceGroup: sharnitha-poc 
+resourceGroup: sharnitha-poc
 type: Microsoft.App/containerApps
 properties:
     managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-b20f
     configuration:
-        activeRevisionsMode: single
-       
+        activeRevisionsMode: Single
+        ingress:
+            external: true
+            allowInsecure: false
+            targetPort: 80
+            traffic:
+            - latestRevision: true
+              weight: 100
+            transport: Http
+        registries:
+          - passwordSecretRef: reg-pswd-39d6d968-bcc8
+            server: githubcisharni.azurecr.io
+            username: githubcisharni
     template:
         containers:
-        - image: $IMAGE_TAG
+        - image: githubcisharni.azurecr.io/demoenv:{{github.ci}}
           name: githubcisharni
           env:
           - name: LOG_DEFAULT
-            value: "Information"
-          resources:
-              cpu: 2  
-              memory: 4Gi  
-        scale:
+            value: {__LOG_DEFAULT__}
+		  resources:
+              cpu: 2
+              memory: 4Gi
+		scale:
           minReplicas: 1
           maxReplicas: 10
