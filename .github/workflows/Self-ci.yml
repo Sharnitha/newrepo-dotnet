@@ -59,8 +59,9 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with: 
-            app-name: 'webapp130624'
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            app-name: 'webapp1306249'
+            slot-name: 'production'
+            publish-profile: ${{ secrets.AzureAppService_PublishProfile_4b731991f21d4e138ad1727d5057d53b }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
             
         # chmod +x deploy.sh
