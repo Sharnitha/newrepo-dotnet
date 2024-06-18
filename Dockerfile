@@ -60,7 +60,6 @@ RUN chmod +x /usr/local/bin/add_hosts_entry.sh
 RUN apt-get update && apt-get install -y openssh-server
 RUN apt update && apt install -y vim
 EXPOSE 80
-EXPOSE 22
 COPY --from=build /src/app/publish .
 RUN ls
 CMD [ "/bin/bash", "-c", "/usr/local/bin/add_hosts_entry.sh; dotnet dotnet-folder.dll" ]
