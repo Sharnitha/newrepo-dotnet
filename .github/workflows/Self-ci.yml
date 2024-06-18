@@ -2,9 +2,9 @@ name: Self-Hosted CI
 
 on:
   workflow_dispatch:
-  push: 
-    branches:  
-      - feature-private  
+  # push: 
+  #   branches:  
+  #     - feature-private  
     # env:   
 #   DOTNET_VERSION: '6.0.422' 
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
@@ -61,17 +61,14 @@ jobs:
         id: keyvault
         run: |
           LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
-          echo "LOG_DEFAULT=$LOG_DEFAULT"  # Print for verification
           echo "::set-output name=logDefault::$LOG_DEFAULT" 
           
-
       - uses: azure/appservice-settings@v1
         with:
           app-name: 'webapp1306249'
           mask-inputs: true
           slot-name: 'production' 
           app-settings-json: '[{ "name": "LOG_DEFAULT", "value": "${{ steps.keyvault.outputs.logDefault }}", "slotSetting": false }]'
-        id: settings
           
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
        # echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
