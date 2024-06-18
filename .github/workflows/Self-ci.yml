@@ -52,15 +52,15 @@ jobs:
       - name: Docker build using Dockerfile
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-          LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
-          echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
-          echo "The log value:" $LOG_DEFAULT
-    # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+    #       LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
+    #       echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
+    #       echo "The log value:" $LOG_DEFAULT
+    # # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
  
-      - name: Replace placeholders in appsettings.json
-        run: |
-          sed -i "s/{Defaultdomain}/${{env.LOG_DEFAULT}}/g" appsettings.json
-          cat appsettings.json
+    #   - name: Replace placeholders in appsettings.json
+    #     run: |
+    #       sed -i "s/{Defaultdomain}/${{env.LOG_DEFAULT}}/g" appsettings.json
+    #       cat appsettings.json
           
       - name: build and push 
         run: |
