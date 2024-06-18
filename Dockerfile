@@ -13,29 +13,48 @@
 # RUN chmod +x /usr/local/bin/add_hosts_entry.sh
 # RUN ls
 # CMD ["dotnet", "dotnet-folder.dll"]
-
-# Dockerfile for a .NET Core container with SSH server
+# Stage 1: Build stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY . /src
-RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+COPY . .
+RUN dotnet publish dotnet-folder.csproj -c release -o /app/publish
 
-# Create a new image for the final runtime environment
+# Stage 2: Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
-
-# Install SSH server and other utilities
-RUN apt-get update && apt-get install -y openssh-server vim
-
-# Expose ports
+COPY add_hosts_entry.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/add_hosts_entry.sh \
+    && apt-get update \
+    && apt-get install -y openssh-server vim \
+    && rm -rf /var/lib/apt/lists/*
 EXPOSE 80
 EXPOSE 22
-
-# Copy the published .NET Core app
 COPY --from=build /src/app/publish .
+CMD ["bash", "-c", "service ssh start && dotnet dotnet-folder.dll"]
 
-# Start the SSH server and the .NET Core app
-CMD ["/bin/bash", "-c", "service ssh start && dotnet dotnet-folder.dll"]
+
+# Dockerfile for a .NET Core container with SSH server
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# WORKDIR /src
+# COPY . /src
+# RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+
+# # Create a new image for the final runtime environment
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+# WORKDIR /app
+
+# # Install SSH server and other utilities
+# RUN apt-get update && apt-get install -y openssh-server vim
+
+# # Expose ports
+# EXPOSE 80
+# EXPOSE 22
+
+# # Copy the published .NET Core app
+# COPY --from=build /src/app/publish .
+
+# # Start the SSH server and the .NET Core app
+# CMD ["/bin/bash", "-c", "service ssh start && dotnet dotnet-folder.dll"]
 
 
 # ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
