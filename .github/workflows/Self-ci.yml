@@ -70,6 +70,12 @@ jobs:
       #     slot-name: 'production' 
       #     app-settings-json: '[{ "name": "LOG_DEFAULT", "value": "${{ steps.keyvault.outputs.logDefault }}", "slotSetting": false }]'
 
+      - name: build and push 
+        run: |
+           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+      
       - uses: azure/webapps-deploy@v2
         with: 
             app-name: 'webapp1306249'
