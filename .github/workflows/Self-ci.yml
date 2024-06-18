@@ -68,7 +68,7 @@ jobs:
       - uses: azure/appservice-settings@v1
         with:
           app-name: 'webapp1306249'
-          mask-inputs: false
+          mask-inputs: true
           slot-name: 'production' 
           app-settings-json: '[{ "name": "LOG_DEFAULT", "value": "${{ steps.keyvault.outputs.logDefault }}", "slotSetting": false }]'
         id: settings
