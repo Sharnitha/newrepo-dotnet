@@ -55,8 +55,15 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
-          az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+    # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
 
+
+      # - uses: azure/webapps-deploy@v2
+      #   with:
+      #       app-name: 'webapp130624'
+      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            
         # chmod +x deploy.sh
           # GITHUB_RUN_ID=${{ github.run_id }}
           # ./deploy.sh $GITHUB_RUN_ID
