@@ -52,9 +52,9 @@ jobs:
       - name: Docker build using Dockerfile
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-    #       LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
-    #       echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
-    #       echo "The log value:" $LOG_DEFAULT
+          LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
+          echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
+          echo "The log value:" $LOG_DEFAULT
     # # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
  
     #   - name: Replace placeholders in appsettings.json
@@ -72,6 +72,7 @@ jobs:
         with: 
             app-name: 'webapp1306249'
             slot-name: 'production'
+            app-settings-json: '$LOG_DEFAULT' 
             publish-profile: ${{ secrets.AzureAppService_PublishProfile_4b731991f21d4e138ad1727d5057d53b }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
             
