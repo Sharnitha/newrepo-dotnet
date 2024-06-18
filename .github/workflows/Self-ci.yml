@@ -73,9 +73,8 @@ jobs:
           app-name: 'webapp1306249'
           mask-inputs: false
           slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
-          app-settings-json: '[{ "name": "BUILD_DURING_DEPLOYMENT", "value": "1", "slotSetting": false }]'
+          app-settings-json: '[{ "name": "DURING_LOG_DEPLOYMENT", "value": "$LOG_DEFAULT", "slotSetting": false }]'
         id: settings
-      - run: echo "The webapp-url is ${{ steps.settings.outputs.webapp-url }}"
       
       # - uses: azure/webapps-deploy@v2
       #   with: 
