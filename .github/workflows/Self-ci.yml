@@ -49,11 +49,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
+        
       - name: Docker build using Dockerfile
+        id: list-secrets
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
           LOG=$(az keyvault secret list --vault-name Keyvault180624 --query "[].id" -o tsv | xargs -L1 az keyvault secret show --id)
           echo $LOG
+          
+      - name: Store Secrets in File
+        id: store-secrets
+        run: |
+          echo "${{ steps.list-secrets.outputs.stdout }}" > secrets.json
+
+      - name: Set App Service Environment Variables
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'webapp1306249'
+          slot-name: 'production'
+          app-settings-json: "$(cat secrets.json | jq -c '.[] | {name: .name, value: .value}')"
+          
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
        # echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
           # echo "The log value:" $LOG_DEFAULT
