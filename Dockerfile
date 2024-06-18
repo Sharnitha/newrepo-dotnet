@@ -58,7 +58,6 @@ WORKDIR /app
 COPY add_hosts_entry.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/add_hosts_entry.sh
 RUN apt-get update && apt-get install -y openssh-server
-RUN service ssh start
 RUN apt update && apt install -y vim
 EXPOSE 80
 EXPOSE 22
