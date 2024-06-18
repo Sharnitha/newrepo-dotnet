@@ -61,7 +61,7 @@ jobs:
  
       - name: Replace placeholders in appsettings.json
         run: |
-          sed -i "s|#{__Defaultdomain__}#|$LOG_DEFAULT|g" appsettings.json
+          sed -i "s|#{Defaultdomain}#|$LOG_DEFAULT|g" appsettings.json
           cat appsettings.json
 
       - uses: azure/webapps-deploy@v2
