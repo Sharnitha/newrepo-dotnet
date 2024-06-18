@@ -67,14 +67,23 @@ jobs:
            docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
            docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
-           
-      - uses: azure/webapps-deploy@v2
-        with: 
-            app-name: 'webapp1306249'
-            slot-name: 'production'
-            app-settings-json: '$LOG_DEFAULT' 
-            publish-profile: ${{ secrets.AzureAppService_PublishProfile_4b731991f21d4e138ad1727d5057d53b }}
-            images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+
+      - uses: azure/appservice-settings@v1
+        with:
+          app-name: 'webapp1306249'
+          slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
+          app-settings-json: '${{ secrets.APP_SETTINGS }}' 
+          connection-strings-json: '${{ secrets.CONNECTION_STRINGS }}'
+          general-settings-json: '{"alwaysOn": "false", "webSocketsEnabled": "true"}' #'General configuration settings as Key Value pairs'
+        id: settings
+      - run: echo "The webapp-url is ${{ steps.settings.outputs.webapp-url }}"
+      
+      # - uses: azure/webapps-deploy@v2
+      #   with: 
+      #       app-name: 'webapp1306249'
+      #       slot-name: 'production'
+      #       publish-profile: ${{ secrets.AzureAppService_PublishProfile_4b731991f21d4e138ad1727d5057d53b }}
+      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
             
         # chmod +x deploy.sh
           # GITHUB_RUN_ID=${{ github.run_id }}
