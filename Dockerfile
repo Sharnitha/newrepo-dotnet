@@ -32,6 +32,24 @@ EXPOSE 22
 COPY --from=build /src/app/publish .
 CMD ["bash", "-c", "service ssh start && dotnet dotnet-folder.dll"]
 
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY . /src
+RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+RUN cd app/publish && ls
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+WORKDIR /app
+COPY add_hosts_entry.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/add_hosts_entry.sh \
+    && apt-get update \
+    && apt-get install -y openssh-server openssh-client vim \
+    && rm -rf /var/lib/apt/lists/*
+EXPOSE 80
+EXPOSE 22
+COPY --from=build /src/app/publish .
+RUN ls
+CMD [ "/bin/bash", "-c", "service ssh start; dotnet dotnet-folder.dll" ]
+
 
 # Dockerfile for a .NET Core container with SSH server
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
