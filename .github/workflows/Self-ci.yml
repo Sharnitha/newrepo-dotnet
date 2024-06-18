@@ -50,12 +50,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 
         
-      - name: Docker build using Dockerfile
-        id: list-secrets
+      # - name: Docker build using Dockerfile
+      #   id: list-secrets
+      #   run: |
+      #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+      #     LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
+      #     echo $LOG_DEFAULT
+
+      - name: Retrieve Key Vault Secret
+        id: keyvault
         run: |
-          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
           LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
-          echo $LOG_DEFAULT
+          echo "LOG_DEFAULT=$LOG_DEFAULT"  # Print for verification
+          echo "::set-output name=logDefault::$LOG_DEFAULT" 
           
 
       - uses: azure/appservice-settings@v1
@@ -63,7 +70,7 @@ jobs:
           app-name: 'webapp1306249'
           mask-inputs: false
           slot-name: 'production' 
-          app-settings-json: '[{ "name": "DURING_LOG_DEPLOYMENT", "value": "${{ steps.list-secrets.outputs.LOG_DEFAULT }}", "slotSetting": false }]'
+          app-settings-json: '[{ "name": "LOG_DEFAULT", "value": "${{ steps.keyvault.outputs.logDefault }}", "slotSetting": false }]'
         id: settings
           
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
