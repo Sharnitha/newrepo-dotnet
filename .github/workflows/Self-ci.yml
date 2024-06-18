@@ -52,8 +52,8 @@ jobs:
       - name: Docker build using Dockerfile
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-          Log= $(az keyvault secret list --vault-name Keyvault180624 --query "[].id" -o tsv | xargs -L1 az keyvault secret show --id)
-          echo $log
+          LOG=$(az keyvault secret list --vault-name Keyvault180624 --query "[].id" -o tsv | xargs -L1 az keyvault secret show --id)
+          echo $LOG
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
        # echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
           # echo "The log value:" $LOG_DEFAULT
