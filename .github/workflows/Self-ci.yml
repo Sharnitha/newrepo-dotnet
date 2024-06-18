@@ -55,7 +55,14 @@ jobs:
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+          LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name Keyvault180624 --query value -o tsv)
+          echo "The log value:" $LOG_DEFAULT
     # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+ 
+      - name: Replace placeholders in appsettings.json
+        run: |
+          sed -i "s/{Default}/${LOG_DEFAULT}/g" appsettings.json
+          cat appsettings.json
 
       - uses: azure/webapps-deploy@v2
         with: 
