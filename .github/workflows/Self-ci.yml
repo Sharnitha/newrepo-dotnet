@@ -52,9 +52,11 @@ jobs:
       - name: Docker build using Dockerfile
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-          LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
-          echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
-          echo "The log value:" $LOG_DEFAULT
+          Log= $(az keyvault secret list --vault-name Keyvault180624 --query "[].id" -o tsv | xargs -L1 az keyvault secret show --id)
+          echo $log
+        # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
+       # echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
+          # echo "The log value:" $LOG_DEFAULT
     # # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
  
     #   - name: Replace placeholders in appsettings.json
@@ -62,19 +64,21 @@ jobs:
     #       sed -i "s/{Defaultdomain}/${{env.LOG_DEFAULT}}/g" appsettings.json
     #       cat appsettings.json
           
-      - name: build and push 
-        run: |
-           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+      # - name: build and push 
+      #   run: |
+      #      docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+      #      docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #      docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
-      - uses: azure/appservice-settings@v1
-        with:
-          app-name: 'webapp1306249'
-          mask-inputs: false
-          slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
-          app-settings-json: '[{ "name": "DURING_LOG_DEPLOYMENT", "value": "$LOG_DEFAULT", "slotSetting": false }]'
-        id: settings
+        
+
+      # - uses: azure/appservice-settings@v1
+      #   with:
+      #     app-name: 'webapp1306249'
+      #     mask-inputs: false
+      #     slot-name: 'production' 
+      #     app-settings-json: '[{ "name": "DURING_LOG_DEPLOYMENT", "value": "$LOG_DEFAULT", "slotSetting": false }]'
+      #   id: settings
       
       # - uses: azure/webapps-deploy@v2
       #   with: 
