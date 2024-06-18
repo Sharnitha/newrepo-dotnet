@@ -58,7 +58,7 @@ jobs:
     # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
 
       - uses: azure/webapps-deploy@v2
-        with:
+        with: 
             app-name: 'webapp130624'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
