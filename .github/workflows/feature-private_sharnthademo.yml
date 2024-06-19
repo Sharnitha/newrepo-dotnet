@@ -4,9 +4,10 @@
 name: Build and deploy container app to Azure Web App - sharnthademo
 
 on:
-  push:
-    branches:
-      - feature-private
+ 
+  # push:
+  #   branches:
+  #   
   workflow_dispatch:
 
 jobs:
