@@ -2,9 +2,9 @@ name: Self-Hosted CI
 
 on:
   workflow_dispatch:
-  # push: 
-  #   branches:  
-  #     - feature-private  
+  push: 
+    branches:  
+      - feature-private  
     # env:   
 #   DOTNET_VERSION: '6.0.422' 
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
@@ -78,9 +78,9 @@ jobs:
       
       - uses: azure/webapps-deploy@v2
         with: 
-            app-name: 'webapp1306249'
+            app-name: 'sharnthademo'
             slot-name: 'production'
-            publish-profile: ${{ secrets.AzureAppService_PublishProfile_4b731991f21d4e138ad1727d5057d53b }}
+            publish-profile: ${{ secrets.AzureAppService_PublishProfile_7c0c4388fcc348f5841c9c43c5356612 }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
           
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
