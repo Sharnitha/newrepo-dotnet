@@ -48,18 +48,28 @@
 # EXPOSE 22
 # COPY --from=build /src/app/publish .
 # RUN ls
+# First Stage (Build)
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
-RUN cd app/publish && ls
+
+# Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
-RUN apt update && apt install -y vim
 EXPOSE 80
 COPY --from=build /src/app/publish .
-RUN ls
-CMD [ "/bin/bash", "-c", "/usr/local/bin/add_hosts_entry.sh; dotnet dotnet-folder.dll" ]
+COPY entrypoint.sh ./
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends dialog \
+    && apt-get install -y --no-install-recommends openssh-server \
+    && echo "root:Docker!" | chpasswd \
+    && chmod u+x ./entrypoint.sh
+COPY sshd_config /etc/ssh/
+EXPOSE 8000 2222
+ENTRYPOINT [ "./entrypoint.sh" ]
+
 
 
 # Dockerfile for a .NET Core container with SSH server
