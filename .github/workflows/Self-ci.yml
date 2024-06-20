@@ -78,9 +78,9 @@ jobs:
       
       - uses: azure/webapps-deploy@v2
         with: 
-            app-name: 'sharnithaappservice'
+            app-name: 'webappstesting'
             slot-name: 'production'
-            publish-profile: ${{ secrets.AzureAppService_PublishProfile_48b66f6073c44813ae30515e099783c8 }}
+            publish-profile: ${{ secrets.AzureAppService_PublishProfile_5863de30bf5c45d5821d31c3ca2adbd4 }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
           
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
