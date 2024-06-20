@@ -4,9 +4,9 @@
 name: Build and deploy container app to Azure Web App - webappstesting
 
 on:
-  push:
-    branches:
-      - feature-private
+  # push:
+  #   branches:
+  #     - feature-private
   workflow_dispatch:
 
 jobs:
