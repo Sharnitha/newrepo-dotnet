@@ -2,9 +2,9 @@ name: Self-Hosted CI
 
 on:
   workflow_dispatch:
-  push: 
-    branches:  
-      - feature-private  
+  # push: 
+  #   branches:  
+  #     - feature-private  
     # env:    
 #   DOTNET_VERSION: '6.0.422' 
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
@@ -72,9 +72,9 @@ jobs:
 
       - name: build and push 
         run: |
-           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+           docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} .
+           docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+           docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} 
       
       # - uses: azure/webapps-deploy@v2
       #   with: 
