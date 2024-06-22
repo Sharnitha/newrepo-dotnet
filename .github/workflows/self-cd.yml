@@ -16,8 +16,8 @@ jobs:
           uses: actions/checkout@v2
         - name: Deploy Docker image
           run: |
-            docker pull demo.azureecr.io/demoenv:${{ github.event.workflow_run.run_id }}
-            docker run demo.azureecr.io/demoenv:${{ github.event.workflow_run.run_id }}
+            docker pull githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.run_id }}
+            docker run githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.run_id }}
 
         # - uses: azure/webapps-deploy@v2
         #   with: 
