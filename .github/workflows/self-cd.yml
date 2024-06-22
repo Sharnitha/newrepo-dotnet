@@ -1,5 +1,8 @@
 name: CD on GitHub 
 on:
+  push:
+    branches:
+      - feature-private
   workflow_run:
      workflows:    
       - Self-Hosted CI
