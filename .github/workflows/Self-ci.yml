@@ -76,12 +76,12 @@ jobs:
            docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} 
       
-      - uses: azure/webapps-deploy@v2
-        with: 
-            app-name: 'webappsdemotr'
-            slot-name: 'production'
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
+      # - uses: azure/webapps-deploy@v2
+      #   with: 
+      #       app-name: 'webappsdemotr'
+      #       slot-name: 'production'
+      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #       images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
           
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
        # echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
