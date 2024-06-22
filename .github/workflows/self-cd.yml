@@ -2,7 +2,7 @@ name: CD on GitHub
 on:
   push:
     branches:
-      - feature-private
+      - feature-private 
       
   workflow_run:
     workflows: 
