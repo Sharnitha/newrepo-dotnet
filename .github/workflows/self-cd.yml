@@ -27,7 +27,7 @@ jobs:
           with: 
             app-name: 'webappstesting'
             slot-name: 'production'
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            publish-profile: ${{ secrets.AzureAppService_PublishProfile_de55fd5575424801903b5377385c3eab }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
       
 
