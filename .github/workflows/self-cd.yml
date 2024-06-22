@@ -20,6 +20,7 @@ jobs:
           uses: actions/checkout@v2
         - name: Deploy Docker image
           run: |
+            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
             az webapp config appsettings set --name sharnithawebapp --resource-group sharnitha-poc --settings __DEFAULT__="Information"
           # docker pull githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
          #  docker run githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
