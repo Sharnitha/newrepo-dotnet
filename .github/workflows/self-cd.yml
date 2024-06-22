@@ -20,15 +20,17 @@ jobs:
           uses: actions/checkout@v2
         - name: Deploy Docker image
           run: |
+            az webapp config appsettings set --name sharnithawebapp --resource-group sharnitha-poc --settings __DEFAULT__="Information"
           # docker pull githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
          #  docker run githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
 
-        - uses: azure/appservice-settings@v1
-          with:
-            app-name: 'sharnithawebapp'
-            mask-inputs: true
-            slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
-            app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
+        # - uses: azure/appservice-settings@v1
+        #   with:
+        #     app-name: 'sharnithawebapp'
+        #     mask-inputs: true
+        #     slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
+        #     app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
+     
 
         - uses: azure/webapps-deploy@v2
           with: 
