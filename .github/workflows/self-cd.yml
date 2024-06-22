@@ -1,12 +1,13 @@
-name: CD on GitHub 
+name: CD on GitHub
 on:
   push:
     branches:
       - feature-private
+      
   workflow_run:
-     workflows:    
+    workflows: 
       - Self-Hosted CI
-     types: 
+    types:
       - completed
 jobs:
     update-deployment:
