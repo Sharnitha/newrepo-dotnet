@@ -3,7 +3,7 @@ on:
   workflow_run:
      workflows:    
       - Self-Hosted CI
-     types:
+     types: 
       - completed
 jobs:
     update-deployment:
