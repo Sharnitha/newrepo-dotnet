@@ -76,15 +76,15 @@ jobs:
            docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} 
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: publish
-          path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*
+      # - name: Upload build artifacts
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: publish
+      #     path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*
           
-      - name: build and push 
-        run: |
-          gh run download ${{ github.run_id }}
+      # - name: build and push 
+      #   run: |
+      #     gh run download ${{ github.run_id }}
       
       # - uses: azure/webapps-deploy@v2
       #   with: 
