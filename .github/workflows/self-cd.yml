@@ -80,7 +80,11 @@ jobs:
         #     slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
         #     app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
 
-
+        - name: Download build artifacts
+          uses: actions/download-artifact@v2
+          with:
+              name: publish
+              path: ./app
        
         - name: Replace tokens in appsettings.json
           run: |
@@ -109,9 +113,9 @@ jobs:
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
-        - name: Set app settings
-          run: |
-            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
+        # - name: Set app settings
+        #   run: |
+        #     az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
 
         # - uses: azure/webapps-deploy@v2
         #   with: 
