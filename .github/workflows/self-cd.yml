@@ -98,8 +98,8 @@ jobs:
         - name: listing
           run: |
             az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-            docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} .
-            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}
+            docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }} .
+            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
             
         - name: Deploy to Azure App Service
           uses: azure/webapps-deploy@v2
@@ -107,7 +107,7 @@ jobs:
             app-name: 'webappstesting2306'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
+            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
         - name: Set app settings
           run: |
