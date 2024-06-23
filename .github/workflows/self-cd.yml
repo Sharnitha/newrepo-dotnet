@@ -22,12 +22,17 @@ jobs:
         - name: list
           run:
             ls
-          
-        - name: Download build artifacts
-          uses: actions/download-artifact@v2
-          with:
-            name: publish
-            package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
+
+        - name: download artifacts
+          run: |
+            gh run download ${{ github.event.workflow_run.id }} -n publish -D /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+           
+     # 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
+        # - name: Download build artifacts
+        #   uses: actions/download-artifact@v2
+        #   with:
+        #     name: publish
+        #     package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
             
         - name: Deploy Docker image
           run: |
