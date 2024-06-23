@@ -1,8 +1,8 @@
 name: CD on GitHub
 on:
-  push:
-    branches:
-      - feature-private 
+#   push:
+#     branches:
+#       - feature-private 
       
   workflow_run:
     workflows: 
@@ -22,7 +22,7 @@ jobs:
         - name: Download build artifacts
           uses: actions/download-artifact@v2
           with:
-            name: publish-artifacts
+            name: publish
             path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*
             
         - name: Deploy Docker image
