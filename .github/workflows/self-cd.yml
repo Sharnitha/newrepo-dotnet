@@ -84,7 +84,6 @@ jobs:
           run: |
             echo "${{ secrets.TOKEN }}" | gh auth login --with-token
             gh run download ${{ github.event.workflow_run.id }}
-            ls
   
         - name: Replace tokens in appsettings.json
           run: |
@@ -93,11 +92,11 @@ jobs:
              echo $SECRET_DEFAULT
              SECRET_MICROSOFT=$(az keyvault secret show --name MicrosoftLogLevel --vault-name keyvault11062 --query value -o tsv)
              echo $SECRET_MICROSOFT
-             json=$(cat appsettings.json)
+             json=$(cat publish/appsettings.json)
              updated_json=$(echo "$json" | \
              sed "s/{__LOGLEVEL__}/$SECRET_DEFAULT/g" | \
              sed "s/{__MICROSOFT__}/$SECRET_MICROSOFT/g")   
-             echo "$updated_json" > appsettings.json
+             echo "$updated_json" > publish/appsettings.json
 
         # - name: listing
         #   run: |
@@ -105,13 +104,13 @@ jobs:
         #     docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }} .
         #     docker push githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
             
-        # - name: Deploy to Azure App Service
-        #   uses: azure/webapps-deploy@v2
-        #   with: 
-        #     app-name: 'webappstesting2306'
-        #     slot-name: 'production'
-        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        #     images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+        - name: Deploy to Azure App Service
+          uses: azure/webapps-deploy@v2
+          with: 
+            app-name: 'webappstesting2306'
+            slot-name: 'production'
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
 
         # - name: Set app settings
         #   run: |
