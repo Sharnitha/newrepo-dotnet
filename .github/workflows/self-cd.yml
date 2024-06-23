@@ -21,7 +21,7 @@ jobs:
         - name: Deploy Docker image
           run: |
             az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-            az webapp config appsettings set --name sharnithawebapp --resource-group sharnitha-poc --settings __DEFAULT__="Information"
+        # az webapp config appsettings set --name sharnithawebapp --resource-group sharnitha-poc --settings __DEFAULT__="Information"
           # docker pull githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
          #  docker run githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
 
@@ -35,7 +35,7 @@ jobs:
 
         - uses: azure/webapps-deploy@v2
           with: 
-            app-name: 'sharnithawebapp'
+            app-name: 'webappcontainer23'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
