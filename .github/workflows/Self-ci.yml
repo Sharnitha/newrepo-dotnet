@@ -75,6 +75,12 @@ jobs:
            docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} .
            docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} 
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: publish-artifacts
+          path: /app/*
       
       # - uses: azure/webapps-deploy@v2
       #   with: 
