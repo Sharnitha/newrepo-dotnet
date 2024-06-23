@@ -105,13 +105,15 @@ jobs:
         #     docker push githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
             
         - name: Deploy to Azure App Service
-          uses: azure/webapps-deploy@v2
+          uses: Azure/webapps-deploy@v3.0.1
           with: 
             app-name: 'webappstesting2306'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
             package: './publish'
+          
+        
 
         # - name: Set app settings
         #   run: |
