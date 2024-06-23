@@ -84,7 +84,8 @@ jobs:
           run: |
             echo "${{ secrets.TOKEN }}" | gh auth login --with-token
             gh run download ${{ github.event.workflow_run.id }}
-       
+            ls
+  
         - name: Replace tokens in appsettings.json
           run: |
              az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
@@ -98,19 +99,19 @@ jobs:
              sed "s/{__MICROSOFT__}/$SECRET_MICROSOFT/g")   
              echo "$updated_json" > appsettings.json
 
-        - name: listing
-          run: |
-            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-            docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }} .
-            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
+        # - name: listing
+        #   run: |
+        #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        #     docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }} .
+        #     docker push githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
             
-        - name: Deploy to Azure App Service
-          uses: azure/webapps-deploy@v2
-          with: 
-            app-name: 'webappstesting2306'
-            slot-name: 'production'
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+        # - name: Deploy to Azure App Service
+        #   uses: azure/webapps-deploy@v2
+        #   with: 
+        #     app-name: 'webappstesting2306'
+        #     slot-name: 'production'
+        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+        #     images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
         # - name: Set app settings
         #   run: |
