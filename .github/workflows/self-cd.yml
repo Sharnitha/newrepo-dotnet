@@ -18,13 +18,42 @@ jobs:
       steps:
         - name: Checkout code
           uses: actions/checkout@v2
+          
+        - name: Download build artifacts
+          uses: actions/download-artifact@v2
+          with:
+            name: publish-artifacts
+            path: /app/*
+
+        - name: listing app folder
+          run: | 
+            cd /app
+            ls 
+            
         - name: Deploy Docker image
           run: |
             az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
         # az webapp config appsettings set --name sharnithawebapp --resource-group sharnitha-poc --settings __DEFAULT__="Information"
-          # docker pull githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
-         #  docker run githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
 
+        - name: Deploy Docker image
+          run: |
+            LOG_DEFAULT = ${{ secrets.DEFAULTGITHUB }}
+            echo "Retrieved log level default: $LOG_DEFAULT"
+            sed -i "s|__DEFAULT__|$LOG_DEFAULT|g" /app/appsettings.json
+
+        # LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
+
+
+        - name: Deploy to Azure Web App
+          uses: azure/webapps-deploy@v2
+          with:
+              app-name: 'webappcontainer23'
+              slot-name: 'production'
+              publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+              package: '/app/*'
+            
+
+        
         # - uses: azure/appservice-settings@v1
         #   with:
         #     app-name: 'sharnithawebapp'
@@ -33,12 +62,12 @@ jobs:
         #     app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
      
 
-        - uses: azure/webapps-deploy@v2
-          with: 
-            app-name: 'webappcontainer23'
-            slot-name: 'production'
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+        # - uses: azure/webapps-deploy@v2
+        #   with: 
+        #     app-name: 'webappcontainer23'
+        #     slot-name: 'production'
+        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+        #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
       
 
 # name: cd on GitHub
