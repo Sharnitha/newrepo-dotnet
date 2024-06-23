@@ -61,6 +61,7 @@ WORKDIR /app
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh .
 COPY sshd_config /etc/ssh/
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends openssh-server \
