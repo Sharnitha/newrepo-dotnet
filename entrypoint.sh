@@ -5,7 +5,7 @@ set -e
 service ssh start
 
 # Login to Azure using managed identity or service principal
-az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+az login --service-principal -u $DOCKER_LOGIN -p $DOCKER_PASSWORD --tenant $DOCKER_TENANT
 
 # Fetch and replace placeholders in appsettings.json
 SECRET_DEFAULT=$(az keyvault secret show --name DefaultLogLevel --vault-name $KEYVAULT_NAME --query value -o tsv)
