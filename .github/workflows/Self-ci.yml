@@ -72,6 +72,7 @@ jobs:
 
       - name: build and push 
         run: |
+           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
            docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} .
            docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} 
