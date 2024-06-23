@@ -19,16 +19,18 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
 
-        - name: Authenticate gh CLI
+        - name: Deploy Docker image
+          run: |
+            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+
+        - name: Deploy to Azure Web App
+          uses: azure/webapps-deploy@v2
+          with:
+            app-name: webappcontainer23  # Change this to your App Service name
+            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
           env:
-           GITHUB_TOKEN: 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
-          run: |
-            echo $GITHUB_TOKEN | gh auth login --with-token
-            
-        - name: download artifacts
-          run: |
-            gh run download ${{ github.event.workflow_run.id }} -n publish -D /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
-           
+            KEYVAULT_NAME: keyvault11062
+        
      # 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
         # - name: Download build artifacts
         #   uses: actions/download-artifact@v2
@@ -36,27 +38,27 @@ jobs:
         #     name: publish
         #     package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
             
-        - name: Deploy Docker image
-          run: |
-            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        # - name: Deploy Docker image
+        #   run: |
+        #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
         # az webapp config appsettings set --name sharnithawebapp --resource-group sharnitha-poc --settings __DEFAULT__="Information"
 
-        - name: Deploy Docker image
-          run: |
-            LOG_DEFAULT = ${{ secrets.DEFAULTGITHUB }}
-            echo "Retrieved log level default: $LOG_DEFAULT"
-            sed -i "s|__DEFAULT__|$LOG_DEFAULT|g" /app/appsettings.json
+        # - name: Deploy Docker image
+        #   run: |
+        #     LOG_DEFAULT = ${{ secrets.DEFAULTGITHUB }}
+        #     echo "Retrieved log level default: $LOG_DEFAULT"
+        #     sed -i "s|__DEFAULT__|$LOG_DEFAULT|g" /app/appsettings.json
 
         # LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
 
 
-        - name: Deploy to Azure Web App
-          uses: azure/webapps-deploy@v2
-          with:
-              app-name: 'webappcontainer23'
-              slot-name: 'production'
-              publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-              package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
+        # - name: Deploy to Azure Web App
+        #   uses: azure/webapps-deploy@v2
+        #   with:
+        #       app-name: 'webappcontainer23'
+        #       slot-name: 'production'
+        #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+        #       package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
             
 
         
