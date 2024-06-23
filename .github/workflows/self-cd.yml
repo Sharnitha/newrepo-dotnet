@@ -30,6 +30,9 @@ jobs:
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
           env:
             KEYVAULT_NAME: keyvault11062
+            DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+            DOCKER_TENANT: ${{ secrets.DOCKER_TENANT }}
         
      # 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
         # - name: Download build artifacts
