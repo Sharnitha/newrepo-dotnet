@@ -61,12 +61,12 @@ WORKDIR /app
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh .
 COPY sshd_config /etc/ssh/
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
+    && apt-get install -y azure-cli \
     && apt-get install -y --no-install-recommends openssh-server \
     && echo "root:Docker!" | chpasswd \
-    && chmod u+x ./entrypoint.sh
+    && chmod u+x ./entrypoint.sh    
 EXPOSE 80 2222
 ENTRYPOINT [ "./entrypoint.sh" ]
 
