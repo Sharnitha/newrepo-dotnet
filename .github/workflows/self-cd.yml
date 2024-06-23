@@ -111,13 +111,10 @@ jobs:
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
-            package: './publish'
           
-        
-
-        # - name: Set app settings
-        #   run: |
-        #     az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
+        - name: Set app settings
+          run: |
+            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
 
         # - uses: azure/webapps-deploy@v2
         #   with: 
