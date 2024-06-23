@@ -111,6 +111,7 @@ jobs:
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
+            package: './publish'
 
         # - name: Set app settings
         #   run: |
