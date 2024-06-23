@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: publish-artifacts
-          path: /app/*
+          path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*
       
       # - uses: azure/webapps-deploy@v2
       #   with: 
