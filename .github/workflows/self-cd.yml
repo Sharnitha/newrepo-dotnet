@@ -83,7 +83,7 @@ jobs:
         - name: Log in to GitHub CLI
           run: |
             echo "${{ secrets.TOKEN }}" | gh auth login --with-token
-            gh run download ${{ github.event.workflow_run.id }} -n publish
+            gh run download ${{ github.event.workflow_run.id }}
        
         - name: Replace tokens in appsettings.json
           run: |
