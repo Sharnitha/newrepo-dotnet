@@ -1,0 +1,43 @@
+[
+  {
+    "name": "__LOGLEVEL__",
+    "value": "Information",
+    "slotSetting": false
+  },
+  {
+    "name": "__MICROSOFT__",
+    "value": "Warning",
+    "slotSetting": false
+  },
+
+  {
+    "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+    "value": "OQ45C1NhGnD6a4VZFm7VAnhJm+awv4DP3VNDxE/DKD+ACRC5jMG1",
+    "slotSetting": false
+  },
+  {
+    "name": "DOCKER_REGISTRY_SERVER_URL",
+    "value": "https://githubcisharnitha.azurecr.io",
+    "slotSetting": false
+  },
+  {
+    "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+    "value": "githubcisharnitha",
+    "slotSetting": false
+  },
+  {
+    "name": "Logging_LogLevel_Default",
+    "value": "Information",
+    "slotSetting": false
+  },
+  {
+    "name": "Logging_LogLevel_Microsoft.AspNetCore",
+    "value": "Warning",
+    "slotSetting": false
+  },
+  {
+    "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+    "value": "false",
+    "slotSetting": false
+  }
+]
