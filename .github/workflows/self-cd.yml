@@ -80,23 +80,23 @@ jobs:
         #     slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
         #     app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
 
-        - name: Log in to GitHub CLI
-          run: |
-            echo "${{ secrets.TOKEN }}" | gh auth login --with-token
-            gh run download ${{ github.event.workflow_run.id }}
+        # - name: Log in to GitHub CLI
+        #   run: |
+        #     echo "${{ secrets.TOKEN }}" | gh auth login --with-token
+        #     gh run download ${{ github.event.workflow_run.id }}
   
-        - name: Replace tokens in appsettings.json
-          run: |
-             az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-             SECRET_DEFAULT=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
-             echo $SECRET_DEFAULT
-             SECRET_MICROSOFT=$(az keyvault secret show --name MicrosoftLogLevel --vault-name keyvault11062 --query value -o tsv)
-             echo $SECRET_MICROSOFT
-             json=$(cat publish/appsettings.json)
-             updated_json=$(echo "$json" | \
-             sed "s/{__LOGLEVEL__}/$SECRET_DEFAULT/g" | \
-             sed "s/{__MICROSOFT__}/$SECRET_MICROSOFT/g")   
-             echo "$updated_json" > publish/appsettings.json
+        # - name: Replace tokens in appsettings.json
+        #   run: |
+        #      az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        #      SECRET_DEFAULT=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
+        #      echo $SECRET_DEFAULT
+        #      SECRET_MICROSOFT=$(az keyvault secret show --name MicrosoftLogLevel --vault-name keyvault11062 --query value -o tsv)
+        #      echo $SECRET_MICROSOFT
+        #      json=$(cat publish/appsettings.json)
+        #      updated_json=$(echo "$json" | \
+        #      sed "s/{__LOGLEVEL__}/$SECRET_DEFAULT/g" | \
+        #      sed "s/{__MICROSOFT__}/$SECRET_MICROSOFT/g")   
+        #      echo "$updated_json" > publish/appsettings.json
 
         # - name: listing
         #   run: |
@@ -114,7 +114,7 @@ jobs:
           
         - name: Set app settings
           run: |
-            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
+            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "__LOGLEVEL__=Infomation" "__MICROSOFT__=Warning"
 
         # - uses: azure/webapps-deploy@v2
         #   with: 
