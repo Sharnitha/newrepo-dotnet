@@ -1,8 +1,8 @@
 name: CD on GitHub
 on:
-#   push:
-#     branches:
-#       - feature-private 
+  push:
+    branches:
+      - feature-private 
       
   workflow_run:
     workflows: 
@@ -33,6 +33,10 @@ jobs:
             DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
             DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
             DOCKER_TENANT: ${{ secrets.DOCKER_TENANT }}
+
+        - name: Restart Azure App Service
+          run: |
+            az webapp restart --name webappcontainer23 --resource-group sharnitha-poc
         
      # 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
         # - name: Download build artifacts
