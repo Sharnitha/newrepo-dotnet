@@ -81,6 +81,10 @@ jobs:
         with:
           name: publish
           path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*
+          
+      - name: build and push 
+        run: |
+          gh run download ${{ github.run_id }}
       
       # - uses: azure/webapps-deploy@v2
       #   with: 
