@@ -18,12 +18,16 @@ jobs:
       steps:
         - name: Checkout code
           uses: actions/checkout@v2
+
+        - name: list
+          run:
+            ls
           
         - name: Download build artifacts
           uses: actions/download-artifact@v2
           with:
             name: publish
-            path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*
+            path: .
             
         - name: Deploy Docker image
           run: |
