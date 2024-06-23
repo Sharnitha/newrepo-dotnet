@@ -114,7 +114,7 @@ jobs:
           
         - name: Set app settings
           run: |
-            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "__LOGLEVEL__=Infomation" "__MICROSOFT__=Warning"
+            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "__LOGLEVEL__=Information" "__MICROSOFT__=Warning"
 
         # - uses: azure/webapps-deploy@v2
         #   with: 
