@@ -90,7 +90,7 @@ jobs:
 
         - name: Set app settings
           run: |
-            az webapp config appsettings set --name webappcontainer23 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
+            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
       
 
 # name: cd on GitHub
