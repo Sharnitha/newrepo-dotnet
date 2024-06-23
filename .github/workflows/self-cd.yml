@@ -19,10 +19,12 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
 
-        - name: list
-          run:
-            ls
-
+        - name: Authenticate gh CLI
+          env:
+           GITHUB_TOKEN: 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
+          run: |
+            echo $GITHUB_TOKEN | gh auth login --with-token
+            
         - name: download artifacts
           run: |
             gh run download ${{ github.event.workflow_run.id }} -n publish -D /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
