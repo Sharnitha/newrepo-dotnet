@@ -19,25 +19,29 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
 
-        - name: Deploy Docker image
-          run: |
-            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        # - name: Deploy Docker image
+        #   run: |
+        #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        #     SECRET_DEFAULT=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
+        #     echo $SECRET_DEFAULT
+        #     SECRET_MICROSOFT=$(az keyvault secret show --name MicrosoftLogLevel --vault-name keyvault11062 --query value -o tsv)
+        #     echo $SECRET_MICROSOFT
+            
+        # - name: Replace tokens in appsettings.json
+        #   run: |
+        #     sed -i "s|{{TokenName1}}|SECRET_DEFAULT|g" $(Build.ArtifactStagingDirectory)/appsettings.json
+        #     sed -i "s|{{TokenName2}}|SECRET_MICROSOFT|g" $(Build.ArtifactStagingDirectory)/appsettings.json
+        #     # Add more sed commands as needed for other tokens
+    
+        # - name: Deploy to Azure Web App
+        #   uses: azure/webapps-deploy@v2
+        #   with:
+        #     app-name: 'your-app-name' # Replace with your Azure App Service name
+        #     slot-name: 'production'   # Replace with your deployment slot if needed
+        #     publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }}
+        #     package: $(Build.ArtifactStagingDirectory)/
 
-        - name: Deploy to Azure Web App
-          uses: azure/webapps-deploy@v2
-          with:
-            app-name: webappcontainer23  # Change this to your App Service name
-            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
-          env:
-            KEYVAULT_NAME: keyvault11062
-            DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
-            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-            DOCKER_TENANT: ${{ secrets.DOCKER_TENANT }}
-
-        - name: Restart Azure App Service
-          run: |
-            az webapp restart --name webappcontainer23 --resource-group sharnitha-poc
-        
+    
      # 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
         # - name: Download build artifacts
         #   uses: actions/download-artifact@v2
@@ -77,12 +81,12 @@ jobs:
         #     app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
      
 
-        # - uses: azure/webapps-deploy@v2
-        #   with: 
-        #     app-name: 'webappcontainer23'
-        #     slot-name: 'production'
-        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+        - uses: azure/webapps-deploy@v2
+          with: 
+            app-name: 'webappcontainer23'
+            slot-name: 'production'
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
       
 
 # name: cd on GitHub
