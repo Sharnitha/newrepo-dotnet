@@ -83,7 +83,7 @@ jobs:
 
         - uses: azure/webapps-deploy@v2
           with: 
-            app-name: 'webappcontainer23'
+            app-name: 'webappstesting2306'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
