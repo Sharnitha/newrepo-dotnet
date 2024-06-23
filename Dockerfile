@@ -59,7 +59,7 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=build /src/app/publish .
-COPY entrypoint.sh ./
+COPY entrypoint.sh .
 COPY sshd_config /etc/ssh/
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
