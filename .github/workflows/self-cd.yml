@@ -23,12 +23,7 @@ jobs:
           uses: actions/download-artifact@v2
           with:
             name: publish-artifacts
-            path: /app/*
-
-        - name: listing app folder
-          run: | 
-            cd /app
-            ls 
+            path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*
             
         - name: Deploy Docker image
           run: |
@@ -50,7 +45,7 @@ jobs:
               app-name: 'webappcontainer23'
               slot-name: 'production'
               publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-              package: '/app/*'
+              package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
             
 
         
