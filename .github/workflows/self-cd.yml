@@ -4,7 +4,7 @@ on:
     branches:
       - feature-private 
       
-  workflow_run:
+  workflow_run: 
     workflows: 
       - Self-Hosted CI
     types:
