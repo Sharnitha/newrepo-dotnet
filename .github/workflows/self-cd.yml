@@ -103,18 +103,27 @@ jobs:
         #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
         #     docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }} .
         #     docker push githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
-            
-        - name: Deploy to Azure App Service
-          uses: Azure/webapps-deploy@v3.0.1
-          with: 
-            app-name: 'webappstesting2306'
+
+
+        - uses: catchco/azure-appservice-settings-env@latest
+          with:
+            file: 'appconfig.json'
+            appname: 'webappstesting2306'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
+            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'  
+            
+        # - name: Deploy to Azure App Service
+        #   uses: Azure/webapps-deploy@v3.0.1
+        #   with: 
+        #     app-name: 'webappstesting2306'
+        #     slot-name: 'production'
+        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+        #     images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
           
-        - name: Set app settings
-          run: |
-            az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "__LOGLEVEL__=Information" "__MICROSOFT__=Warning"
+        # - name: Set app settings
+        #   run: |
+        #     az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "__LOGLEVEL__=Information" "__MICROSOFT__=Warning"
 
         # - uses: azure/webapps-deploy@v2
         #   with: 
