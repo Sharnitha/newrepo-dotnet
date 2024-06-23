@@ -27,7 +27,7 @@ jobs:
           uses: actions/download-artifact@v2
           with:
             name: publish
-            path: .
+            package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
             
         - name: Deploy Docker image
           run: |
