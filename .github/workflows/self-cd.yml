@@ -79,11 +79,26 @@ jobs:
         #     mask-inputs: true
         #     slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
         #     app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
-     
 
-        - uses: azure/webapps-deploy@v2
+
+       
+        - name: Replace tokens in appsettings.json
+          run: |
+             az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+             SECRET_DEFAULT=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
+             echo $SECRET_DEFAULT
+             SECRET_MICROSOFT=$(az keyvault secret show --name MicrosoftLogLevel --vault-name keyvault11062 --query value -o tsv)
+             echo $SECRET_MICROSOFT
+             json=$(cat appsettings.json)
+             updated_json=$(echo "$json" | \
+             sed "s/{__LOGLEVEL__}/$SECRET_DEFAULT/g" | \
+             sed "s/{__MICROSOFT__}/$SECRET_MICROSOFT/g")   
+             echo "$updated_json" > appsettings.json
+
+        - name: Deploy to Azure App Service
+          uses: azure/webapps-deploy@v2
           with: 
-            app-name: 'webappstesting2306'
+            app-name: 'webappcontainer23'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
@@ -91,6 +106,17 @@ jobs:
         - name: Set app settings
           run: |
             az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
+
+        # - uses: azure/webapps-deploy@v2
+        #   with: 
+        #     app-name: 'webappstesting2306'
+        #     slot-name: 'production'
+        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+        #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+
+        # - name: Set app settings
+        #   run: |
+        #     az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
       
 
 # name: cd on GitHub
