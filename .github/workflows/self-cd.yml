@@ -19,21 +19,21 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
 
-        - name: check
-          run: |
-            LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
-            sed -i "s|\"{Logging__LogLevel__Default__LOG}\"|\"$LOGVALUE\"|g" appsettings.json
+        # - name: check
+        #   run: |
+        #     LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
+        #     sed -i "s|\"{Logging__LogLevel__Default__LOG}\"|\"$LOGVALUE\"|g" appsettings.json
 
-        # - name: Deploy to Azure App Service
-        #   uses: azure/webapps-deploy@v2
-        #   with:
-        #     app-name: sharnithaappservice
-        #     slot-name: production  # Optional: specify if deploying to a slot
-        #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        - name: Deploy to Azure App Service
+          uses: azure/webapps-deploy@v2
+          with:
+            app-name: sharnithaappservice
+            slot-name: production  # Optional: specify if deploying to a slot
+            publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
             
-        - name: check
-          run: |
-            az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings @appsettings.json
+        # - name: check
+        #   run: |
+        #     az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings @appsettings.json
             
          # LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
             # sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
