@@ -26,13 +26,14 @@ jobs:
             az webapp config appsettings set --name webappsdemo2406 --resource-group sharnitha-poc --settings @settings.json
             cat appsettings.json
            
-
         - name: Deploy to Azure App Service
-          uses: azure/webapps-deploy@v2
-          with:
-            app-name: webappsdemo2406
-            slot-name: production  # Optional: specify if deploying to a slot
-            publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          uses: Azure/webapps-deploy@v3.0.1
+          with: 
+            app-name: 'webappsdemo2406'
+            slot-name: 'production'
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
+        
             
         # - name: check
         #   run: |
