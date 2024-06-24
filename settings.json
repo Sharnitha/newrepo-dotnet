@@ -1,6 +1,6 @@
 [
   {
-    "name": "{__LOG__}",
+    "name": "__LOG__",
     "value": "LOGVALUE",
     "slotSetting": false
   },
