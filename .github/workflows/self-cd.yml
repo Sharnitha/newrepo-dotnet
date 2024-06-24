@@ -19,22 +19,11 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
 
-        - name: Replace placeholders in appsettings.json
+        - name: Deploy to Azure Web App for Containers
           run: |
-            chmod +x ./replace_token.sh
-            ./replace_token.sh
-          env:
-            AZURE_CLIENT_ID: ${{ secrets.DOCKER_LOGIN }}
-            AZURE_CLIENT_SECRET: ${{ secrets.AZURE_DOCKER_PASSWORD }}
-            AZURE_TENANT_ID: ${{ secrets.DOCKER_TENANT }}
- 
-        - name: Create deployment package
-          run: |
-            zip -r myapp.zip .
-  
-        - name: Deploy to Azure Web App
-          run: |
-             az webapp deployment source config-zip --resource-group sharnitha-poc --name sharnithaappservice --src myapp.zip
+            az webapp config container set --name sharnithaappservice --resource-group sharnitha-poc --docker-custom-image-name githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
+            logLevel=$(az keyvault secret show --vault-name keyvault11062 --name DefaultLogLevel --query value -o tsv)
+            az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings LogLevel=$logLevel
 
         # - name: Deploy Docker image
         #   run: |
