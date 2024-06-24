@@ -24,6 +24,7 @@ jobs:
             az webapp config container set --name sharnithaappservice --resource-group sharnitha-poc --docker-custom-image-name githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
             logLevel=$(az keyvault secret show --vault-name keyvault11062 --name DefaultLogLevel --query value -o tsv)
             az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings LogLevel=$logLevel
+            cat appsettings.json
 
         # - name: Deploy Docker image
         #   run: |
