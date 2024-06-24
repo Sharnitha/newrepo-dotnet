@@ -21,7 +21,7 @@ jobs:
 
         - name: check
           run: |
-           az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings APPSETTING_LOGLEVEL=Information
+           az webapp config appsettings set --name webappsharnitha --resource-group sharnitha-poc --settings APPSETTING_LOGLEVEL=Information
         # LOGVALUE=${{ secrets.LOG }}
             # sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
             # az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings @settings.json
