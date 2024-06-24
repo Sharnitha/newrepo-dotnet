@@ -21,11 +21,10 @@ jobs:
 
         - name: check
           run: |
-           az webapp config appsettings set --name webappsharnitha --resource-group sharnitha-poc --settings APPSETTING_LOGLEVEL=Information
-        # LOGVALUE=${{ secrets.LOG }}
-            # sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
-            # az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings @settings.json
-       # LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
+            LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
+            sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
+            az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings @settings.json
+            cat appsettings.json
            
 
         - name: Deploy to Azure App Service
