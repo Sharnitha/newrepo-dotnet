@@ -23,7 +23,7 @@ jobs:
           run: |
             LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault1106258 --query value -o tsv)
             sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
-            az webapp config appsettings set --name keyvault1106258 --resource-group sharnitha-poc --settings @settings.json
+            az webapp config appsettings set --name webapp25062 --resource-group sharnitha-poc --settings @settings.json
            
         - name: Deploy to Azure App Service
           uses: Azure/webapps-deploy@v3.0.1
