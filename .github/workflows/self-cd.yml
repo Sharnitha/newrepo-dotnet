@@ -21,14 +21,14 @@ jobs:
 
         - name: check
           run: |
-            LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault110625 --query value -o tsv)
+            LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name webapp25062 --query value -o tsv)
             sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
-            az webapp config appsettings set --name webappsdemo2406 --resource-group sharnitha-poc --settings @settings.json
+            az webapp config appsettings set --name webapp25062 --resource-group sharnitha-poc --settings @settings.json
            
         - name: Deploy to Azure App Service
           uses: Azure/webapps-deploy@v3.0.1
           with: 
-            app-name: 'webappsdemo2406'
+            app-name: 'webapp25062'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
