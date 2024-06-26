@@ -61,7 +61,7 @@ WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
-RUN apt-get update \
+RUN apt-get update \ 
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends openssh-server \
     && echo "root:Docker!" | chpasswd \
