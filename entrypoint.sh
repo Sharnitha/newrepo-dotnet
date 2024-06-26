@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -e 
 LOG=$LOG
 MICRO=$MICROSOFT
 # Start SSH service
