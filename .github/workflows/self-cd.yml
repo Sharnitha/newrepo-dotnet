@@ -28,17 +28,15 @@ jobs:
         - name: credential
           run: | 
               az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-              docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+              docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            
         - name: Deploy to Azure App Service
           uses: Azure/webapps-deploy@v3.0.1
           with: 
-            app-name: 'webappsdeploy'
+            app-name: 'webappsdemo270624'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
-            username: githubcisharni
-            password: Rn9bD/QIhyrnPg9Y1dhv+/m/cFMf8YiU0RAXGE1Bbi+ACRCb9HxD
         
             
         # - name: check
