@@ -3,7 +3,7 @@ set -e
  
 service ssh start
 
-# MICRO=$MICROSOFT
+# MICRO=$MICROSOFT 
 # echo $MICROSOFT
 # Start SSH service
 sed -i "s|__LOGDEF__|$LOGGING|g" appsettings.json
