@@ -18,6 +18,24 @@ jobs:
       steps:
         - name: Checkout code
           uses: actions/checkout@v2
+        - name: listing files and directories
+          run: |
+            ls
+            cd /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+            echo "listing files inside /opt location"
+            ls
+            
+        - name: Download artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: publish
+            path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+
+        - name: Replace placeholders in appsettings.json
+          run: |
+            sed -i 's/__DEFAULT__/${{ secrets.DEFAULT }}/g' appsettings.json
+            sed -i 's/__MICROSOFT__/${{ secrets.MICROSOFT }}/g' appsettings.json
+            cat appsettings.json
 
         # - name: check
         #   run: |
@@ -36,7 +54,8 @@ jobs:
             app-name: 'webappsharni2824'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+            package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/'
+            # images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
         
             
         # - name: check
