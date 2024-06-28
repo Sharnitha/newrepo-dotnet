@@ -108,12 +108,12 @@ jobs:
            
       - name: Deploy to Azure App Service
         uses: Azure/webapps-deploy@v3.0.1
-        with: 
+        with:
           app-name: 'webappsharni2824'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-          package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/'
-          images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
+          package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/'  # Adjust this path to point to your published application files
+          images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'  # Use github.run_id instead of github.event.workflow_run.id
           
       # - name: build and push 
       #   run: |
