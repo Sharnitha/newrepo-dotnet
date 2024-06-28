@@ -77,17 +77,17 @@ jobs:
            docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} 
 
-      - name: Upload build artifacts 
-        uses: actions/upload-artifact@v2
-        with:
-          name: publish
-          path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+      # - name: Upload build artifacts 
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: publish
+      #     path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
 
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: publish
-          path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: publish
+      #     path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
 
       - name: Replace placeholders in appsettings.json
         run: |
@@ -112,7 +112,8 @@ jobs:
           app-name: 'webappsharni2824'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-          package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/'  # Adjust this path to point to your published application files
+          images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+          # package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/'  # Adjust this path to point to your published application files
           # images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'  # Use github.run_id instead of github.event.workflow_run.id
           
       # - name: build and push 
