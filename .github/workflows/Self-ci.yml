@@ -82,6 +82,38 @@ jobs:
         with:
           name: publish
           path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: publish
+          path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+
+      - name: Replace placeholders in appsettings.json
+        run: |
+            sed -i 's/__DEFAULT__/${{ secrets.DEFAULT }}/g' appsettings.json
+            sed -i 's/__MICROSOFT__/${{ secrets.MICROSOFT }}/g' appsettings.json
+            cat appsettings.json
+
+        # - name: check
+        #   run: |
+        #     LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault1106258 --query value -o tsv)
+        #     sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
+        #     az webapp config appsettings set --name webapp25062 --resource-group sharnitha-poc --settings @settings.json
+
+        # - name: credential
+        #   run: | 
+        #       az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        #       docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+           
+      - name: Deploy to Azure App Service
+        uses: Azure/webapps-deploy@v3.0.1
+        with: 
+          app-name: 'webappsharni2824'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/'
+            # images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event
           
       # - name: build and push 
       #   run: |
