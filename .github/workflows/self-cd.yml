@@ -17,14 +17,14 @@ jobs:
       runs-on: self-hosted
       steps:
         - name: Checkout code
-          uses: actions/checkout@v2    
+          uses: actions/checkout@v2   
 
-        - name: Replace placeholders in appsettings.json
-          run: |
-            sed -i 's/__DEFAULT__/${{ secrets.DEFAULT }}/g' appsettings.json
-            sed -i 's/__MICROSOFT__/${{ secrets.MICROSOFT }}/g' appsettings.json
-            echo ${{ secrets.DEFAULT }}
-            echo ${{ secrets.MICROSOFT }}
+        # - name: Replace placeholders in appsettings.json
+        #   run: |
+        #     sed -i 's/__DEFAULT__/${{ secrets.DEFAULT }}/g' appsettings.json
+        #     sed -i 's/__MICROSOFT__/${{ secrets.MICROSOFT }}/g' appsettings.json
+        #     echo ${{ secrets.DEFAULT }}
+        #     echo ${{ secrets.MICROSOFT }}
 
         # - name: check
         #   run: |
@@ -44,7 +44,10 @@ jobs:
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
-        
+            
+        - name: Set environment variables
+          run: |
+            az webapp config appsettings set --name webappsharni2824 --resource-group sharnitha-poc --settings Default=${{ secrets.DEFAULT }} Microsoft.AspNetCore=${{ secrets.MICROSOFT }}
             
         # - name: check
         #   run: |
