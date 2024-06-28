@@ -17,19 +17,7 @@ jobs:
       runs-on: self-hosted
       steps:
         - name: Checkout code
-          uses: actions/checkout@v2
-        - name: listing files and directories
-          run: |
-            ls
-            cd /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
-            echo "listing files inside /opt location"
-            ls
-            
-        - name: Download artifact
-          uses: actions/download-artifact@v2
-          with:
-            name: publish
-            path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+          uses: actions/checkout@v2    
 
         - name: Replace placeholders in appsettings.json
           run: |
