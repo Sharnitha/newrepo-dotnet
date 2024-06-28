@@ -23,8 +23,8 @@ jobs:
           run: |
             sed -i 's/__DEFAULT__/${{ secrets.DEFAULT }}/g' appsettings.json
             sed -i 's/__MICROSOFT__/${{ secrets.MICROSOFT }}/g' appsettings.json
-            echo $secrets.DEFAULT
-            echo $secrets.MICROSOFT
+            echo ${{ secrets.DEFAULT }}
+            echo ${{ secrets.MICROSOFT }}
 
         # - name: check
         #   run: |
