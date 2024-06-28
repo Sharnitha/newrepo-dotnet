@@ -45,9 +45,7 @@ jobs:
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
             
-        - name: Set environment variables
-          run: |
-            az webapp config appsettings set --name webappsharni2824 --resource-group sharnitha-poc --settings Default=${{ secrets.DEFAULT }} Microsoft.AspNetCore=${{ secrets.MICROSOFT }}
+  
             
         # - name: check
         #   run: |
