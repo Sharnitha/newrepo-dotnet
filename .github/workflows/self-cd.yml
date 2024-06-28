@@ -33,7 +33,7 @@ jobs:
         - name: Deploy to Azure App Service
           uses: Azure/webapps-deploy@v3.0.1
           with: 
-            app-name: 'githubci270624'
+            app-name: 'webappsharni2824'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
