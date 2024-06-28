@@ -67,7 +67,7 @@ RUN apt-get update \
     && chmod u+x ./entrypoint.sh
 COPY sshd_config /etc/ssh/
 EXPOSE 80 2222
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
 
 
 
