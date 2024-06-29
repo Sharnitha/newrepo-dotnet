@@ -44,6 +44,16 @@ jobs:
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+
+        - name: Build and deploy Container App
+          uses: azure/container-apps-deploy-action@v1
+          with:
+            acrName:  githubcisharni         
+            acrUsername: githubcisharni          
+            acrPassword: ${{ secrets.ACRPASS }}
+            containerAppName: containerappsnametest      
+            resourceGroup: sharnitha-poc
+            imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }} 
             
   
             
