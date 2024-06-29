@@ -45,6 +45,10 @@ jobs:
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
+        - name: credential
+          run: | 
+              az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+
         - name: Build and deploy Container App
           uses: azure/container-apps-deploy-action@v1
           with:
