@@ -43,7 +43,7 @@ jobs:
             app-name: 'webapp290624'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+            images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
             
   
             
