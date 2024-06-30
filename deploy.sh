@@ -42,6 +42,10 @@ properties:
         env:
           - name: SHARNILOG
             secretRef: sharnilog
+          - name: BASEKEYURL
+            secretRef: apibaseurl
+           - name: APIBASEURL
+            secretRef: apibaseurl
         resources:
           cpu: 2
           memory: 4Gi
