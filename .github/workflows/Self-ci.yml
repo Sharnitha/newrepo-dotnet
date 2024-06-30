@@ -1,4 +1,4 @@
-name: Self-Hosted CI
+name: ContainerAso
 
 on:
   workflow_dispatch: 
