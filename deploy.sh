@@ -10,7 +10,7 @@ GITHUB_RUN_ID=$1
 # Replace placeholders in appsetting.json with fetched secrets
 # sed -i "s|#{__logLevel__}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
 # sed -i "s|#{__microsoft__}#|$API_KEY|g" appsettings.json
-
+ 
 IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 
 # Define backend.yaml content dynamically with fetched secrets 
