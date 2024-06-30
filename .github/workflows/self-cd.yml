@@ -1,12 +1,12 @@
 name: CD on GitHub
 on:
-  push:
-    branches:
-      - containbran
+  # push:
+  #   branches:
+  #     - containbran
       
   workflow_run: 
     workflows: 
-      - Self-Hosted CI
+      - ContainerAso
     types:
       - completed
 jobs:
