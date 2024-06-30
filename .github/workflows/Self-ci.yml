@@ -77,6 +77,13 @@ jobs:
            docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
+      - name: container deployment
+        run: | 
+          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+          chmod +x deploy.sh
+          GITHUB_RUN_ID=${{ github.event.workflow_run.id }}
+          ./deploy.sh $GITHUB_RUN_ID
+
       # - name: Upload build artifacts 
       #   uses: actions/upload-artifact@v2
       #   with:
