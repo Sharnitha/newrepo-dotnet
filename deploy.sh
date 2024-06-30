@@ -45,3 +45,5 @@ properties:
         resources:
           cpu: 2
           memory: 4Gi
+EOF
+az containerapp update  -n contaiinerapps13 -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
