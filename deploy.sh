@@ -40,7 +40,7 @@ properties:
         server: githubcisharni.azurecr.io
         username: githubcisharni
   template:
-    containers:
+    containers: 
       - image: $IMAGE_TAG
         name: githubcisharni
         env:
