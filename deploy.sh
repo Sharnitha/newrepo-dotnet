@@ -20,7 +20,7 @@ location: East US
 name: containerapps
 type: Microsoft.App/containerApps
 properties:
-    managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-b20f
+    managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-beb7
     configuration:
         activeRevisionsMode: Single
         ingress:
@@ -32,7 +32,7 @@ properties:
               weight: 100
             transport: Http
         registries:
-          - passwordSecretRef: reg-pswd-39d6d968-bcc8
+          - passwordSecretRef: reg-pswd-7fd98047-a315
             server: githubcisharni.azurecr.io
             username: githubcisharni
     template:
