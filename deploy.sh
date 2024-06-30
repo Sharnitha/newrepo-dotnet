@@ -22,10 +22,6 @@ type: Microsoft.App/containerApps
 properties:
   managedEnvironmentId: /subscriptions/80/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-beb7
   configuration:
-    secrets:
-      - name: 'SHARNILO'
-        keyVaultUrl: '@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTSHARNITHALOG)'
-        identity: 'system'
     activeRevisionsMode: Single
     ingress:
       external: true
@@ -45,7 +41,7 @@ properties:
         name: githubcisharni
         env:
           - name: SHARNILOG
-            secretRef: SHARNILO
+            secretRef: sharnilog
         resources:
           cpu: 2
           memory: 4Gi
