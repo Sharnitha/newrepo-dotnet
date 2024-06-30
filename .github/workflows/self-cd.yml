@@ -44,7 +44,7 @@ jobs:
             az webapp config appsettings set --name webapptest1306 --resource-group sharnitha-poc --settings @settings.json
             echo "Using Dev Secret: $SECRET_KEY"
         
-        - name: Deploy to Azure App Service
+        - name: Deploy to Azure App Service 
           uses: Azure/webapps-deploy@v3.0.1
           with: 
             app-name: 'webapptest1306'
