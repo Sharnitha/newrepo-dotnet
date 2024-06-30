@@ -2,7 +2,6 @@
 
 GITHUB_RUN_ID=$1
 
-sed -i "s|{__LOGDEF__}|$SHARNILOG|g" appsettings.json
 
 # Fetch secrets from Azure Key Vault
 # DATABASE_CONNECTION_STRING=$(az keyvault secret show --name "logLevel-default" --vault-name "keyvaulttest1506" --query "value" -o tsv)
@@ -47,4 +46,4 @@ properties:
               cpu: 2
               memory: 4Gi
 EOF
-az containerapp update  -n containerapps -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
+az containerapp update  -n contaiinerapps13 -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
