@@ -2,9 +2,9 @@
 
 GITHUB_RUN_ID=$1
 
-
 # Fetch secrets from Azure Key Vault
-SHARNILOGKEYVAULT=$(az keyvault secret show --name "KEYVAULTSHARNITHALOG" --vault-name "dockeyvault280824" --query "value" -o tsv)
+# SHARNILOGKEYVAULT=$(az keyvault secret show --name "KEYVAULTSHARNITHALOG" --vault-name "dockeyvault280824" --query "value" -o tsv)
+# echo $SHARNILOGKEYVAULT
 # API_KEY=$(az keyvault secret show --name "micro" --vault-name "keyvaulttest1506" --query "value" -o tsv)
 
 # Replace placeholders in appsetting.json with fetched secrets
@@ -22,6 +22,13 @@ type: Microsoft.App/containerApps
 properties:
     managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-beb7
     configuration:
+        secrets: [
+        {
+          name: 'SHARNILO'
+          keyVaultUrl: '@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTSHARNITHALOG)'
+          identity: 'system'
+        }  
+      ]
         activeRevisionsMode: Single
         ingress:
             external: true
@@ -41,7 +48,7 @@ properties:
           name: githubcisharni
           env:
           - name: SHARNILOG
-            value: $(SHARNILOGKEYVAULT)
+            secretRef: SHARNILO
           resources:
               cpu: 2
               memory: 4Gi
