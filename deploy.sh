@@ -44,7 +44,7 @@ properties:
             secretRef: sharnilog
           - name: BASEKEYURL
             secretRef: apibaseurl
-           - name: APIBASEURL
+          - name: APIBASEURL
             secretRef: apibaseurl
         resources:
           cpu: 2
