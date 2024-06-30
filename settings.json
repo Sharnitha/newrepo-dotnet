@@ -1,7 +1,7 @@
 [
   {
     "name": "APIBASEURL",
-    "value": "${{ env.APIBASEURLVALUE }}",
+    "value": "",
     "slotSetting": false
   },
   {
