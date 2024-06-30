@@ -1,7 +1,17 @@
 [
   {
-    "name": "__LOG__",
-    "value": "LOGVALUE",
+    "name": "APIBASEURL",
+    "value": "${{ env.APIBASEURLVALUE }}",
+    "slotSetting": false
+  },
+  {
+    "name": "BASEKEYURL",
+    "value": "@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTBASEKEYURL)",
+    "slotSetting": false
+  },
+  {
+    "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+    "value": "FiqXS/fGJ/PKLPaPCYo57ZlH+y1/XWuHHDBq2kPusM+ACRCMZi4c",
     "slotSetting": false
   },
   {
@@ -15,8 +25,13 @@
     "slotSetting": false
   },
   {
-    "name": "LogLevel",
-    "value": "Information",
+    "name": "SHARNILOG",
+    "value": "@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTSHARNITHALOG)",
+    "slotSetting": false
+  },
+  {
+    "name": "SHARNITHAMICROSOFT",
+    "value": "@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTSHARNITHAMICROSOFT)",
     "slotSetting": false
   },
   {
