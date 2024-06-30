@@ -17,7 +17,10 @@ jobs:
       runs-on: self-hosted
       steps:
         - name: Checkout code
-          uses: actions/checkout@v2   
+          uses: actions/checkout@v2  
+        - name: Use Dev Secret
+          env:
+            SECRET_KEY: ${{ secrets.APIBASEURLVALUE }}
 
         # - name: Replace placeholders in appsettings.json
         #   run: |
@@ -40,7 +43,7 @@ jobs:
         - name: check
           run: |
             az webapp config appsettings set --name webapptest1306 --resource-group sharnitha-poc --settings @settings.json
-            echo ${{ env.APIBASEURLVALUE }}
+            echo "Using Dev Secret: $SECRET_KEY"
         
         - name: Deploy to Azure App Service
           uses: Azure/webapps-deploy@v3.0.1
