@@ -43,7 +43,6 @@ jobs:
           run: |
             az webapp config appsettings set --name webapptest1306 --resource-group sharnitha-poc --settings @settings.json
             az webapp config appsettings list --name webapptest1306 --resource-group sharnitha-poc
-            echo "Using Dev Secret: $SECRET_KEY"
         
         - name: Deploy to Azure App Service 
           uses: Azure/webapps-deploy@v3.0.1
@@ -53,9 +52,9 @@ jobs:
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
-        - name: credential
-          run: | 
-              az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        # - name: credential
+        #   run: | 
+        #       az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
 
         # - name: Build and deploy Container App
         #   uses: azure/container-apps-deploy-action@v1
