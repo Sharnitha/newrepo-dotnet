@@ -1,4 +1,4 @@
-name: CD on GitHub
+name: ContainerCD on GitHub
 on:
   # push:
   #   branches:
