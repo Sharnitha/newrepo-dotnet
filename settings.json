@@ -1,7 +1,7 @@
 [
   {
     "name": "APIBASEURL",
-    "value": "${{ secrets.APIBASEURLVALUE }}",
+    "value": "12345abcdef",
     "slotSetting": false
   },
   {
