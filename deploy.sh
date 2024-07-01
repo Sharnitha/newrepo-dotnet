@@ -41,11 +41,11 @@ properties:
         name: githubcisharni
         env:
           - name: SHARNILOG
-            secretRef: sharnilog
+            value: Information
           - name: BASEKEYURL
-            secretRef: apibaseurl
+            value: https://google.com
           - name: APIBASEURL
-            secretRef: apibaseurl
+            value: 123ave
         resources:
           cpu: 2
           memory: 4Gi
