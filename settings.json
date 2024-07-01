@@ -30,7 +30,7 @@
     "slotSetting": false
   },
   {
-    "name": "SHARNITHAMICROSOFT",
+    "name": "SHARNITHAMICOSOFT",
     "value": "@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTSHARNITHAMICROSOFT)",
     "slotSetting": false
   },
