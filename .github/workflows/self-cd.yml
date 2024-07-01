@@ -18,8 +18,8 @@ jobs:
       steps: 
         - name: Checkout code
           uses: actions/checkout@v2  
-          env:
-            SECRET_KEY: ${{ secrets.APIBASEURLVALUE }}
+          # env:
+          #   SECRET_KEY: ${{ secrets.APIBASEURLVALUE }}
 
         # - name: Replace placeholders in appsettings.json
         #   run: |
@@ -41,13 +41,13 @@ jobs:
 
         - name: check
           run: |
-            az webapp config appsettings set --name webapptest1306 --resource-group sharnitha-poc --settings @settings.json
-            az webapp config appsettings list --name webapptest1306 --resource-group sharnitha-poc
+            az webapp config appsettings set --name webappforcontainers11 --resource-group sharnitha-poc --settings @settings.json
+            az webapp config appsettings list --name webappforcontainers11 --resource-group sharnitha-poc
         
         - name: Deploy to Azure App Service 
           uses: Azure/webapps-deploy@v3.0.1
           with: 
-            app-name: 'webapptest1306'
+            app-name: 'webappforcontainers11'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
