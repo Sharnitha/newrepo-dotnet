@@ -96,7 +96,8 @@ jobs:
         app-name: 'webappforcontainers11'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+        images: 'githubcisharni.azurecr.io/demoenv:${{ github.run.id }}'
+        # images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
       # - name: Upload build artifacts 
       #   uses: actions/upload-artifact@v2
