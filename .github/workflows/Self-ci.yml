@@ -77,6 +77,11 @@ jobs:
            docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
+  DEV_Deploy:
+      runs-on: self-hosted
+      environment:
+        name: Dev 
+      steps:     
       - name: container deployment
         run: | 
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
