@@ -1,17 +1,18 @@
 name: CD on GitHub
 on:
+  workflow_call:
   workflow_dispatch:
   # push:
   #   branches:
   #     - feature-private 
       
-  workflow_run:   
-    workflows:  
-      - Self-Hosted CI
-    types:
-      - completed
-    branches:
-      - feature-private
+  # workflow_run:   
+  #   workflows:  
+  #     - Self-Hosted CI
+  #   types:
+  #     - completed
+  #   branches:
+  #     - feature-private
 jobs:
     update-deployment:
       if: ${{ github.event.workflow_run.conclusion == 'success' }}
