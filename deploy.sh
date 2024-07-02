@@ -43,7 +43,7 @@ properties:
           - name: SHARNILOG
             secretRef: sharnithalog
           - name: BASEKEYURL
-            secretRef: baseurl
+            secretRef: api-baseurl
           - name: APIBASEURL
             secretRef: apibaseurl
         resources:
