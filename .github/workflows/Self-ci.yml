@@ -44,8 +44,7 @@ jobs:
   #       run: dotnet build -c release
 
   Frontend_Docker_Build:
-    runs-on: self-hosted
-    # needs: Frontend_Dotnet_Build
+    runs-on: self-hosted   
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
@@ -79,6 +78,7 @@ jobs:
 
   DEV_Deploy:
       runs-on: self-hosted
+      needs: Frontend_Docker_Build
       environment:
         name: Dev 
       steps:     
