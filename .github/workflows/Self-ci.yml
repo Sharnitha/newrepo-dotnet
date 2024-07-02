@@ -77,26 +77,26 @@ jobs:
            docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
-  DEV_Deploy:
-    runs-on: self-hosted
-    needs: Frontend_Docker_Build
-    environment:
-      name: Dev 
-    steps:     
-    - name: container deployment
-      uses: actions/checkout@v2       
-    - name: check
-      run: |
-        az webapp config appsettings set --name webappforcontainers11 --resource-group sharnitha-poc --settings @settings.json
-        az webapp config appsettings list --name webappforcontainers11 --resource-group sharnitha-poc
+  # DEV_Deploy:
+  #   runs-on: self-hosted
+  #   needs: Frontend_Docker_Build
+  #   environment:
+  #     name: Dev 
+  #   steps:     
+  #   - name: container deployment
+  #     uses: actions/checkout@v2       
+  #   - name: check
+  #     run: |
+  #       az webapp config appsettings set --name webappforcontainers11 --resource-group sharnitha-poc --settings @settings.json
+  #       az webapp config appsettings list --name webappforcontainers11 --resource-group sharnitha-poc
     
-    - name: Deploy to Azure App Service 
-      uses: Azure/webapps-deploy@v3.0.1
-      with: 
-        app-name: 'webappforcontainers11'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+  #   - name: Deploy to Azure App Service 
+  #     uses: Azure/webapps-deploy@v3.0.1
+  #     with: 
+  #       app-name: 'webappforcontainers11'
+  #       slot-name: 'production'
+  #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+  #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
         # images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
       # - name: Upload build artifacts 
