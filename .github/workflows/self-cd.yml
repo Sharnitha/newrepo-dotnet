@@ -6,7 +6,7 @@ on:
   #     - feature-private 
       
   workflow_run:   
-    workflows: 
+    workflows:  
       - Self-Hosted CI
     types:
       - completed
