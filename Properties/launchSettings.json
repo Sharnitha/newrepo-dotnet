@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "dotnet_folder": {
+    "dotnet_folder": { 
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
