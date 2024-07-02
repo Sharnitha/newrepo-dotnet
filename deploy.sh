@@ -49,5 +49,20 @@ properties:
         resources:
           cpu: 2
           memory: 4Gi
+        probes:
+          - type: liveness
+            tcpSocket:
+              path: "/"
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          - type: readiness
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 3
+        scale:
+          minReplicas: 1
+          maxReplicas: 10
 EOF
 az containerapp update  -n containerapp01 -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
