@@ -1,7 +1,7 @@
 name: Self-Hosted CI
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:  
   push:      
     branches:     
       - feature-private         
