@@ -4,7 +4,7 @@ on:
   workflow_dispatch:   
   push:       
     branches:  
-      - feature-private            
+      - feature-private             
   #   # env:         
 #   DOTNET_VERSION: '6.0.422'  
 #   DOTNET_INSTALL_DIR: "./.dotnet"   
@@ -23,7 +23,7 @@ jobs:
   #     run: dotnet --version
   #   - name: listing files
   #     run: ls
-  #   - name: dotnet restore
+  #   - name: dotnet Restoring
   #     run: 
   #       dotnet restore
         
