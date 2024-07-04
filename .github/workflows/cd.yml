@@ -3,7 +3,7 @@ name: CD
 on:
   workflow_dispatch:
   # push: 
-  #   branches:
+  #   branches: 
   #   - feature-private
 jobs:
   cd_deployment:
