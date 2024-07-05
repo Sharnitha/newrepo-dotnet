@@ -77,13 +77,13 @@ jobs:
            docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
-      # - name: Deploy to Azure App Service 
-      #   uses: Azure/webapps-deploy@v3.0.1
-      #   with: 
-      #     app-name: 'webappscontainertest'
-      #     slot-name: 'production'
-      #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-      #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+      - name: Deploy to Azure App Service 
+        uses: Azure/webapps-deploy@v3.0.1
+        with: 
+          app-name: 'webappscontainer14'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
 
   # DEV_Deploy:
   #   runs-on: self-hosted
