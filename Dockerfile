@@ -7,7 +7,7 @@
 # WORKDIR /app
 # COPY add_hosts_entry.sh /usr/local/bin/
 # COPY --from=build /src/app/publish .
-# RUN apt update && apt install -y vim
+# RUN apt update && apt install -y vim 
 # EXPOSE 80
 # COPY entrypoint.sh /usr/local/bin/
 # RUN chmod +x /usr/local/bin/add_hosts_entry.sh
