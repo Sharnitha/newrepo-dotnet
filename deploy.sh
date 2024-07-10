@@ -40,8 +40,6 @@ properties:
       - image: $IMAGE_TAG
         name: githubcisharni
         env:
-          - name: SHARNILOG
-            secretRef: sharnithalog
           - name: BASEKEYURL
             secretRef: api-baseurl
           - name: APIBASEURL
