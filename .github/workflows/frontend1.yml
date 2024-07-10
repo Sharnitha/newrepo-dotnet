@@ -2,11 +2,11 @@ name: Backend-CI
 
 on:
   workflow_dispatch:   
-  push:         
-    branches:       
-      - feature-private   
-    paths:
-    - Pages/**
+  # push:         
+  #   branches:       
+  #     - feature-private   
+  #   paths:
+  #   - Pages/**
     
   #   # env:               
 #   DOTNET_VERSION: '6.0.422'     
