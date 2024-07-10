@@ -17,10 +17,10 @@ IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 cat <<EOF > backend.yaml
 kind: containerapp
 location: East US
-name: containerapp01
+name: containerappsimage
 type: Microsoft.App/containerApps
 properties:
-  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9a80
+  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9eda
   configuration:
     activeRevisionsMode: Single
     ingress:
@@ -32,13 +32,13 @@ properties:
           weight: 100
       transport: Http
     registries:
-      - passwordSecretRef: reg-pswd-28d52452-b8f1
-        server: githubcisharni.azurecr.io
-        username: githubcisharni
+      - passwordSecretRef: reg-pswd-815922ab-b27d
+        server: githubcisharnith.azurecr.io
+        username: githubcisharnith
   template:
     containers: 
       - image: $IMAGE_TAG
-        name: githubcisharni
+        name: githubcisharnith
         env:
           - name: BASEKEYURL
             secretRef: api-baseurl
@@ -63,4 +63,4 @@ properties:
       minReplicas: 1
       maxReplicas: 10
 EOF
-az containerapp update  -n containerapp01 -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
+az containerapp update  -n containerappsimage -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
