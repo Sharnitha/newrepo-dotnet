@@ -1,0 +1,419 @@
+name: Backend-CI
+
+on:
+  workflow_dispatch:   
+  push:         
+    branches:       
+      - feature-private   
+    paths:
+    - Pages/**
+    
+  #   # env:               
+#   DOTNET_VERSION: '6.0.422'     
+#   DOTNET_INSTALL_DIR: "./.dotnet"   
+  
+jobs:   
+  # Dotnet_Task: 
+  #   runs-on: self-hosted 
+  #   steps:
+  #   - name: Checkout code 
+  #     uses: actions/checkout@v4
+  #   - name: Setup .NET version
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: 6.0.x
+  #   - name: Listing Dotnet version
+  #     run: dotnet --version
+  #   - name: listing files
+  #     run: ls
+  #   - name: dotnet Restoring
+  #     run: 
+  #       dotnet restore
+        
+  # Frontend_Dotnet_Build:
+  #   runs-on: self-hosted  
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: Setup .NET Core SDK
+  #       uses: actions/setup-dotnet@v4 
+  #       with:
+  #         dotnet-version: ${{ env.DOTNET_VERSION }}
+  #     - name: Checking Dotnet version
+  #       run: dotnet --version
+  #     - name: Install Dependency
+  #       run: dotnet restore
+  #     - name: Dotnet build
+  #       run: dotnet build -c release
+
+  Frontend_Docker_Build:
+    runs-on: self-hosted
+    # needs: Frontend_Dotnet_Build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 
+        
+      # - name: Docker build using Dockerfile
+      #   id: list-secrets
+      #   run: |
+      #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+      #     LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
+      #     echo $LOG_DEFAULT
+
+      # - name: Retrieve Key Vault Secret
+      #   id: keyvault
+      #   run: |
+      #     LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
+      #     echo "::set-output name=logDefault::$LOG_DEFAULT" 
+          
+      # - uses: azure/appservice-settings@v1
+      #   with:
+      #     app-name: 'webapp1306249'
+      #     mask-inputs: true
+      #     slot-name: 'production' 
+      #     app-settings-json: '[{ "name": "LOG_DEFAULT", "value": "${{ steps.keyvault.outputs.logDefault }}", "slotSetting": false }]'
+
+      - name: build and push 
+        run: |
+           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+           docker build -t githubcisharnith.azurecr.io/demoenv:${{ github.run_id }} .
+           docker login githubcisharnith.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+           docker push githubcisharnith.azurecr.io/demoenv:${{ github.run_id }} 
+
+      # - name: Deploy to Azure App Service 
+      #   uses: Azure/webapps-deploy@v3.0.1
+      #   with: 
+      #     app-name: 'demoappservice090724'
+      #     slot-name: 'production'
+      #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+
+  # DEV_Deploy:
+  #   runs-on: self-hosted
+  #   needs: Frontend_Docker_Build
+  #   environment:
+  #     name: Dev 
+  #   steps:     
+  #   - name: container deployment
+  #     uses: actions/checkout@v2       
+  #   - name: check
+  #     run: |
+  #       az webapp config appsettings set --name webappforcontainers11 --resource-group sharnitha-poc --settings @settings.json
+  #       az webapp config appsettings list --name webappforcontainers11 --resource-group sharnitha-poc
+    
+  #   - name: Deploy to Azure App Service 
+  #     uses: Azure/webapps-deploy@v3.0.1
+  #     with: 
+  #       app-name: 'webappforcontainers11'
+  #       slot-name: 'production'
+  #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+  #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+        # images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+
+      # - name: Upload build artifacts 
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: publish
+      #     path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: publish
+      #     path: /opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/
+
+      # - name: Replace placeholders in appsettings.json
+      #   run: |
+      #       sed -i 's/__DEFAULT__/${{ secrets.DEFAULT }}/g' appsettings.json
+      #       sed -i 's/__MICROSOFT__/${{ secrets.MICROSOFT }}/g' appsettings.json
+      #       cat appsettings.json
+
+        # - name: check
+        #   run: |
+        #     LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault1106258 --query value -o tsv)
+        #     sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
+        #     az webapp config appsettings set --name webapp25062 --resource-group sharnitha-poc --settings @settings.json
+
+        # - name: credential
+        #   run: | 
+        #       az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        #       docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+           
+      # - name: Deploy to Azure App Service
+      #   uses: Azure/webapps-deploy@v3.0.1
+      #   with:
+      #     app-name: 'webappsharni2824'
+      #     slot-name: 'production'
+      #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #     images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
+          
+          # package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/'  # Adjust this path to point to your published application files
+          # images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'  # Use github.run_id instead of github.event.workflow_run.id
+          
+      # - name: build and push 
+      #   run: |
+      #     gh run download ${{ github.run_id }}
+      
+      # - uses: azure/webapps-deploy@v2
+      #   with: 
+      #       app-name: 'webappsdemotr'
+      #       slot-name: 'production'
+      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #       images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
+          
+        # LOG_DEFAULT=$(az keyvault secret show --name logLevel --vault-name Keyvault180624 --query value -o tsv)
+       # echo "LOG_DEFAULT=${LOG_DEFAULT}" >> $GITHUB_ENV
+          # echo "The log value:" $LOG_DEFAULT
+    # # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+ 
+    #   - name: Replace placeholders in appsettings.json
+    #     run: |
+    #       sed -i "s/{Defaultdomain}/${{env.LOG_DEFAULT}}/g" appsettings.json
+    #       cat appsettings.json
+          
+      # - name: build and push 
+      #   run: |
+      #      docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+      #      docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #      docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+
+        
+
+      # - uses: azure/appservice-settings@v1
+      #   with:
+      #     app-name: 'webapp1306249'
+      #     mask-inputs: false
+      #     slot-name: 'production' 
+      #     app-settings-json: '[{ "name": "DURING_LOG_DEPLOYMENT", "value": "$LOG_DEFAULT", "slotSetting": false }]'
+      #   id: settings
+      
+      # - uses: azure/webapps-deploy@v2
+      #   with: 
+      #       app-name: 'webapp1306249'
+      #       slot-name: 'production'
+      #       publish-profile: ${{ secrets.AzureAppService_PublishProfile_4b731991f21d4e138ad1727d5057d53b }}
+      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            
+        # chmod +x deploy.sh
+          # GITHUB_RUN_ID=${{ github.run_id }}
+          # ./deploy.sh $GITHUB_RUN_ID
+          
+
+  # Frontend_Docker_Build:
+  #   runs-on: self-hosted
+  #   # needs: Frontend_Dotnet_Build
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4 
+  #     - name: Docker build using Dockerfile
+  #       run: |
+  #         az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+  #         docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+  #         docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+  #         docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+  #         LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
+  #         echo "The log value:" $LOG_DEFAULT
+  #         echo "secret1=$LOG_DEFAULT" >> $GITHUB_ENV   
+  #         cat appsettings.json
+  #         cat /mnt/actions-runner/_work/_temp/*.sh
+  #         script -q -c 'az containerapp exec --name containerapps --resource-group sharnitha-poc --command "sed -i \"s|{LOG_DEFAULT}|'"Information\"'|g\" appsettings.json"'
+  #         cat /mnt/actions-runner/_work/_temp/*.sh
+       # script -q -c 'az containerapp exec --name containerapps --resource-group sharnitha-poc --command "sed -i \"s|{LOG_DEFAULT}|'"${{ env.secret1 }}\"'|g\" appsettings.json"'
+
+       # az containerapp exec --exec-command "/bin/bash" --name containerapps --resource-group sharnitha-poc
+       
+        # az containerapp restart \
+        #   --name containerapps \
+        #   --resource-group sharnitha-poc
+
+        # az containerapp exec \
+        #   --name containerapps \
+        #   --resource-group sharnitha-poc \
+        #   --command 'sed -i "s|{{LOG_DEFAULT}}|'"${{ env.secret1 }}"'|g" appsettings.json'
+
+        #      status=$(az containerapp show --name containerapps --resource-group sharnitha-poc --query state -o tsv)
+        # if [[ $status != "Running" ]]; then
+        # az containerapp start --name containerapps --resource-group sharnitha-poc
+        # sleep 30 
+        # fi 
+       # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+
+      # - name: Re-Contaimer Apps
+      #   run: |
+      #      chmod +x deploy.sh
+      #      GITHUB_RUN_ID=${{ github.run_id }}
+      #      ./deploy.sh $GITHUB_RUN_ID
+           
+      # - name: Replace tokens
+      #   run: |
+      #     LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvaulttest1506 --query value -o tsv)
+      #     echo $LOG_DEFAULT
+      #     MICROSOFT=$(az keyvault secret show --name micro --vault-name keyvaulttest1506 --query value -o tsv)
+      #     echo $MICROSOFT
+      #     sed -i "s/{__logLevel__}/$LOG_DEFAULT/g" appsettings.json
+      #     sed -i "s/{__microsoft__}/$MICROSOFT/g" appsettings.json
+      #     cat appsettings.json
+      #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+      #     az containerapp update --name containerapps --resource-group sharnitha-poc --yaml 
+         
+       # az containerapp update  -n containerappname  -g sharnitha-poc --yaml back.yaml
+          
+      # - name: Replace token
+      #   run: |
+      #     LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
+      #     echo $LOG_DEFAULT
+      #     MICROSOFT=$(az keyvault secret show --name microsoft-AspNetCore --vault-name keyvault110624 --query value -o tsv)
+      #     echo "Appsettingslogdefault"
+      #     sed -i "s/{__logLevel-default__}/$LOG_DEFAULT/g" appsettings.json
+      #     cat appsettings.json
+      #     echo "microsoft asp"
+      #     sed -i "s/{__microsoft-AspNetCore__}/$MICROSOFT/g" appsettings.json  
+      #     cat appsettings.json
+
+      # - uses: azure/webapps-deploy@v2
+      #   with:
+      #       app-name: 'webapp130624'
+      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            # package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+
+      # - name: Fetch secrets from Azure Key Vault
+      #   id: fetch-secrets
+      #   run: |
+      #     export SECRET_1=$(az keyvault secret show --vault-name 'keyvault110624' --name 'logleveldefault' --query 'value' -o tsv)
+      #     echo $SECRET_1
+      #     export SECRET_2=$(az keyvault secret show --vault-name 'keyvault110624' --name 'microsoft-AspNetCore' --query 'value' -o tsv)
+      #     echo $SECRET_2
+
+      # - name: Build and deploy Container App
+      #   uses: azure/container-apps-deploy-action@v1
+      #   with:
+      #     acrName:  githubcisharni         
+      #     acrUsername: githubcisharni          
+      #     acrPassword: t7/XMWigN+CfwFE5BC+i671BCPYToWQXGf3c0G5uQV+ACRCystt1
+      #     containerAppName: containerapps      
+      #     resourceGroup: sharnitha-poc
+      #     imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+
+      # - name: Docker build using Dockerfile
+      #   run: |
+      #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+      #     az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+      # # az containerapp update --name containerapps --resource-group sharnitha-poc --image githubcisharni.azurecr.io/demoenv:${{ github.run_id }} --set-env-vars "demo=1.2.3.4.5" "testing=172.168.9.86"
+          
+      #     replace_env_vars: true
+      #     env: |
+      #       SECRET_1=$SECRET_1
+      #       SECRET_2=$SECRET_2
+
+
+      # - name: Azure CLI script
+      #   id: step_one
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #       echo secret=$(az keyvault secret download --vault-name Pracvault123 --name MySecret --query value) >> $GITHUB_ENV
+              
+      # - name: Use the value
+      #   id: step_two
+      #   run: |
+      #       echo "${{ env.secret }}"
+
+# name: Self-Hosted CI
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - feature-private
+
+# env:   
+#   DOTNET_VERSION: '6.0.422' 
+#   DOTNET_INSTALL_DIR: "./.dotnet" 
+
+# jobs:
+  # Dotnet_Build:
+  #   runs-on: self-hosted  
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
+  #   - name: Setup .NET Core SDK
+  #     uses: actions/setup-dotnet@v4 
+  #     with:
+  #       dotnet-version: ${{ env.DOTNET_VERSION }}
+  
+  #   - name: Checking Dotnet version
+  #     run: dotnet --version
+  #   - name: Install Dependency
+  #     run: dotnet restore
+  #   - name: Dotnet build
+  #     run: dotnet build -c release
+
+  # Docker_Build:
+  #   runs-on: self-hosted
+  #   # needs: Dotnet_Build
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+        
+  #     - name: Docker build using Dockerfile
+  #       run: |
+  #         docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+          
+  #     - name: Aqua Security Trivy
+  #       uses: aquasecurity/trivy-action@0.18.0
+  #       with:   
+  #         exit-code: 0
+  #         severity: LOW,MEDIUM,HIGH,CRITICAL
+  #         format: table
+  #         image-ref: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+          
+      # - name: Azure CLI
+      #   run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
+
+      # - name: Docker build using Dockerfile
+      #   run: |
+      #     docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #     docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
+      #     docker history githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
+    
+
+  # Sonar:
+  #   runs-on: self-hosted
+  #   needs: Dotnet_Build
+  #   steps: 
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4      
+        
+  #   - name: Verify Java version
+  #     run: java --version
+
+  #   - name: Setup .NET version
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: 6.0.x
+      
+  #   - name: SonarScanner tool installed
+  #     run: |
+  #       echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+  #     # dotnet tool install --global dotnet-sonarscanner
+        
+      
+  #   - name: Begin SonarQube analysis
+  #     run: |
+  #       dotnet sonarscanner begin /k:"demoproject" \
+  #       /d:sonar.login="admin" \
+  #       /d:sonar.password="Admin@123" \
+  #       /d:sonar.host.url="http://20.55.36.68:9000/" \
+  #       /v:"${{ github.run_number }}" \
+  #       /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
+  #       /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
+   
+  #   - name: Check .sonarqube Directory
+  #     run: |
+  #       dotnet build -c release -o app/publish
+        
+  #   - name: End SonarQube analysis
+  #     run: |
+  #       dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Admin@123"
