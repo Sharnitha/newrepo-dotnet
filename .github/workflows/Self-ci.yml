@@ -5,8 +5,8 @@ on:
   # push:         
   #   branches:       
   #     - feature-private   
-    paths:
-    - bin/**
+    # paths:
+    # - bin/**
   #   # env:               
 #   DOTNET_VERSION: '6.0.422'     
 #   DOTNET_INSTALL_DIR: "./.dotnet"   
