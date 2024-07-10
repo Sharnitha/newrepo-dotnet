@@ -42,13 +42,13 @@ jobs:
 
         - name: check
           run: |
-            az webapp config appsettings set --name webappforcontainers11 --resource-group sharnitha-poc --settings @settings.json
-            az webapp config appsettings list --name webappforcontainers11 --resource-group sharnitha-poc
+            az webapp config appsettings set --name webappdemo01-100724 --resource-group sharnitha-poc --settings @settings.json
+            az webapp config appsettings list --name webappdemo01-100724 --resource-group sharnitha-poc
         
         - name: Deploy to Azure App Service 
           uses: Azure/webapps-deploy@v3.0.1
           with: 
-            app-name: 'webappforcontainers11'
+            app-name: 'webappdemo01-100724'
             slot-name: 'production'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
