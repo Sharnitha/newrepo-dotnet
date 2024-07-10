@@ -38,7 +38,7 @@ properties:
   template:
     containers: 
       - image: $IMAGE_TAG
-        name: githubcisharnith
+        name: containerappsimage
         env:
           - name: BASEKEYURL
             secretRef: api-baseurl
