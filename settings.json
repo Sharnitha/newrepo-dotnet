@@ -1,37 +1,37 @@
 [
   {
     "name": "APIBASEURL",
-    "value": "12345abc/def$875ghijklmno",
+    "value": "12345abc",
     "slotSetting": false
   },
   {
     "name": "BASEKEYURL",
-    "value": "@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTBASEKEYURL)",
+    "value": "@Microsoft.KeyVault(VaultName=keyvaultnam100724;SecretName=DEV-BASEKEYURL)", 
     "slotSetting": false 
   },
   {
     "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-    "value": "My3V3xl48Yyt06akXWqYVSIpP+kAWCpaj7lla+4esh+ACRD772UG",
+    "value": "wkbgnyj40nxTp8569CdpMncqAJB+guyBim5HOAPigG+ACRBGvyAM",
     "slotSetting": false
   },
   {
     "name": "DOCKER_REGISTRY_SERVER_URL",
-    "value": "https://githubcisharni.azurecr.io",
+    "value": "https://githubcisharnith.azurecr.io",
     "slotSetting": false
   },
   {
     "name": "DOCKER_REGISTRY_SERVER_USERNAME",
-    "value": "githubcisharni",
+    "value": "githubcisharnith",
     "slotSetting": false
   },
   {
-    "name": "SHARNIOG",
-    "value": "@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTSHARNITHALOG)",
+    "name": "SHARNILOG",
+    "value": "@Microsoft.KeyVault(VaultName=keyvaultnam100724;SecretName=DEV-SHARNILOG)",
     "slotSetting": false
   },
   {
     "name": "SHARNITHAMICROSOFT",
-    "value": "@Microsoft.KeyVault(VaultName=dockeyvault280824;SecretName=KEYVAULTSHARNITHAMICROSOFT)",
+    "value": "@Microsoft.KeyVault(VaultName=keyvaultnam100724;SecretName=DEV-SHARNITHAMICROSOFT)",
     "slotSetting": false
   },
   {
