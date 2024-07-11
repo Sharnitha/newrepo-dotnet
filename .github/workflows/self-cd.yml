@@ -45,7 +45,7 @@ jobs:
             APIBASEURL: ${{ secrets.APIBASEURL }}
             DOCKER_REGISTRY_SERVER_PASSWORD: ${{ secrets.DOCKER_REGISTRY_SERVER_PASSWORD }}
           run: |
-            echo $APIBASEURL
+            echo $APIBASEURL > file1.txt
             az webapp config appsettings set --name webappstest110724 --resource-group sharnitha-poc --settings @settings.json
 
         # - name: check
