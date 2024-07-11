@@ -1,5 +1,10 @@
 [
   {
+    "name": "APIBASEURL",
+    "value": "${{ env.APIBASEURL }}",
+    "slotSetting": false 
+  },
+  {
     "name": "BASEKEYURL",
     "value": "@Microsoft.KeyVault(VaultName=keyvaultnam100724;SecretName=DEV-BASEKEYURL)", 
     "slotSetting": false 
