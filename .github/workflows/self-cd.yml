@@ -46,6 +46,7 @@ jobs:
             DOCKER_REGISTRY_SERVER_PASSWORD: ${{ secrets.DOCKER_REGISTRY_SERVER_PASSWORD }}
           run: |
             echo $APIBASEURL > file1.txt
+            echo '[{"name": "APIBASEURL", "value": "'${APIBASEURL}'", "slotSetting": false}]' > settings.json
             az webapp config appsettings set --name webappstest110724 --resource-group sharnitha-poc --settings @settings.json
 
         # - name: check
