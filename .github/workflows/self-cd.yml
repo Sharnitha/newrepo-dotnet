@@ -39,15 +39,27 @@ jobs:
         #   run: | 
         #       az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
         #       docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-
+      
         - name: Set app settings
           env:
             APIBASEURL: ${{ secrets.APIBASEURL }}
             DOCKER_REGISTRY_SERVER_PASSWORD: ${{ secrets.DOCKER_REGISTRY_SERVER_PASSWORD }}
           run: |
             echo $APIBASEURL > file1.txt
-            echo '{"name": "APIBASEURL", "value": "'${APIBASEURL}'", "slotSetting": false}' > settings.json
+            echo '{"APIBASEURL": "'${APIBASEURL}'", "DOCKER_REGISTRY_SERVER_PASSWORD": "'${DOCKER_REGISTRY_SERVER_PASSWORD}'" }' > settings.json
             az webapp config appsettings set --name webappstest110724 --resource-group sharnitha-poc --settings @settings.json
+         # echo '{"name": "DOCKER_REGISTRY_SERVER_PASSWORD", "value": "'${DOCKER_REGISTRY_SERVER_PASSWORD}'", "slotSetting": false}' > settings.json
+         #    az webapp config appsettings set --name webappstest110724 --resource-group sharnitha-poc --settings @settings.json
+
+
+        # - name: Set app settings
+        #   env:
+        #     APIBASEURL: ${{ secrets.APIBASEURL }}
+        #     DOCKER_REGISTRY_SERVER_PASSWORD: ${{ secrets.DOCKER_REGISTRY_SERVER_PASSWORD }}
+        #   run: |
+        #     echo $APIBASEURL > file1.txt
+        #     echo '{"name":"APIBASEURL", "value": "'${APIBASEURL}'", "slotSetting": false}' > settings.json
+        #     az webapp config appsettings set --name webappstest110724 --resource-group sharnitha-poc --settings @settings.json
          # echo '{"name": "DOCKER_REGISTRY_SERVER_PASSWORD", "value": "'${DOCKER_REGISTRY_SERVER_PASSWORD}'", "slotSetting": false}' > settings.json
             # az webapp config appsettings set --name webappstest110724 --resource-group sharnitha-poc --settings @settings.json
 
