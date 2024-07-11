@@ -8,7 +8,7 @@ on:
   workflow_run:
     workflows: Self-Hosted CI 
     types: completed
-    branches: feature-private
+    branches: replacetoken-envsecrets
     
 jobs:
     update-deployment:
