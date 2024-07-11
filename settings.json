@@ -1,7 +1,7 @@
 [
   {
     "name": "APIBASEURL",
-    "value": "12345abc",
+    "value": "${{ env.APIBASEURL }}",
     "slotSetting": false
   },
   {
@@ -11,7 +11,7 @@
   },
   {
     "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-    "value": "wkbgnyj40nxTp8569CdpMncqAJB+guyBim5HOAPigG+ACRBGvyAM",
+    "value": "${{ env.DOCKER_REGISTRY_SERVER_PASSWORD }}", 
     "slotSetting": false
   },
   {
