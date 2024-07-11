@@ -75,9 +75,9 @@ jobs:
       - name: build and push 
         run: |
            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-           docker build -t githubcisharnith.azurecr.io/demoenv:${{ github.run_id }} .
-           docker login githubcisharnith.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-           docker push githubcisharnith.azurecr.io/demoenv:${{ github.run_id }} 
+           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
       # - name: Deploy to Azure App Service 
       #   uses: Azure/webapps-deploy@v3.0.1
