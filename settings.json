@@ -2,7 +2,7 @@
   {
     "name": "APIBASEURLL",
     "value": "@Microsoft.KeyVault(VaultName=keyvaultname120724;SecretName=APIBASEURL)", 
-    "slotSetting": false 
+    "slotSetting": false  
   },
   {
     "name": "BASEKEYURLL",  
