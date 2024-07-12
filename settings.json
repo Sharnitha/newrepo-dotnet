@@ -8,7 +8,7 @@
     "name": "BASEKEYURLL",  
     "value": "@Microsoft.KeyVault(VaultName=keyvaultname120724;SecretName=BASEKEYURL)", 
     "slotSetting": false 
-  }
+  },
   {
     "name": "DOCKER_REGISTRY_SERVER_PASSWORD",  
     "value": "@Microsoft.KeyVault(VaultName=keyvaultname120724;SecretName=DOCKERREGISTRYSERVERPASSWORD)", 
