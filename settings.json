@@ -1,12 +1,12 @@
 [  
   {
     "name": "APIBASEURL",
-    "value": "@Microsoft.KeyVault(VaultName=keyvaultnam100724;SecretName=APIBASEURL)", 
+    "value": "@Microsoft.KeyVault(VaultName=keyvaultname12072;SecretName=APIBASEURL)", 
     "slotSetting": false 
   },
   {
     "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-    "value": "@Microsoft.KeyVault(VaultName=keyvaultnam100724;SecretName=DOCKERREGISTRYSERVERPASSWORD)", 
+    "value": "@Microsoft.KeyVault(VaultName=keyvaultname12072;SecretName=DOCKERREGISTRYSERVERPASSWORD)", 
     "slotSetting": false
   },
   {
