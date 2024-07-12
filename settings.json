@@ -5,7 +5,7 @@
     "slotSetting": false 
   },
   {
-    "name": "BASEKEYURLL", 
+    "name": "BASEKEYURLL",  
     "value": "@Microsoft.KeyVault(VaultName=keyvaultname120724;SecretName=BASEKEYURL)", 
     "slotSetting": false 
   }
