@@ -11,13 +11,13 @@ GITHUB_RUN_ID=$1
 # sed -i "s|#{__logLevel__}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
 # sed -i "s|#{__microsoft__}#|$API_KEY|g" appsettings.json
  
-IMAGE_TAG=githubcisharnith.azurecr.io/demoenv:${GITHUB_RUN_ID}
+IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 
 # Define backend.yaml content dynamically with fetched secrets 
 cat <<EOF > backend.yaml
 kind: containerapp
 location: East US
-name: containerappsimage
+name: containerappstest
 type: Microsoft.App/containerApps
 properties:
   managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9eda
@@ -32,13 +32,13 @@ properties:
           weight: 100
       transport: Http
     registries:
-      - passwordSecretRef: reg-pswd-815922ab-b27d
+      - passwordSecretRef: reg-pswd-a91a181e-8019
         server: githubcisharni.azurecr.io
         username: githubcisharni
   template:
     containers: 
       - image: $IMAGE_TAG
-        name: containerappsimage
+        name: containerappstest
         env:
           - name: LOGLEVELMICROSOFT
             value: Warning
@@ -61,4 +61,4 @@ properties:
       minReplicas: 1
       maxReplicas: 10
 EOF
-az containerapp update  -n containerappsimage -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
+az containerapp update  -n containerappstest -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
