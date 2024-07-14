@@ -85,10 +85,11 @@ jobs:
             az webapp config appsettings list --name ertjkbvhj --resource-group sharnitha-poc
 
       - uses: azure/webapps-deploy@v2
-        with:
+        with: 
             app-name: 'ertjkbvhj'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+
         
       # - name: Deploy to Azure App Service 
       #   uses: Azure/webapps-deploy@v3.0.1
