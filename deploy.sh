@@ -33,17 +33,15 @@ properties:
       transport: Http
     registries:
       - passwordSecretRef: reg-pswd-815922ab-b27d
-        server: githubcisharnith.azurecr.io
-        username: githubcisharnith
+        server: githubcisharni.azurecr.io
+        username: githubcisharni
   template:
     containers: 
       - image: $IMAGE_TAG
         name: containerappsimage
         env:
-          - name: BASEKEYURL
-            secretRef: api-baseurl
-          - name: APIBASEURL
-            secretRef: apibaseurl
+          - name: LOGLEVELMICROSOFT
+            value: Warning
         resources:
           cpu: 2
           memory: 4Gi
