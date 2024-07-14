@@ -79,6 +79,19 @@ jobs:
            docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
+      - name: check
+        run: |
+            az webapp config appsettings set --name ertjkbvhj --resource-group sharnitha-poc --settings @settings.json
+            az webapp config appsettings list --name ertjkbvhj --resource-group sharnitha-poc
+        
+      - name: Deploy to Azure App Service 
+        uses: Azure/webapps-deploy@v3.0.1
+        with: 
+            app-name: 'ertjkbvhj'
+            slot-name: 'production'
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
+
       # - name: Deploy to Azure App Service 
       #   uses: Azure/webapps-deploy@v3.0.1
       #   with: 
