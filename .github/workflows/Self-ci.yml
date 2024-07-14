@@ -89,6 +89,8 @@ jobs:
             app-name: 'ertjkbvhj'
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+            slot-name: 'production'
+            region: 'Central US'
 
         
       # - name: Deploy to Azure App Service 
