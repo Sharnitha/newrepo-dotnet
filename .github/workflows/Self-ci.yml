@@ -2,9 +2,9 @@ name: ContainerAso
 
 on:
   workflow_dispatch: 
-  # push:     
-  #   branches:     
-  #     - containbran        
+  push:     
+    branches:     
+      - containbran        
   #   # env:      
 #   DOTNET_VERSION: '6.0.422'  
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
