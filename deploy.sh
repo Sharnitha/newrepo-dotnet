@@ -17,10 +17,10 @@ IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 cat <<EOF > backend.yaml
 kind: containerapp
 location: East US
-name: containerappstest
+name: containedemotesapp
 type: Microsoft.App/containerApps
 properties:
-  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-8585
+  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9fc3
   configuration:
     activeRevisionsMode: Single
     ingress:
@@ -38,7 +38,7 @@ properties:
   template:
     containers: 
       - image: $IMAGE_TAG
-        name: containerappstest
+        name: containedemotesapp
         env:
           - name: LOGLEVELMICROSOFT
             value: Warning
@@ -61,4 +61,4 @@ properties:
       minReplicas: 1
       maxReplicas: 10
 EOF
-az containerapp update  -n containerappstest -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
+az containerapp update  -n containedemotesapp -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
