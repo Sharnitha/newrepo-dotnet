@@ -79,15 +79,15 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
-COPY entrypoint.sh ./
+COPY backendentrypoint.sh ./
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends openssh-server \
     && echo "root:Docker!" | chpasswd \
-    && chmod u+x ./entrypoint.sh
+    && chmod u+x ./backendentrypoint.sh
 COPY sshd_config /etc/ssh/
 EXPOSE 8000 2222
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "./backendentrypoint.sh" ]
 
 
 # Dockerfile for a .NET Core container with SSH server
