@@ -47,13 +47,7 @@ properties:
         resources:
           cpu: 2
           memory: 4Gi
-        probes:
-          - type: readiness                     
-            httpGet:
-              port: 80
-              path: "/health"
-            initialDelaySeconds: 10
-            periodSeconds: 10
+          
     scale:
       minReplicas: 1
       maxReplicas: 10
