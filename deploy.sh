@@ -42,6 +42,8 @@ properties:
         env:
           - name: LOGLEVELMICROSOFT
             value: Warning
+          - name: BASEKEYURL
+            secretRef: basekeyurl
         resources:
           cpu: 2
           memory: 4Gi
