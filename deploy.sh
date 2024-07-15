@@ -15,7 +15,7 @@ IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 
 # Define backend.yaml content dynamically with fetched secrets 
 cat <<EOF > backend.yaml
-kind: containerapp
+kind: containerapp 
 location: East US
 name: containedemotesapp
 type: Microsoft.App/containerApps
