@@ -49,7 +49,7 @@ properties:
           memory: 4Gi
         probes:
           - type: readiness                     
-            tcpSocket:
+            httpGet:
               port: 80
               path: "/health"
             initialDelaySeconds: 10
