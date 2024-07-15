@@ -43,7 +43,7 @@ properties:
           - name: LOGLEVELMICROSOFT
             value: Warning
           - name: BASEKEYURL
-            secretRef: basekeyurl
+            value: @Microsoft.KeyVault(VaultName=keyvaulttesti999;SecretName=demour)
         resources:
           cpu: 2
           memory: 4Gi
