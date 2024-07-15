@@ -48,17 +48,12 @@ properties:
           cpu: 2
           memory: 4Gi
         probes:
-          - type: liveness
-            tcpSocket:
-              path: "/"
-              port: 80
-            initialDelaySeconds: 30
-            periodSeconds: 3
-          - type: readiness
+          - type: readiness                     
             tcpSocket:
               port: 80
-            initialDelaySeconds: 30
-            periodSeconds: 3
+              path: "/health"
+            initialDelaySeconds: 10
+            periodSeconds: 10
     scale:
       minReplicas: 1
       maxReplicas: 10
