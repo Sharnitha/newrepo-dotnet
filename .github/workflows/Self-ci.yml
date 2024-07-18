@@ -48,6 +48,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
+      - name: echo
+        run: echo "CI Pipel"
         
       # - name: Docker build using Dockerfile
       #   id: list-secrets
@@ -69,19 +71,19 @@ jobs:
       #     slot-name: 'production' 
       #     app-settings-json: '[{ "name": "LOG_DEFAULT", "value": "${{ steps.keyvault.outputs.logDefault }}", "slotSetting": false }]'
 
-      - name: build and push 
-        run: |
-           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
+      # - name: build and push 
+      #   run: |
+      #      az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+      #      docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+      #      docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #      docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
-      - name: credential
-        run: | 
-            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-            chmod +x deploy.sh
-            GITHUB_RUN_ID=${{ github.run_id }}
-            ./deploy.sh $GITHUB_RUN_ID
+      # - name: credential
+      #   run: | 
+      #       az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+      #       chmod +x deploy.sh
+      #       GITHUB_RUN_ID=${{ github.run_id }}
+      #       ./deploy.sh $GITHUB_RUN_ID
         # - name: ContainerApps Deploy
         # run: | 
         #  
