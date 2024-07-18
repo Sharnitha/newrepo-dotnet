@@ -10,16 +10,18 @@ on:
     types:
       - completed
     branches:
-      - containbran
+      - demobranch01
 jobs:
     update-deployment:
       if: ${{ github.event.workflow_run.conclusion == 'success' }}
       environment:
         name: Dev 
-      runs-on: self-hosted
+      runs-on: ubuntu-latest
       steps:
         - name: Checkout code
           uses: actions/checkout@v2  
+        - name: echo command 
+          run: echo "cd file deploy"
 
         # - name: Replace placeholders in appsettings.json
         #   run: |
@@ -52,12 +54,12 @@ jobs:
         #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
         #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
 
-        - name: credential
-          run: | 
-              az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-              chmod +x deploy.sh
-              GITHUB_RUN_ID=${{ github.event.workflow_run.id }}
-              ./deploy.sh $GITHUB_RUN_ID
+        # - name: credential
+        #   run: | 
+        #       az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
+        #       chmod +x deploy.sh
+        #       GITHUB_RUN_ID=${{ github.event.workflow_run.id }}
+        #       ./deploy.sh $GITHUB_RUN_ID
 
         # - name: Build and deploy Container App
         #   uses: azure/container-apps-deploy-action@v1
