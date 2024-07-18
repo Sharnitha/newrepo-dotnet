@@ -43,8 +43,8 @@ jobs:
   #     - name: Dotnet build
   #       run: dotnet build -c release
 
-  Frontend_Docker_Build:
-    runs-on: self-hosted   
+  Checking Env approver:
+    runs-on: ubuntu-latest  
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
