@@ -22,6 +22,14 @@ jobs:
           uses: actions/checkout@v2  
         - name: echo command 
           run: echo "cd file deploy"
+        - name: Deployment Auto Approve
+          uses: ambilykk/deployment-auto-approve@v1.0.1
+          with:
+            # GitHub token
+            GITHUB_TOKEN: ${{ secrets.TOKEN }}
+            # Environment to pre-approve deployment
+            environment: Dev
+          
 
         # - name: Replace placeholders in appsettings.json
         #   run: |
