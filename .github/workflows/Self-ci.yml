@@ -4,7 +4,7 @@ on:
   workflow_dispatch: 
   push:     
     branches:     
-      - containbran        
+      - demobranch01      
   #   # env:       
 #   DOTNET_VERSION: '6.0.422'  
 #   DOTNET_INSTALL_DIR: "./.dotnet" 
