@@ -27,8 +27,6 @@ jobs:
           with:
             # GitHub token
             GITHUB_TOKEN: ${{ secrets.TOKEN }}
-            # Environment to pre-approve deployment
-            environment: Dev
           
 
         # - name: Replace placeholders in appsettings.json
