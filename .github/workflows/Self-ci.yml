@@ -43,7 +43,7 @@ jobs:
   #     - name: Dotnet build
   #       run: dotnet build -c release
 
-  Checking Env approver:
+  CheckEnvapprover:
     runs-on: ubuntu-latest  
     steps:
       - name: Checkout code
