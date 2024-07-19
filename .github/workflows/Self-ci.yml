@@ -58,7 +58,7 @@ jobs:
     needs: CI
     environment: ${{ needs.CI.environment }}
     env:
-      Environment: ${{ needs.CI.outputs.environment }}
+      Envs: ${{ needs.CI.outputs.environment }}
       workspace: ${{ github.workspace }}
     steps:
       - name: Replacetoken
@@ -69,6 +69,8 @@ jobs:
             app-name: ${{ secrets.WEBAPP_NAME }}
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
+    outputs:
+      environment: ${{ env.Envs }}
           
             # az webapp config appsettings set --name pocfrontwebapp --resource-group POCnonprod --settings @demo/dev-settings.json
             
