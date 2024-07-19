@@ -67,7 +67,7 @@ jobs:
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}  
           az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
-          az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @dev-settings.json
+          az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @${{ env.JSONFILE }}.json
 
       - uses: azure/webapps-deploy@v2
         with: 
