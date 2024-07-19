@@ -33,6 +33,9 @@ jobs:
       Environments: ${{ needs.set_environment.outputs.environment }}
       workspace: ${{ github.workspace }}
     steps:
+       - name: Checkout code
+         uses: actions/checkout@v4 
+         
        - name: Docker Build
          run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
        - name: Azure CLI
