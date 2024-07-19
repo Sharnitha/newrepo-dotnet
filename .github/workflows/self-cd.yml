@@ -1,228 +1,29 @@
-name: ContainerCD on GitHub
-on:
-  # push:
-  #   branches:
-  #     - containbran
-       
+name: TestingBranch-CD
+on:      
   workflow_run:   
     workflows: 
-      - ContainerAso
+      - TestingBranch
     types:
       - completed
-    branches:
-      - containbran
 jobs:
-    update-deployment:
-      if: ${{ github.event.workflow_run.conclusion == 'success' }}
-      environment:
-        name: Dev 
+    Dev-deployment:
+      if: ${{ github.event.workflow_run.conclusion == 'success'  && github.ref == 'refs/heads/branchswitch' }}
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
           uses: actions/checkout@v2  
+        - name: echo 
+          run: Hi
 
-        # - name: Replace placeholders in appsettings.json
-        #   run: |
-        #     sed -i 's/__DEFAULT__/${{ secrets.DEFAULT }}/g' appsettings.json
-        #     sed -i 's/__MICROSOFT__/${{ secrets.MICROSOFT }}/g' appsettings.json
-        #     echo ${{ secrets.DEFAULT }}
-        #     echo ${{ secrets.MICROSOFT }}
-
-        # - name: check
-        #   run: |
-        #     LOGVALUE=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault1106258 --query value -o tsv)
-        #     sed -i "s|\"value\": \"LOGVALUE\"|\"value\": \"$LOGVALUE\"|g" settings.json
-        #     az webapp config appsettings set --name webapp25062 --resource-group sharnitha-poc --settings @settings.json
-
-        # - name: credential
-        #   run: | 
-        #       az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-        #       docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-        # - name: check
-        #   run: |
-        #     az webapp config appsettings set --name webapptest1306 --resource-group sharnitha-poc --settings @settings.json
-        #     az webapp config appsettings list --name webapptest1306 --resource-group sharnitha-poc
-        
-        # - name: Deploy to Azure App Service 
-        #   uses: Azure/webapps-deploy@v3.0.1
-        #   with: 
-        #     app-name: 'webapptest1306'
-        #     slot-name: 'production'
-        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
-
-        - name: credential
-          run: | 
-              az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-              chmod +x deploy.sh
-              GITHUB_RUN_ID=${{ github.event.workflow_run.id }}
-              ./deploy.sh $GITHUB_RUN_ID
-
-        # - name: Build and deploy Container App
-        #   uses: azure/container-apps-deploy-action@v1
-        #   with:
-        #     acrName:  githubcisharni         
-        #     acrUsername: githubcisharni          
-        #     acrPassword: ${{ secrets.ACRPASS }}
-        #     containerAppName: containerappsnametest      
-        #     resourceGroup: sharnitha-poc
-        #     imageToDeploy: githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }} 
-            
-  
-            
-        # - name: check
-        #   run: |
-        #     az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings @appsettings.json
-            
-    
-
-        # - name: Deploy to Azure Web App for Containers
-        #   run: |
-        #     az webapp config container set --name sharnithaappservice --resource-group sharnitha-poc --docker-custom-image-name githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
-        #     logLevel=$(az keyvault secret show --vault-name keyvault11062 --name DefaultLogLevel --query value -o tsv)
-        #     az webapp config appsettings set --name sharnithaappservice --resource-group sharnitha-poc --settings LogLevel=$logLevel
-        #     cat appsettings.json
-
-        # - name: Deploy Docker image
-        #   run: |
-        #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-        #     SECRET_DEFAULT=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
-        #     echo $SECRET_DEFAULT
-        #     SECRET_MICROSOFT=$(az keyvault secret show --name MicrosoftLogLevel --vault-name keyvault11062 --query value -o tsv)
-        #     echo $SECRET_MICROSOFT
-            
-        # - name: Replace tokens in appsettings.json
-        #   run: |
-        #     sed -i "s|{{TokenName1}}|SECRET_DEFAULT|g" $(Build.ArtifactStagingDirectory)/appsettings.json
-        #     sed -i "s|{{TokenName2}}|SECRET_MICROSOFT|g" $(Build.ArtifactStagingDirectory)/appsettings.json
-        #     # Add more sed commands as needed for other tokens
-    
-        # - name: Deploy to Azure Web App
-        #   uses: azure/webapps-deploy@v2
-        #   with:
-        #     app-name: 'your-app-name' # Replace with your Azure App Service name
-        #     slot-name: 'production'   # Replace with your deployment slot if needed
-        #     publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }}
-        #     package: $(Build.ArtifactStagingDirectory)/
-
-    
-     # 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
-        # - name: Download build artifacts
-        #   uses: actions/download-artifact@v2
-        #   with:
-        #     name: publish
-        #     package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
-            
-        # - name: Deploy Docker image
-        #   run: |
-        #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-        # az webapp config appsettings set --name sharnithawebapp --resource-group sharnitha-poc --settings __DEFAULT__="Information"
-
-        # - name: Deploy Docker image
-        #   run: |
-        #     LOG_DEFAULT = ${{ secrets.DEFAULTGITHUB }}
-        #     echo "Retrieved log level default: $LOG_DEFAULT"
-        #     sed -i "s|__DEFAULT__|$LOG_DEFAULT|g" /app/appsettings.json
-
-        # LOG_DEFAULT=$(az keyvault secret show --name logLevel-default --vault-name keyvault110624 --query value -o tsv)
-
-
-        # - name: Deploy to Azure Web App
-        #   uses: azure/webapps-deploy@v2
-        #   with:
-        #       app-name: 'webappcontainer23'
-        #       slot-name: 'production'
-        #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        #       package: '/opt/actions-runner/_work/newrepo-dotnet/newrepo-dotnet/*'
-            
-
-        
-        # - uses: azure/appservice-settings@v1
-        #   with:
-        #     app-name: 'sharnithawebapp'
-        #     mask-inputs: true
-        #     slot-name: 'production'  # Optional and needed only if the settings have to be configured on the specific deployment slot
-        #     app-settings-json: '[{ "name": "__DEFAULT__", "value": "Information", "__MICROSOFT__": "Warning" }]'
-
-        # - name: Log in to GitHub CLI
-        #   run: |
-        #     echo "${{ secrets.TOKEN }}" | gh auth login --with-token
-        #     gh run download ${{ github.event.workflow_run.id }}
-  
-        # - name: Replace tokens in appsettings.json
-        #   run: |
-        #      az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-        #      SECRET_DEFAULT=$(az keyvault secret show --name DefaultLogLevel --vault-name keyvault11062 --query value -o tsv)
-        #      echo $SECRET_DEFAULT
-        #      SECRET_MICROSOFT=$(az keyvault secret show --name MicrosoftLogLevel --vault-name keyvault11062 --query value -o tsv)
-        #      echo $SECRET_MICROSOFT
-        #      json=$(cat publish/appsettings.json)
-        #      updated_json=$(echo "$json" | \
-        #      sed "s/{__LOGLEVEL__}/$SECRET_DEFAULT/g" | \
-        #      sed "s/{__MICROSOFT__}/$SECRET_MICROSOFT/g")   
-        #      echo "$updated_json" > publish/appsettings.json
-
-        # - name: listing
-        #   run: |
-        #     az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-        #     docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }} .
-        #     docker push githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}
-
-
-        # - uses: catchco/azure-appservice-settings-env@latest
-        #   with:
-        #     file: 'appconfig.json'
-        #     appname: 'webappstesting2306'
-        #     slot-name: 'production'
-        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        #     images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'  
-            
-        # - name: Deploy to Azure App Service
-        #   uses: Azure/webapps-deploy@v3.0.1
-        #   with: 
-        #     app-name: 'webappstesting2306'
-        #     slot-name: 'production'
-        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        #     images: 'githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }}'
-          
-        # - name: Set app settings
-        #   run: |
-        #     az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging__LogLevel__Default=Information" "Logging__LogLevel__Microsoft.AspNetCore=Warning"
-
-        # # - uses: azure/webapps-deploy@v2
-        #   with: 
-        #     app-name: 'webappstesting2306'
-        #     slot-name: 'production'
-        #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-        #     images: 'githubcisharni.azurecr.io/demoenv:${{ github.event.workflow_run.id }}'
-
-        # - name: Set app settings
-        #   run: |
-        #     az webapp config appsettings set --name webappstesting2306 --resource-group sharnitha-poc --settings "Logging_LogLevel_Default=Infomation" "Logging_LogLevel_Microsoft.AspNetCore=Warning"
-      
-
-# name: cd on GitHub
-# on:
-#   workflow_run:
-#     workflows: 
-#       - Self-Hosted CI
-#     types:
-#       - completed
-# jobs:
-#     update-deployment:
-#       if: ${{ github.event.workflow_run.conclusion == 'success' }}
-#       environment:
-#         name: Dev
-#       runs-on: self-hosted
-#       steps:
-        
-#         # - name: az cli
-#         #   run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}
-  
-#         # - name: Azure CLI script
-#         #   id: step_one
-#         #   uses: azure/CLI@v1
+    Prod-deployment:
+      if: ${{ github.event.workflow_run.conclusion == 'success'  && github.ref == 'refs/heads/Perf' }}
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2  
+        - name: echo 
+          run: Hello
+   
 #         #   with:
 #         #     inlineScript: |
 #         #       echo secret=$(az keyvault secret show --vault-name Pracvault123 --name MySecret --query value) >> $GITHUB_ENV
