@@ -4,7 +4,7 @@ on:
   push:
     branches:     
     - branchswitch
-    - perf01
+    - perfo01
      
 jobs:  
   set_environment:
@@ -18,7 +18,7 @@ jobs:
         run: |
           if [ "$GITHUB_REF" == "branchswitch" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
-          elif [ "$GITHUB_REF" == "refs/heads/perf01" ]; then
+          elif [ "$GITHUB_REF" == "perfo01" ]; then
             echo "environment=PROD" >> "$GITHUB_ENV"
           else 
              echo "environment=DEV" >> "$GITHUB_ENV"
