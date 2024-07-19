@@ -1,133 +1,86 @@
-name: TestingBranch
-
+name: Frontend-CI
 on:
   workflow_dispatch: 
-  push:      
+  push:
     branches:     
-      - branchswitch
-      - Perf
- 
-jobs: 
-  Develop_Docker_Build:
-    if: github.ref == 'refs/heads/branchswitch'
-    runs-on: ubuntu-latest   
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 
-        
-      - name: build and push 
-        run: |
-           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-           docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-           docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
-
-  Perf_Docker_Build:
-    if: github.ref == 'refs/heads/Perf'
-    runs-on: ubuntu-latest   
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 
-        
-      - name: build and push 
-        run: |
-           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
-           docker build -t githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} .
-           docker login githubcisharnitha.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-           docker push githubcisharnitha.azurecr.io/demoenv:${{ github.run_id }} 
-
+    - branchswitch        
      
-#   workflow_dispatch:
-#   push:
-#     branches:
-#       - feature-private
-
-# env:   
-#   DOTNET_VERSION: '6.0.422' 
-#   DOTNET_INSTALL_DIR: "./.dotnet" 
-
-# jobs:
-  # Dotnet_Build:
-  #   runs-on: self-hosted  
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4
-  #   - name: Setup .NET Core SDK
-  #     uses: actions/setup-dotnet@v4 
-  #     with:
-  #       dotnet-version: ${{ env.DOTNET_VERSION }}
+jobs:  
+  set_environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
   
-  #   - name: Checking Dotnet version
-  #     run: dotnet --version
-  #   - name: Install Dependency
-  #     run: dotnet restore
-  #   - name: Dotnet build
-  #     run: dotnet build -c release
+      - name: Determine environment based on branch
+        id: set_env
+        run: |
+          if [ "$GITHUB_REF" == "branchswitch" ]; then
+            echo "environment=DEV" >> "$GITHUB_ENV"
+          elif [ "$GITHUB_REF" == "refs/heads/perf" ]; then
+            echo "environment=PROD" >> "$GITHUB_ENV"
+          else 
+             echo "environment=DEV" >> "$GITHUB_ENV"
+          fi
+    outputs:
+      environment: ${{ env.environment }}
+  
+  Docker_Build:
+    runs-on: ubuntu-latest
+    needs: set_environment
+    environment: ${{ needs.set_environment.outputs.environment }}
+    env:
+      Environments: ${{ needs.set_environment.outputs.environment }}
+      workspace: ${{ github.workspace }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker build using Dockerfile  
+        run: |
+          cd demo/
+          docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} --file Dockerfile-frontend .
+          docker images 
+    outputs:
+      environment: ${{ env.Environments }}
 
-  # Docker_Build:
-  #   runs-on: self-hosted
-  #   # needs: Dotnet_Build
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+  Docker_ImagePush:
+    runs-on: ubuntu-latest
+    needs: Docker_Build
+    environment: ${{ needs.Docker_Build.outputs.environment }}
+    env:
+      workspace: ${{ github.workspace }}
+    steps:
+      - name: Azure CLI
+        run: | 
+          az login --service-principal -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}  
+          az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
         
-  #     - name: Docker build using Dockerfile
-  #       run: |
-  #         docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
-          
-  #     - name: Aqua Security Trivy
-  #       uses: aquasecurity/trivy-action@0.18.0
-  #       with:   
-  #         exit-code: 0
-  #         severity: LOW,MEDIUM,HIGH,CRITICAL
-  #         format: table
-  #         image-ref: githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
-          
-      # - name: Azure CLI
-      #   run: az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}
-
-      # - name: Docker build using Dockerfile
-      #   run: |
-      #     docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-      #     docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }}  
-      #     docker history githubcisharni.azurecr.io/demoenv:${{ github.run_id }}
-    
-
-  # Sonar:
-  #   runs-on: self-hosted
-  #   needs: Dotnet_Build
-  #   steps: 
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4      
-        
-  #   - name: Verify Java version
-  #     run: java --version
-
-  #   - name: Setup .NET version
-  #     uses: actions/setup-dotnet@v3
-  #     with:
-  #       dotnet-version: 6.0.x
+      - name: Docker build using Dockerfile
+        run: |
+          docker login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }}
+          docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}  
+          docker history ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}
+          docker image prune -a -f
+    outputs:
+      environment: ${{ env.Environments }} 
       
-  #   - name: SonarScanner tool installed
-  #     run: |
-  #       echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-  #     # dotnet tool install --global dotnet-sonarscanner
-        
-      
-  #   - name: Begin SonarQube analysis
-  #     run: |
-  #       dotnet sonarscanner begin /k:"demoproject" \
-  #       /d:sonar.login="admin" \
-  #       /d:sonar.password="Admin@123" \
-  #       /d:sonar.host.url="http://20.55.36.68:9000/" \
-  #       /v:"${{ github.run_number }}" \
-  #       /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/*.trx" \
-  #       /d:sonar.cs.vscoveragexml.reportsPaths="${{ github.workspace }}/TestResults/coverage.xml"
-   
-  #   - name: Check .sonarqube Directory
-  #     run: |
-  #       dotnet build -c release -o app/publish
-        
-  #   - name: End SonarQube analysis
-  #     run: |
-  #       dotnet sonarscanner end /d:sonar.login="admin" /d:sonar.password="Admin@123"
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: Docker_Build
+    environment: ${{ needs.Docker_ImagePush.outputs.environment }}
+    env:
+      workspace: ${{ github.workspace }}
+    steps:
+      - name: Replacetoken
+        run: echo "HI"
+          
+            # az webapp config appsettings set --name pocfrontwebapp --resource-group POCnonprod --settings @demo/dev-settings.json
+            
+      # - uses: azure/webapps-deploy@v2
+      #   with: 
+      #       app-name: 'pocfrontwebapp' 
+      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #       images: 'nonprodfrontendacr.azurecr.io/frontend:${{ github.run_id }}'
+            
+        # using keyvault secrets
+      # docker login nonprodfrontendacr.azurecr.io -u ${{ steps.GetSecretAction.outputs.docker-login-secret }} -p ${{ steps.GetSecretAction.outputs.docker-pass-secret }}
