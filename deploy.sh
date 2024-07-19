@@ -17,10 +17,10 @@ IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 cat <<EOF > backend.yaml
 kind: containerapp 
 location: East US
-name: containedemotesapp
+name: containerappname
 type: Microsoft.App/containerApps
 properties:
-  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9fc3
+  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-ae0f
   configuration:
     activeRevisionsMode: Single
     ingress:
@@ -32,18 +32,13 @@ properties:
           weight: 100
       transport: Http
     registries:
-      - passwordSecretRef: reg-pswd-c040e7f1-91a2
+      - passwordSecretRef: reg-pswd-bbd8cfe4-8b37
         server: githubcisharni.azurecr.io
         username: githubcisharni
   template:
     containers: 
       - image: $IMAGE_TAG
-        name: containedemotesapp
-        env:
-          - name: LOGLEVELMICROSOFT
-            value: Warning
-          - name: BASEKEYURL
-            value: @Microsoft.KeyVault(VaultName=keyvaulttesti999;SecretName=demour)
+        name: containerappname
         resources:
           cpu: 2
           memory: 4Gi
@@ -52,4 +47,4 @@ properties:
       minReplicas: 1
       maxReplicas: 10
 EOF
-az containerapp update  -n containedemotesapp -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
+az containerapp update  -n containerappname -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
