@@ -25,7 +25,6 @@ jobs:
   Perf_Docker_Build:
     if: github.ref == 'refs/heads/Perf'
     runs-on: ubuntu-latest   
-    needs: Develop_Docker_Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
