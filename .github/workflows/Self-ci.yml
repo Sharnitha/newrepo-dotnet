@@ -1,10 +1,10 @@
 name: Frontend-CI
 on:
   workflow_dispatch: 
-  # push:
-  #   branches:      
-    # - branchswitch
-    # - branch01
+  push:
+    branches:      
+    - branchswitch
+    - branch01
      
 jobs:  
   set_environment:
