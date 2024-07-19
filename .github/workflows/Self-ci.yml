@@ -2,7 +2,7 @@ name: TestingBranch
 
 on:
   workflow_dispatch: 
-  push:     
+  push:      
     branches:     
       # - branchswitch
       - Perf
