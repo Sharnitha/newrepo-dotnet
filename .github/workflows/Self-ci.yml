@@ -46,7 +46,7 @@ jobs:
   #       run: dotnet build -c release
 
   Frontend_Docker_Build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     # needs: Frontend_Dotnet_Build
     steps:
       - name: Checkout code
@@ -79,18 +79,18 @@ jobs:
            docker login githubcisharni.azurecr.io -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
            docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
-      - name: check
-        run: |
-            az webapp config appsettings set --name ertjkbvhj --resource-group sharnitha-poc --settings @settings.json
-            az webapp config appsettings list --name ertjkbvhj --resource-group sharnitha-poc
+      # - name: check
+      #   run: |
+      #       az webapp config appsettings set --name ertjkbvhj --resource-group sharnitha-poc --settings @settings.json
+      #       az webapp config appsettings list --name ertjkbvhj --resource-group sharnitha-poc
 
-      - uses: azure/webapps-deploy@v2
-        with: 
-            app-name: 'ertjkbvhj'
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
-            slot-name: 'production'
-            region: 'Central US'
+      # - uses: azure/webapps-deploy@v2
+      #   with: 
+      #       app-name: 'ertjkbvhj'
+      #       publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+      #       images: 'githubcisharni.azurecr.io/demoenv:${{ github.run_id }}'
+      #       slot-name: 'production'
+      #       region: 'Central US'
 
         
       # - name: Deploy to Azure App Service 
