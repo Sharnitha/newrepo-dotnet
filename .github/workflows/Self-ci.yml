@@ -58,6 +58,7 @@ jobs:
     needs: Docker_Build_ImagePush
     environment: ${{ needs.Docker_ImagePush.outputs.environment }}
     env:
+      Environments: ${{ needs.set_environment.outputs.environment }}
       workspace: ${{ github.workspace }}
     steps:
       - name: Replacetoken
