@@ -4,8 +4,8 @@ on:
   workflow_dispatch: 
   push:     
     branches:     
-      - branchswitch
-      - perf
+      # - branchswitch
+      - Perf
  
 jobs: 
   Develop_Docker_Build:
