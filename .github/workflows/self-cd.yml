@@ -43,6 +43,7 @@ jobs:
 
         - name: check
           run: |
+            az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
             az webapp config appsettings set --name webappcisharni --resource-group sharnitha-poc --settings @settings.json
             az webapp config appsettings list --name webappcisharni --resource-group sharnitha-poc
         
