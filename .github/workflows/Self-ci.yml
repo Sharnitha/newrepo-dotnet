@@ -2,10 +2,10 @@ name: TestingBranch
 
 on:
   workflow_dispatch: 
-  # push:     
-  #   branches:     
-  #     - branchswitch
-  #     - perf
+  push:     
+    branches:     
+      - branchswitch
+      - perf
  
 jobs: 
   Develop_Docker_Build:
