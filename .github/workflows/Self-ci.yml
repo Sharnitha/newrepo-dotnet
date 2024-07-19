@@ -7,7 +7,7 @@ on:
       - containbran         
   #   # env:       
 #   DOTNET_VERSION: '6.0.422'  
-#   DOTNET_INSTALL_DIR: "./.dotnet" 
+#   DOTNET_INSTALL_DIR: "./.dotnet"  
  
 jobs: 
   # Dotnet_Task:
