@@ -51,7 +51,7 @@ jobs:
     steps:
       - name: Azure CLI
         run: | 
-          az login --service-principal -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}  
+          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}  
           az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
         
       - name: Docker build using Dockerfile
