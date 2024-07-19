@@ -8,5 +8,25 @@
     "name": "BASEKEYURL",
     "value": "abd",
     "slotSetting": false
-  }  
+  },
+  {
+    "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+    "value": "uvTnZaJV6peZ2k3amFex75jTuCtp1U9sCyzXXrJAM/+ACRBVEXAz",
+    "slotSetting": false
+  },
+  {
+    "name": "DOCKER_REGISTRY_SERVER_URL",
+    "value": "https://githubcisharni.azurecr.io",
+    "slotSetting": false
+  },
+  {
+    "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+    "value": "githubcisharni",
+    "slotSetting": false
+  },
+  {
+    "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+    "value": "false",
+    "slotSetting": false
+  }
 ]
