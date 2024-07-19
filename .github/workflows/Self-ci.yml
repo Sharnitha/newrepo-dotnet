@@ -26,7 +26,7 @@ jobs:
     outputs:
       environment: ${{ env.environment }}
   
-  Docker_Build_ImagePush:
+  CI:
     runs-on: ubuntu-latest
     needs: set_environment
     environment: ${{ needs.set_environment.outputs.environment }}
@@ -55,13 +55,19 @@ jobs:
       
   Deploy:
     runs-on: ubuntu-latest
-    needs: Docker_Build_ImagePush
+    needs: CI
     environment: ${{ needs.Docker_ImagePush.outputs.environment }}
     env:
       workspace: ${{ github.workspace }}
     steps:
       - name: Replacetoken
-        run: echo "HI"
+        run: az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings ${{ env.JSONFILE }}.json
+
+      - uses: azure/webapps-deploy@v2
+        with: 
+            app-name: ${{ secrets.WEBAPP_NAME }}
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
           
             # az webapp config appsettings set --name pocfrontwebapp --resource-group POCnonprod --settings @demo/dev-settings.json
             
