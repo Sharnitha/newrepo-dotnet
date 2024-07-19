@@ -34,7 +34,7 @@ jobs:
       workspace: ${{ github.workspace }}
     steps:
        - name: Docker Build
-         run: docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+         run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
        - name: Azure CLI
          run: | 
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}  
