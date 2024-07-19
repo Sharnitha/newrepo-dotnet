@@ -6,7 +6,7 @@ on:
     - branchswitch
     - branch01
      
-jobs:  
+jobs:   
   set_environment:
     runs-on: ubuntu-latest
     steps:
