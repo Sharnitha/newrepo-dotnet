@@ -60,6 +60,9 @@ jobs:
     env:
       workspace: ${{ github.workspace }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 
+        
       - name: Replacetoken
         run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}  
