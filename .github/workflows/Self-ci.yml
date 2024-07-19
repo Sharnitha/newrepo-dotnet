@@ -56,7 +56,7 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     needs: CI
-    environment: ${{ needs.CI.environment }}
+    environment: ${{ needs.CI.outputs.environment }}
     env:
       Envs: ${{ needs.CI.outputs.environment }}
       workspace: ${{ github.workspace }}
