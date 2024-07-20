@@ -1,5 +1,10 @@
 [
   {
+    "name": "BASEKEYURL",
+    "value": "https:google.com",
+    "slotSetting": false
+  },
+  {
     "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
     "value": "uvTnZaJV6peZ2k3amFex75jTuCtp1U9sCyzXXrJAM/+ACRBVEXAz",
     "slotSetting": false
@@ -15,18 +20,13 @@
     "slotSetting": false
   },
   {
-    "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
-    "value": "false",
-    "slotSetting": false
-  },
-  {
     "name": "LOGLEVELMICROSOFT",
     "value": "Warning",
     "slotSetting": false
   },
   {
-    "name": "BASEKEYURL",
-    "value": "https:google.com",
+    "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+    "value": "false",
     "slotSetting": false
   }
 ]
