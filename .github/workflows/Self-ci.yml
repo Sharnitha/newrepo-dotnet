@@ -27,7 +27,7 @@ jobs:
           fi
           
     outputs:
-      environment: ${{ steps.set_env.outputs.environment }}
+      environment: ${{ env.environment }}
 
   CI:
     runs-on: ubuntu-latest
