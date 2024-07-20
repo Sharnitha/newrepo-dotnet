@@ -103,7 +103,7 @@ jobs:
           images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
 
   Perf_Deploy:
-    if: github.ref == 'refs/heads/perf'
+    if: github.ref == 'refs/heads/perf20-0724'
     runs-on: ubuntu-latest
     needs: CI
     environment: ${{ needs.CI.outputs.environment }}
