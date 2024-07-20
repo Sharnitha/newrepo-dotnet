@@ -17,7 +17,7 @@ jobs:
         id: set_env
         run: |
           if [ "${{ github.ref }}" == "refs/heads/branchswitch" ]; then
-            echo "environment=DEV,QA" >> "$GITHUB_ENV"
+            echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "${{ github.ref }}" == "refs/heads/branch01" ]; then
             echo "environment=PROD" >> "$GITHUB_ENV"
           else 
