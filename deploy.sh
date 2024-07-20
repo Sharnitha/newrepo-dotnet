@@ -42,7 +42,7 @@ properties:
         env:
         - name: LOGLEVELMICROSOFT
           value: Warning
-         - name: BASEKEYURL
+        - name: BASEKEYURL
           value: https://demo.com
         resources:
           cpu: 2
