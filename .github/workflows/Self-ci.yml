@@ -1,12 +1,14 @@
 name: Frontend-CI
+
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
   push:
-    branches:      
-    - branchswitch
-    - branch01
-     
-jobs:  
+    branches:
+      - branchswitch
+      - perf20-0724
+
+jobs:
+
   set_environment:
     runs-on: ubuntu-latest
     steps:
@@ -18,16 +20,15 @@ jobs:
         run: |
           if [ "$GITHUB_REF" == "refs/heads/branchswitch" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
-          elif [ "$GITHUB_REF" == "refs/heads/branchswitch" ]; then
+          elif [ "$GITHUB_REF" == "refs/heads/perf20-0724" ]; then
             echo "environment=QA" >> "$GITHUB_ENV"
-          elif [ "$GITHUB_REF" == "refs/heads/branch01" ]; then
-            echo "environment=PROD" >> "$GITHUB_ENV"
           else 
-             echo "environment=QA" >> "$GITHUB_ENV"
+            echo "environment=DEV" >> "$GITHUB_ENV"
           fi
+          
     outputs:
-      environment: ${{ env.environment }}
-  
+      environment: ${{ steps.set_env.outputs.environment }}
+
   CI:
     runs-on: ubuntu-latest
     needs: set_environment
@@ -36,30 +37,32 @@ jobs:
       Environments: ${{ needs.set_environment.outputs.environment }}
       workspace: ${{ github.workspace }}
     steps:
-       - name: Checkout code
-         uses: actions/checkout@v4 
-         
-       - name: Docker Build
-         run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
-         
-       - name: Azure CLI
-         run: | 
-          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}  
+      - name: Checkout code
+        uses: actions/checkout@v4 
+        
+      - name: Docker Build
+        run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
+        
+      - name: Azure CLI
+        run: | 
+          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}  
           az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
         
-       - name: Docker build using Dockerfile 
-         run: |
+      - name: Docker build using Dockerfile 
+        run: |
           docker login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}  
           docker history ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}
     outputs:
       environment: ${{ env.Environments }}
-      
-  Deploy_to_Dev:
+
+  DEV_Deploy:
+    if: github.ref == 'refs/heads/branchswitch'
     runs-on: ubuntu-latest
     needs: CI
-    environment:
-      name: DEV
+    environment: ${{ needs.CI.outputs.environment }}
+    env:
+      workspace: ${{ github.workspace }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
@@ -72,15 +75,17 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with: 
-            app-name: ${{ secrets.WEBAPP_NAME }}
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
-            
-  # Deploy_to_QA:
+          app-name: ${{ secrets.WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
+
+  # QA_Deploy:
+  #   if: github.ref == 'refs/heads/branchswitch'
   #   runs-on: ubuntu-latest
-  #   needs: Deploy_to_Dev
-  #   environment:
-  #     name: QA
+  #   needs: DEV_Deploy
+  #   environment: ${{ needs.CI.outputs.environment }}
+  #   env:
+  #     workspace: ${{ github.workspace }}
   #   steps:
   #     - name: Checkout code
   #       uses: actions/checkout@v4 
@@ -91,17 +96,19 @@ jobs:
   #         az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
   #         az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
 
-  #     - uses: azure/webapps-deploy@v2
-  #       with: 
-  #           app-name: ${{ secrets.WEBAPP_NAME }}
-  #           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-  #           images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
+      - uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ secrets.WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
 
-  Deploy_to_PROD:
+  Perf_Deploy:
+    if: github.ref == 'refs/heads/perf'
     runs-on: ubuntu-latest
-    needs: Deploy_to_Dev
-    environment:
-      name: PROD
+    needs: CI
+    environment: ${{ needs.CI.outputs.environment }}
+    env:
+      workspace: ${{ github.workspace }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
@@ -114,6 +121,6 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with: 
-            app-name: ${{ secrets.WEBAPP_NAME }}
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-            images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
+          app-name: ${{ secrets.WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
