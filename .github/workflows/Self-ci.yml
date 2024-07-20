@@ -34,18 +34,25 @@ jobs:
       Environments: ${{ needs.set_environment.outputs.environment }}
       workspace: ${{ github.workspace }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Docker Build
-        run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
-
-      - name: Azure CLI
-        id: azure_login
-        run: |
-          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}
+       - name: Checkout code
+         uses: actions/checkout@v4 
+         
+       - name: Docker Build
+         run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
+         
+       - name: Azure CLI
+         run: | 
+          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}  
           az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
-
+        
+       - name: Docker build using Dockerfile 
+         run: |
+          docker login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}  
+          docker history ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}
+    outputs:
+      environment: ${{ env.Environments }}
+      
   Deploy_to_Dev:
     runs-on: ubuntu-latest
     needs: CI
