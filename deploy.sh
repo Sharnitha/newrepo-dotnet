@@ -39,6 +39,11 @@ properties:
     containers: 
       - image: $IMAGE_TAG
         name: containerappname
+        env:
+        - name: LOGLEVELMICROSOFT
+          value: Warning
+         - name: BASEKEYURL
+          value: https://demo.com
         resources:
           cpu: 2
           memory: 4Gi
