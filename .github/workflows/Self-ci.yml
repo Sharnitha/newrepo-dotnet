@@ -2,10 +2,10 @@ name: Frontend-CI
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - branchswitch
-      - perf20-0724
+  # push:
+  #   # branches:
+  #   #   - branchswitch
+  #     - perf20-0724
 
 jobs:
 
