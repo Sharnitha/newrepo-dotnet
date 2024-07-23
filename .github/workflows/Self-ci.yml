@@ -2,9 +2,9 @@ name: Frontend-CI
 
 on:
   workflow_dispatch:
-  # push:
-  #   # branches:
-  #   #   - branchswitch
+  push:
+    branches:
+      - branchswitch
   #     - perf20-0724
 
 jobs:
@@ -102,25 +102,25 @@ jobs:
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
           images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
 
-  Perf_Deploy:
-    if: github.ref == 'refs/heads/perf'
-    runs-on: ubuntu-latest
-    needs: CI
-    environment: ${{ needs.CI.outputs.environment }}
-    env:
-      workspace: ${{ github.workspace }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 
+  # Perf_Deploy:
+  #   if: github.ref == 'refs/heads/perf'
+  #   runs-on: ubuntu-latest
+  #   needs: CI
+  #   environment: ${{ needs.CI.outputs.environment }}
+  #   env:
+  #     workspace: ${{ github.workspace }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4 
         
-      - name: Replacetoken
-        run: |
-          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}  
-          az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
-          az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
+  #     - name: Replacetoken
+  #       run: |
+  #         az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}  
+  #         az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
+  #         az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
 
-      - uses: azure/webapps-deploy@v2
-        with: 
-          app-name: ${{ secrets.WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-          images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
+  #     - uses: azure/webapps-deploy@v2
+  #       with: 
+  #         app-name: ${{ secrets.WEBAPP_NAME }}
+  #         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+  #         images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
