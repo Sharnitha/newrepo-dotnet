@@ -99,7 +99,7 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:  
           app-name: ${{ secrets.QAWEBAPPNAME }}
-          publish-profile: ${{ secrets.QA_AZUREWEBAPPPUBLISHPROFILE }}
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
           images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
 
   # Perf_Deploy:
