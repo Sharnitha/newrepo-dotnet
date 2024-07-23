@@ -21,7 +21,7 @@ jobs:
           if [ "$GITHUB_REF" == "refs/heads/branchswitch" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/perf20-0724" ]; then
-            echo "environment=QA" >> "$GITHUB_ENV"
+            echo "environment=prod" >> "$GITHUB_ENV"
           else 
             echo "environment=DEV" >> "$GITHUB_ENV"
           fi
@@ -60,7 +60,7 @@ jobs:
     if: github.ref == 'refs/heads/branchswitch'
     runs-on: ubuntu-latest
     needs: CI
-    environment: ${{ needs.CI.outputs.environment }}
+    environment: DEV
     env:
       workspace: ${{ github.workspace }}
     steps:
@@ -83,14 +83,9 @@ jobs:
     if: github.ref == 'refs/heads/branchswitch'
     runs-on: ubuntu-latest
     needs: DEV_Deploy
-    environment: ${{ needs.CI.outputs.environment }}
+    environment: QA
     env:
       workspace: ${{ github.workspace }}
-      WEBAPP_NAME: ${{ secrets.QAWEBAPPNAME }}
-      RG: ${{ secrets.QA_RG }}
-      JSONFILE: ${{ secrets.QA_JSONFILE }}
-      AZUREWEBAPPPUBLISHPROFILE: ${{ secrets.QA_AZUREWEBAPPPUBLISHPROFILE }}
-      SUBSCRIPTION_ID: ${{ secrets.QA_SUBSCRIPTION_ID }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
