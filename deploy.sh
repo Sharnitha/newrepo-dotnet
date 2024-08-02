@@ -20,7 +20,7 @@ location: East US
 name: containerappname
 type: Microsoft.App/containerApps
 properties:
-  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-ae0f
+  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9f5c
   configuration:
     activeRevisionsMode: Single
     ingress:
@@ -32,13 +32,18 @@ properties:
           weight: 100
       transport: Http
     registries:
-      - passwordSecretRef: reg-pswd-bbd8cfe4-8b37
+      - passwordSecretRef: reg-pswd-152a211b-bf17
         server: githubcisharni.azurecr.io
         username: githubcisharni
   template:
     containers: 
       - image: $IMAGE_TAG
         name: containerappname
+        env:
+        - name: LOGLEVELMICROSOFT
+          value: Warning
+        - name: BASEKEYURL
+          value: https://demo.com
         resources:
           cpu: 2
           memory: 4Gi
