@@ -44,7 +44,7 @@ jobs:
   #       run: dotnet build -c release
 
   Frontend_Docker_Build:
-    runs-on: ubuntu-latest   
+    runs-on: self-hosted     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
@@ -90,7 +90,7 @@ jobs:
         #   ./PGW.AutoGlass/devbackend.sh $GITHUB_RUN_ID
 
   DEV_Deploy:
-      runs-on: ubuntu-latest
+      runs-on: self-hosted
       needs: Frontend_Docker_Build
       environment:
         name: Dev 
