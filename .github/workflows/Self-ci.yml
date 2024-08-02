@@ -90,7 +90,7 @@ jobs:
         #   ./PGW.AutoGlass/devbackend.sh $GITHUB_RUN_ID
 
   DEV_Deploy:
-      runs-on: self-hosted
+      runs-on: ubuntu-latest
       needs: Frontend_Docker_Build
       environment:
         name: Dev 
