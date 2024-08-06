@@ -38,6 +38,7 @@ properties:
     secrets:
       - name: my-keyvault-secret
         keyVaultUrl: https://keyvaultname0108.vault.azure.net/secrets/KEY01/71cb391771fd45c1a96e84aebb416095
+        identity: system
   template:
     containers: 
       - image: $IMAGE_TAG
