@@ -70,9 +70,8 @@ jobs:
        run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
           chmod +x deploy.sh
-          ./deploy.sh 
-          az containerapp update -n $BACKEND_APP_NAME -g $RESOURCE_GROUP --yaml backend.yaml
-
+          GITHUB_RUN_ID=${{ github.run_id }}
+          ./deploy.sh $GITHUB_RUN_ID
   # QA_Deploy:
   #   if: github.ref == 'refs/heads/branchswitch'
   #   runs-on: ubuntu-latest
