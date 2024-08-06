@@ -35,6 +35,7 @@ properties:
       - passwordSecretRef: reg-pswd-152a211b-bf17
         server: githubcisharni.azurecr.io
         username: githubcisharni
+        identity: system
     secrets:
       - name: my-keyvault-secret
         keyVaultUrl: https://keyvaultname0108.vault.azure.net/secrets/KEY01/71cb391771fd45c1a96e84aebb416095
