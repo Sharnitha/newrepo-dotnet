@@ -35,6 +35,9 @@ properties:
       - passwordSecretRef: reg-pswd-152a211b-bf17
         server: githubcisharni.azurecr.io
         username: githubcisharni
+    secrets:
+      - name: my-keyvault-secret
+        value: @Microsoft.KeyVault(SecretUri=https://keyvaultname0108.vault.azure.net/secrets/KEY01/71cb391771fd45c1a96e84aebb416095)
   template:
     containers: 
       - image: $IMAGE_TAG
@@ -44,6 +47,10 @@ properties:
           value: Warning
         - name: BASEKEYURL
           value: https://demo.com
+        - name: MY_SECRET
+          valueFrom:
+            secretRef: my-keyvault-secret
+            
         resources:
           cpu: 2
           memory: 4Gi
