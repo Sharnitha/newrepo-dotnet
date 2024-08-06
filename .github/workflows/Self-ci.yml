@@ -64,8 +64,10 @@ jobs:
     env:
       workspace: ${{ github.workspace }}
     steps:
-      - name: AZ login
-        run: |
+     - name: Checkout code
+       uses: actions/checkout@v2
+     - name: AZ login
+       run: |
           az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{secrets.DOCKER_TENANT}}
           chmod +x deploy.sh
           ./deploy.sh 
