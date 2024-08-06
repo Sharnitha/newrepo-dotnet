@@ -47,7 +47,7 @@ properties:
         env:
         - name: LOGLEVELMICROSOFT
           value: Warning
-        - name: my
+        - name: BASEKEYURL
           secretRef: my-keyvault-secret
             
         resources:
