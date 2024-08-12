@@ -32,7 +32,7 @@ properties:
           weight: 100
       transport: Http
     registries:
-      - passwordSecretRef: reg-pswd-152a211b-bf17
+      - passwordSecretRef: reg-pswd-0b9c9a44-8ada
         server: githubcisharni.azurecr.io
         username: githubcisharni
         identity: system
