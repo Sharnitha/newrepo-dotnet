@@ -7,7 +7,7 @@ on:
       - branchswitch
   #     - perf20-0724
 
-jobs:  
+jobs:   
   
   set_environment: 
     runs-on: self-hosted
