@@ -20,7 +20,7 @@ location: East US
 name: containerappname
 type: Microsoft.App/containerApps
 properties:
-  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9f5c
+  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-a836
   configuration:
     activeRevisionsMode: Single
     ingress:
@@ -36,10 +36,6 @@ properties:
         server: githubcisharni.azurecr.io
         username: githubcisharni
         identity: system
-    secrets:
-      - name: my-keyvault-secret
-        keyVaultUrl: https://keyvaultname0108.vault.azure.net/secrets/KEY01/71cb391771fd45c1a96e84aebb416095
-        identity: system
   template:
     containers: 
       - image: $IMAGE_TAG
@@ -48,7 +44,7 @@ properties:
         - name: LOGLEVELMICROSOFT
           value: Warning
         - name: BASEKEYURL
-          secretRef: my-keyvault-secret
+          value: http://google.com/
             
         resources:
           cpu: 2
