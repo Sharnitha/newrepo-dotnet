@@ -8,19 +8,19 @@ GITHUB_RUN_ID=$1
 # API_KEY=$(az keyvault secret show --name "micro" --vault-name "keyvaulttest1506" --query "value" -o tsv)
 
 # Replace placeholders in appsetting.json with fetched secrets
-# sed -i "s|#{__logLevel__}#|$DATABASE_CONNECTION_STRING|g" appsettings.json 
+# sed -i "s|#{__logLevel__}#|$DATABASE_CONNECTION_STRING|g" appsettings.json
 # sed -i "s|#{__microsoft__}#|$API_KEY|g" appsettings.json
  
 IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 
 # Define backend.yaml content dynamically with fetched secrets 
 cat <<EOF > backend.yaml
-kind: containerapp  
+kind: containerapp 
 location: East US
 name: containerappname
 type: Microsoft.App/containerApps
 properties:
-  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-a836
+  managedEnvironmentId: /subscriptions/8da5ea31-eccb-4d99-8a1a-437ea5504220/resourceGroups/sharnitha-poc/providers/Microsoft.App/managedEnvironments/managedEnvironment-sharnithapoc-9f5c
   configuration:
     activeRevisionsMode: Single
     ingress:
@@ -32,10 +32,9 @@ properties:
           weight: 100
       transport: Http
     registries:
-      - passwordSecretRef: reg-pswd-0b9c9a44-8ada
+      - passwordSecretRef: reg-pswd-152a211b-bf17
         server: githubcisharni.azurecr.io
         username: githubcisharni
-        identity: system
   template:
     containers: 
       - image: $IMAGE_TAG
@@ -44,10 +43,10 @@ properties:
         - name: LOGLEVELMICROSOFT
           value: Warning
         - name: BASEKEYURL
-          value: http://google.com/        
+          value: https://demo.com
         resources:
-          cpu: 1.75
-          memory: 3.5Gi
+          cpu: 2
+          memory: 4Gi
           
     scale:
       minReplicas: 1
