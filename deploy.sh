@@ -44,8 +44,7 @@ properties:
         - name: LOGLEVELMICROSOFT
           value: Warning
         - name: BASEKEYURL
-          value: http://google.com/
-            
+          value: http://google.com/        
         resources:
           cpu: 2
           memory: 4Gi
