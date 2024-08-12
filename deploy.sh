@@ -15,7 +15,7 @@ IMAGE_TAG=githubcisharni.azurecr.io/demoenv:${GITHUB_RUN_ID}
 
 # Define backend.yaml content dynamically with fetched secrets 
 cat <<EOF > backend.yaml
-kind: containerapp 
+kind: containerapp  
 location: East US
 name: containerappname
 type: Microsoft.App/containerApps
@@ -46,8 +46,8 @@ properties:
         - name: BASEKEYURL
           value: http://google.com/        
         resources:
-          cpu: 2
-          memory: 4Gi
+          cpu: 1.75
+          memory: 3.5Gi
           
     scale:
       minReplicas: 1
