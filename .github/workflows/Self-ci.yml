@@ -65,7 +65,7 @@ jobs:
       workspace: ${{ github.workspace }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4  
         
       - name: Replacetoken
         run: |
@@ -75,7 +75,7 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ secrets.WEBAPP_NAME }}
+          app-name: ${{ secrets.WEBAPP_NAME }}                                          
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
           images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
 
