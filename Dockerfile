@@ -1,7 +1,7 @@
 FROM redhat/ubi8:latest AS build
 WORKDIR /src
 COPY . /src
-RUN yum update \
+RUN yum update -y \
     && yum install -y dotnet-sdk-6.0
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
