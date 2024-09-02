@@ -1,7 +1,7 @@
 FROM ubuntu:latest AS build
 WORKDIR /src
 COPY . /src
-RUN apt-get update && \
+RUN apt-get update \
     && apt-get install -y dotnet-sdk-6.0 \
     && apt-get install -y aspnetcore-runtime-6.0
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
