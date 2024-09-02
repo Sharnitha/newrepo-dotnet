@@ -1,23 +1,23 @@
-FROM ubuntu:latest AS build
+FROM redhat/ubi8:latest AS build
 WORKDIR /src
 COPY . /src
-RUN apt-get update \
-    && apt-get install -y dotnet-sdk-6.0
+RUN yum update \
+    && yum install -y dotnet-sdk-6.0
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
 # Second Stage (Final)
-FROM ubuntu:latest AS final
+FROM redhat/ubi8:latest AS final
 WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
 COPY backendentrypoint.sh ./
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends dialog \
-    && apt-get install -y --no-install-recommends openssh-server \
-    && echo "root:Docker!" | chpasswd \
-    && chmod u+x ./backendentrypoint.sh
-COPY sshd_config /etc/ssh/
-EXPOSE 8000 2222
+# # RUN yum update \
+# #     && apt-get install -y --no-install-recommends dialog \
+# #     && apt-get install -y --no-install-recommends openssh-server \
+# #     && echo "root:Docker!" | chpasswd \
+# #     && chmod u+x ./backendentrypoint.sh
+# # COPY sshd_config /etc/ssh/
+# EXPOSE 8000 2222
 ENTRYPOINT [ "./backendentrypoint.sh" ]
 
 
