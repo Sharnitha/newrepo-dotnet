@@ -9,7 +9,7 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
 EXPOSE 80
-COPY --from=build /src/app/publish .
+COPY --from=build /src/app/publish . 
 COPY backendentrypoint.sh ./ 
 RUN apk update \
     && apk add --no-cache openssh-server \
