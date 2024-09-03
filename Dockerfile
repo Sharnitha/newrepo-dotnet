@@ -12,10 +12,10 @@ EXPOSE 80
 COPY --from=build /src/app/publish .
 COPY backendentrypoint.sh ./
 RUN apk update \
-    && apk install -y --no-install-recommends dialog \
-    && apk install -y --no-install-recommends openssh-server \
+    && apk add --no-cache openssh-server \
     && echo "root:Docker!" | chpasswd \
-    && chmod u+x ./backendentrypoint.sh
+    && chmod u+x ./backendentrypoint.sh \
+    && rm -rf /var/cache/apk/*
 COPY sshd_config /etc/ssh/
 EXPOSE 2222
 ENTRYPOINT [ "./backendentrypoint.sh" ]
