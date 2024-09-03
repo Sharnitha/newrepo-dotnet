@@ -68,47 +68,20 @@
 # COPY sshd_config /etc/ssh/
 # EXPOSE 80 2222
 # ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
+
+## Working ######################
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
-RUN apt-get update -y \
-    && apt-get install git -y
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
 # Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
+COPY --from=build /src/app/publish .
+COPY backendentrypoint.sh ./
 EXPOSE 80
-COPY --from=build /src/app/publish . 
-COPY backendentrypoint.sh ./ 
-RUN apk update \
-    && apk add --no-cache openssh-server \
-    && echo "root:Docker!" | chpasswd \
-    && chmod u+x ./backendentrypoint.sh \
-    && rm -rf /var/cache/apk/*
-COPY sshd_config /etc/ssh/
-EXPOSE 2222
 ENTRYPOINT [ "./backendentrypoint.sh" ]
-## Working ######################
-# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-# WORKDIR /src
-# COPY . /src
-# RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
-
-# # Second Stage (Final)
-# FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
-# WORKDIR /app
-# EXPOSE 80
-# COPY --from=build /src/app/publish .
-# COPY backendentrypoint.sh ./
-# RUN apt-get update \
-#     && apt-get install -y --no-install-recommends dialog \
-#     && apt-get install -y --no-install-recommends openssh-server \
-#     && echo "root:Docker!" | chpasswd \
-#     && chmod u+x ./backendentrypoint.sh
-# COPY sshd_config /etc/ssh/
-# EXPOSE 8000 2222
-# ENTRYPOINT [ "./backendentrypoint.sh" ]
 ######## Working ######################
 
 
