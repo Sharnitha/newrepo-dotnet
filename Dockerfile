@@ -6,19 +6,18 @@ RUN apt-get update -y \
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
 # Second Stage (Final)
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
 EXPOSE 80
-RUN apt-get update && apt-get upgrade -y
 COPY --from=build /src/app/publish .
 COPY backendentrypoint.sh ./
-# # RUN yum update \
-# #     && apt-get install -y --no-install-recommends dialog \
-# #     && apt-get install -y --no-install-recommends openssh-server \
-# #     && echo "root:Docker!" | chpasswd \
-# #     && chmod u+x ./backendentrypoint.sh
-# # COPY sshd_config /etc/ssh/
-# EXPOSE 8000 2222
+RUN apk update \
+    && apk install -y --no-install-recommends dialog \
+    && apk install -y --no-install-recommends openssh-server \
+    && echo "root:Docker!" | chpasswd \
+    && chmod u+x ./backendentrypoint.sh
+COPY sshd_config /etc/ssh/
+EXPOSE 2222
 ENTRYPOINT [ "./backendentrypoint.sh" ]
 
 
