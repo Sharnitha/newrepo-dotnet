@@ -18,15 +18,5 @@
     "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
     "value": "false",
     "slotSetting": false
-  },
-  {
-    "name": "LOGLEVELMICROSOFT",
-    "value": "Warning",
-    "slotSetting": false
-  },
-  {
-    "name": "BASEKEYURL",
-    "value": "https://google.com",
-    "slotSetting": false
   }
 ]
