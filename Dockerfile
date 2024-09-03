@@ -1,4 +1,4 @@
-FROM microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
 RUN yum update -y \
@@ -6,7 +6,7 @@ RUN yum update -y \
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
 # Second Stage (Final)
-FROM microsoft.com/dotnet/aspnet:6.0-alpine AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
