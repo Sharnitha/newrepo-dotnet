@@ -97,7 +97,7 @@ COPY --from=build /src/app/publish .
 COPY backendentrypoint.sh ./
 RUN apk add openssh \
     && echo "root:Docker!" | chpasswd \
-    && chmod +x ./entrypoint.sh \
+    && chmod +x ./backendentrypoint.sh \
     && cd /etc/ssh/ \
     && ssh-keygen -A
 COPY sshd_config /etc/ssh/
