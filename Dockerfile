@@ -9,6 +9,7 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 EXPOSE 80
+RUN apt-get update && apt-get upgrade -y
 COPY --from=build /src/app/publish .
 COPY backendentrypoint.sh ./
 # # RUN yum update \
