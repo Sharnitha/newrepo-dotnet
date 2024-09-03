@@ -70,6 +70,20 @@
 # ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
 
 ## Working ######################
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# WORKDIR /src
+# COPY . /src
+# RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+
+# # Second Stage (Final)
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
+# WORKDIR /app
+# COPY --from=build /src/app/publish .
+# COPY backendentrypoint.sh ./
+# EXPOSE 80
+# ENTRYPOINT [ "./backendentrypoint.sh" ]
+
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
@@ -78,10 +92,18 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 # Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
+EXPOSE 80
 COPY --from=build /src/app/publish .
 COPY backendentrypoint.sh ./
-EXPOSE 80
+RUN apk add openssh \
+    && echo "root:Docker!" | chpasswd \
+    && chmod +x ./entrypoint.sh \
+    && cd /etc/ssh/ \
+    && ssh-keygen -A
+COPY sshd_config /etc/ssh/
+EXPOSE 2222
 ENTRYPOINT [ "./backendentrypoint.sh" ]
+
 ######## Working ######################
 
 
