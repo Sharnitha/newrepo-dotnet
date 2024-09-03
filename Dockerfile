@@ -1,12 +1,12 @@
-FROM redhat/ubi8:latest AS build
+FROM microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
 RUN yum update -y \
-    && yum install -y dotnet-sdk-6.0
+    && yum install git -y
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
 # Second Stage (Final)
-FROM redhat/ubi8:latest AS final
+FROM microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
