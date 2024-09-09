@@ -93,14 +93,14 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
-RUN apt-get update \ 
+RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends openssh-server \
     && echo "root:Docker!" | chpasswd \
     && chmod u+x ./entrypoint.sh
 COPY sshd_config /etc/ssh/
-EXPOSE 80 2222
-ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
+EXPOSE 80
+ENTRYPOINT [ "./entrypoint.sh" ]
 
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # WORKDIR /src
