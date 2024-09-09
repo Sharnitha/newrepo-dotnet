@@ -86,16 +86,13 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY . /src
-RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+COPY . .
+RUN dotnet publish dotnet-folder.csproj -c release -o /app/publish
 
-# Second Stage (Final)
+# Stage 2: Create the final image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=build /src/app/publish .
-COPY entrypoint.sh ./
-RUN apt-get update \
-    && chmod u+x ./entrypoint.sh
 EXPOSE 80
 ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
 
