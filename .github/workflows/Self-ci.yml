@@ -10,7 +10,7 @@ on:
 jobs:   
   
   set_environment: 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps: 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
       environment: ${{ env.environment }}
 
   CI:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: set_environment
     environment: ${{ needs.set_environment.outputs.environment }}
     env:
@@ -69,7 +69,7 @@ jobs:
 
   DEV_Deploy:
     if: github.ref == 'refs/heads/branchswitch'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: CI
     environment: DEV
     env:
