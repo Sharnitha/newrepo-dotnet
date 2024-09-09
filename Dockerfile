@@ -83,18 +83,36 @@
 # EXPOSE 80
 # ENTRYPOINT [ "./backendentrypoint.sh" ]
 
-
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY . .
-RUN dotnet publish dotnet-folder.csproj -c release -o /app/publish
+COPY . /src
+RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
-# Stage 2: Create the final image
+# Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=build /src/app/publish .
-EXPOSE 80
+COPY entrypoint.sh ./
+RUN apt-get update \ 
+    && apt-get install -y --no-install-recommends dialog \
+    && apt-get install -y --no-install-recommends openssh-server \
+    && echo "root:Docker!" | chpasswd \
+    && chmod u+x ./entrypoint.sh
+COPY sshd_config /etc/ssh/
+EXPOSE 80 2222
 ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
+
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# WORKDIR /src
+# COPY . .
+# RUN dotnet publish dotnet-folder.csproj -c release -o /app/publish
+
+# # Stage 2: Create the final image
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+# WORKDIR /app
+# COPY --from=build /src/app/publish .
+# EXPOSE 80
+# ENTRYPOINT ["dotnet", "dotnet-folder.dll"]
 
 ######## Working ######################
 
