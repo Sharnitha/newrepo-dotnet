@@ -93,11 +93,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
-# RUN apt-get update \
-#     && apt-get install -y --no-install-recommends dialog \
-#     && apt-get install -y --no-install-recommends openssh-server \
-#     && echo "root:Docker!" | chpasswd \
-#     && chmod u+x ./entrypoint.sh
+RUN apt-get update \
+    && chmod u+x ./entrypoint.sh
 # COPY sshd_config /etc/ssh/
 EXPOSE 80
 ENTRYPOINT [ "./entrypoint.sh" ]
