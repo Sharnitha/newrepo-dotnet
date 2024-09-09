@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
  
-service ssh start
+# service ssh start
 
 # MICRO=$MICROSOFT  
 # echo $MICROSOFT
