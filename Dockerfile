@@ -97,7 +97,11 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0.33 AS final
 WORKDIR /app
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
-RUN apt-get update \
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install --only-upgrade bash && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     && chmod u+x ./entrypoint.sh
 # COPY sshd_config /etc/ssh/
 EXPOSE 80
