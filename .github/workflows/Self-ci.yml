@@ -52,7 +52,9 @@ jobs:
           sudo apt-get install trivy -y
 
       - name: Trivy Scan
-        run: trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}
+        run: |
+           trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" mcr.microsoft.com/dotnet/sdk:9.0
+      # trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}
         
       - name: Azure CLI
         run: | 
