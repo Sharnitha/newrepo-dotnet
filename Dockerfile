@@ -88,10 +88,7 @@ WORKDIR /src
 COPY . /src
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install --only-upgrade bash && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-COPY . /src
+    apt-get install --only-upgrade bash
 # Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0.33 AS final
 WORKDIR /app
