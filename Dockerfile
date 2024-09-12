@@ -83,7 +83,7 @@
 # EXPOSE 80
 # ENTRYPOINT [ "./backendentrypoint.sh" ]
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-jammyd AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
 RUN apt-get update && \
@@ -93,15 +93,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 # Second Stage (Final)
-FROM mcr.microsoft.com/dotnet/runtime:6.0-jammy-chiseled AS final 
+FROM mcr.microsoft.com/dotnet/runtime:6.0-distroless AS final 
 WORKDIR /app
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install --only-upgrade bash && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
     chmod u+x ./entrypoint.sh
 # COPY sshd_config /etc/ssh/
 EXPOSE 80
