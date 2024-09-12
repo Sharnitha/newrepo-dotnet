@@ -102,7 +102,7 @@ RUN apt-get update && \
     apt-get install --only-upgrade bash && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    && chmod u+x ./entrypoint.sh
+    chmod u+x ./entrypoint.sh
 # COPY sshd_config /etc/ssh/
 EXPOSE 80
 ENTRYPOINT [ "./entrypoint.sh" ]
