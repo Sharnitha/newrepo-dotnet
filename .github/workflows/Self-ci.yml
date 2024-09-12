@@ -43,8 +43,7 @@ jobs:
       - name: Docker Build
         run: |
           docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
-          docker images
-        
+          docker images        
 
       - name: Install Trivy
         run: |
