@@ -88,7 +88,10 @@ WORKDIR /src
 COPY . /src
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install --only-upgrade bash
+    apt-get install --only-upgrade bash && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 # Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0.33 AS final
 WORKDIR /app
