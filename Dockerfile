@@ -86,6 +86,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0.425 AS build
 WORKDIR /src
 COPY . /src
+RUN apt-get update && apt-get upgrade -y
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
 # Second Stage (Final)
