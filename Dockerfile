@@ -103,7 +103,7 @@ RUN apt-get update \
     && echo "root:Docker!" | chpasswd \
     && chmod u+x ./entrypoint.sh
 COPY sshd_config /etc/ssh/
-EXPOSE 80
+EXPOSE 80 2222
 ENTRYPOINT [ "./entrypoint.sh" ]
 
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
