@@ -83,7 +83,7 @@
 # EXPOSE 80
 # ENTRYPOINT [ "./backendentrypoint.sh" ]
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0.425-1 AS build
 WORKDIR /src
 COPY . /src
 RUN apt-get update && \
@@ -93,7 +93,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 # Second Stage (Final)
-FROM mcr.microsoft.com/dotnet/runtime:6.0-distroless AS final 
+FROM mcr.microsoft.com/dotnet/runtime:6.0.425-1 AS final 
 WORKDIR /app
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
