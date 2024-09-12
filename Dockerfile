@@ -86,9 +86,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0.425 AS build
 WORKDIR /src
 COPY . /src
-RUN apt-get update && apt-get upgrade -y
-RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
-
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install --only-upgrade bash && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 # Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0.33 AS final
 WORKDIR /app
