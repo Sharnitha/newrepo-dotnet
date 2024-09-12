@@ -91,6 +91,7 @@ RUN apt-get update && \
     apt-get install --only-upgrade bash && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+COPY . /src
 # Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0.33 AS final
 WORKDIR /app
