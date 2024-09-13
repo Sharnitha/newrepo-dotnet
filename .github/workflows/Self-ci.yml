@@ -43,6 +43,7 @@ jobs:
       - name: Docker Build
         run: |
           docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
+          docker pull mcr.microsoft.com/dotnet/aspnet:6.0-jammy
           docker inspect mcr.microsoft.com/dotnet/aspnet:6.0-jammy    
 
       - name: Install Trivy
