@@ -89,7 +89,7 @@ COPY . /src
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 
 # Second Stage (Final)
-FROM mcr.microsoft.com/dotnet/aspnet:6.0.33-jammy AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy AS final
 WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
