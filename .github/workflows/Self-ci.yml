@@ -4,11 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - branchswitch 
-  #     - perf20-0724
+      - feature/test 
+      - qa
  
-jobs:   
-  
+jobs:     
   set_environment:  
     runs-on: ubuntu-latest
     steps: 
@@ -18,9 +17,9 @@ jobs:
       - name: Determine environment based on branch
         id: set_env
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/branchswitch" ]; then
+          if [ "$GITHUB_REF" == "refs/heads/feature/test" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
-          elif [ "$GITHUB_REF" == "refs/heads/perf20-0724" ]; then
+          elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
             echo "environment=prod" >> "$GITHUB_ENV"
           else  
             echo "environment=DEV" >> "$GITHUB_ENV"
@@ -42,48 +41,22 @@ jobs:
         
       - name: Docker Build
         run: |
-          docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .  
+          echo "Hello World!"
           
-      - name: Install Trivy
+  DEV_Deploy:
+    if: github.ref == 'refs/heads/branchswitch'
+    runs-on: ubuntu-latest
+    needs: CI
+    environment: DEV
+    env:
+      workspace: ${{ github.workspace }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4   
+        
+      - name: Replacetoken
         run: |
-          sudo apt-get -y install wget apt-transport-https gnupg lsb-release
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update -y 
-          sudo apt-get install trivy -y
-
-      - name: Trivy Scan
-        run: |
-           trivy image --severity "MEDIUM,HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}
-       # trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" mcr.microsoft.com/dotnet/sdk:9.0
-           
-        
-  #     - name: Azure CLI
-  #       run: | 
-  #         az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}  
-  #         az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
-        
-  #     - name: Docker build using Dockerfile 
-  #       run: |
-  #         docker login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-  #         docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}  
-  #         docker history ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}
-  #   outputs:
-  #     environment: ${{ env.Environments }}
-
-  # DEV_Deploy:
-  #   if: github.ref == 'refs/heads/branchswitch'
-  #   runs-on: ubuntu-latest
-  #   needs: CI
-  #   environment: DEV
-  #   env:
-  #     workspace: ${{ github.workspace }}
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4   
-        
-  #     - name: Replacetoken
-  #       run: |
+          echo "Dev Deploy"
   #         az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}  
   #         az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
   #         az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
@@ -94,14 +67,17 @@ jobs:
   #         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
   #         images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
 
-  # QA_Deploy:
-  #   if: github.ref == 'refs/heads/branchswitch'
-  #   runs-on: ubuntu-latest
-  #   needs: DEV_Deploy
-  #   environment: QA
-  #   env:
-  #     workspace: ${{ github.workspace }}
-  #   steps:
+  QA_Deploy:
+    if: github.ref == 'refs/heads/qa'
+    runs-on: ubuntu-latest
+    needs: CI
+    environment: QA
+    env:
+      workspace: ${{ github.workspace }}
+    steps:
+       - name: Replacetoken
+         run: |
+           echo "qa Deploy"
   #     - uses: trstringer/manual-approval@v1
   #       timeout-minutes: 5
   #       with:
