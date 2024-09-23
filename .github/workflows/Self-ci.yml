@@ -32,7 +32,7 @@ jobs:
       environment: ${{ env.environment }}
 
   sonar:
-    if: github.event_name != 'pull_request' || github.base_ref == 'feature/test'
+    if: github.event_name != 'pull_request' || github.ref == 'feature/test'
     runs-on: ubuntu-latest
     needs: set_environment
     steps:
@@ -55,7 +55,7 @@ jobs:
           echo "Hello World!"
           
   DEV_Deploy:
-    if: github.event_name != 'pull_request' || github.base_ref == 'feature/test'
+    if: github.event_name != 'pull_request' || github.ref == 'feature/test'
     runs-on: ubuntu-latest
     needs: CI
     environment: DEV
@@ -79,7 +79,7 @@ jobs:
   #         images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
 
   QA_Deploy:
-    if: github.event_name != 'pull_request' || github.base_ref == 'qa'
+    if: github.event_name != 'pull_request' || github.ref == 'qa'
     runs-on: ubuntu-latest
     needs: CI
     environment: QA
