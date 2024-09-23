@@ -42,7 +42,7 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     needs: set_environment
-    if: ${{ needs.sonar.result != 'failure' }}
+    continue-on-error: false
     environment: ${{ needs.set_environment.outputs.environment }}
     env:
       Environments: ${{ needs.set_environment.outputs.environment }}
