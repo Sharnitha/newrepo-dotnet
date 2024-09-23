@@ -22,7 +22,9 @@ jobs:
           if [ "$GITHUB_REF" == "refs/heads/feature/test" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
-            echo "environment=prod" >> "$GITHUB_ENV"
+            echo "environment=QA" >> "$GITHUB_ENV"
+          elif [ "$GITHUB_REF" == "refs/heads/release/*" ]; then
+            echo "environment=PROD" >> "$GITHUB_ENV"
           else  
             echo "environment=DEV" >> "$GITHUB_ENV"
           fi
