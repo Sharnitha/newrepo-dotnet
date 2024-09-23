@@ -37,7 +37,7 @@ jobs:
     needs: set_environment
     steps:
       - name: list
-        run: eco "Hello"
+        run: echo "Hello"
 
   CI:
     runs-on: ubuntu-latest
