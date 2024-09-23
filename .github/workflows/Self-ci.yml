@@ -9,13 +9,13 @@ on:
  
 jobs:   
   demo:
+    if: github.ref == 'refs/heads/feature/test'
     runs-on: ubuntu-latest
     steps:
       - name: list
         run: echo "Hello"
         
   set_environment:  
-    if: github.ref == 'refs/heads/feature/test'
     runs-on: ubuntu-latest
     needs: demo
     steps: 
