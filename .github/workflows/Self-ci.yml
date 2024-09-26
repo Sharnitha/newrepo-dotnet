@@ -2,10 +2,10 @@ name: Frontend-CI
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature/test 
-      - qa
+  # push:
+  #   branches:
+  #     - feature/test 
+  #     - qa
  
 jobs:   
   set_environment:  
