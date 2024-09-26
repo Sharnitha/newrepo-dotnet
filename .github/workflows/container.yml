@@ -2,9 +2,9 @@ name: Frontend-CI
 
 on:
   workflow_dispatch:
-  # push:
-  #   # branches:
-  #   #   - branchswitch
+  push:
+    branches:
+      - feature/test
   #     - perf20-0724
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
       - name: Determine environment based on branch
         id: set_env
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/branchswitch" ]; then
+          if [ "$GITHUB_REF" == "refs/heads/feature/test" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/perf20-0724" ]; then
             echo "environment=QA" >> "$GITHUB_ENV"
