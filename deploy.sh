@@ -52,4 +52,4 @@ properties:
       minReplicas: 1
       maxReplicas: 10
 EOF
-az containerapp update  -n containerappname -g sharnitha-poc --image $IMAGE_TAG --yaml backend.yaml
+az containerapp update --resource-group 1-c15c0fac-playground-sandbox --name containerappname --set workloadProfileName=workloadprofile
