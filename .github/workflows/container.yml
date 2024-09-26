@@ -45,8 +45,8 @@ jobs:
         
       - name: Azure CLI
         run: | 
-          az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}  
-          az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
+          az login --service-principal -u c03d7f87-710f-41e6-951e-1b48aebeb8f0 -p ${{ secrets.DOCKER_PASSWORD }} --tenant 406f6fb2-e087-4d29-9642-817873fddc4c
+          az account set --subscription 8da5ea31-eccb-4d99-8a1a-437ea5504220
         
       - name: Docker build using Dockerfile 
         run: |
