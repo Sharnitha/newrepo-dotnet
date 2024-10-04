@@ -6,7 +6,7 @@
 # FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 # WORKDIR /app
 # COPY add_hosts_entry.sh /usr/local/bin/
-# COPY --from=build /src/app/publish .
+# COPY --from=build /src/app/publish . 
 # RUN apt update && apt install -y vim  
 # EXPOSE 80 
 # COPY entrypoint.sh /usr/local/bin/
