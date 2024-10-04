@@ -53,6 +53,10 @@ jobs:
       - name: Docker Build
         run: |
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+
+      - name: Zip Published Output
+        run: |
+          zip -r output.zip publish/  
           
   DEV_Deploy:
     if: github.ref == 'refs/heads/feature/test'
