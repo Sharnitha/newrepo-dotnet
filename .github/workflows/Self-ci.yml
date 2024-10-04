@@ -56,15 +56,15 @@ jobs:
 
       - name: Zip Published Output
         run: |
-          ls
-          cd app/
+          mkdir publish
+          apt-get install zip -y
           zip -r output.zip publish/  
           
   DEV_Deploy:
     if: github.ref == 'refs/heads/feature/test'
     continue-on-error: false
     runs-on: ubuntu-latest
-    needs: [sonar,CI]
+    needs: [CI]
     environment: DEV
     env:
       workspace: ${{ github.workspace }}
