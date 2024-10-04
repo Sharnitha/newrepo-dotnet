@@ -2,9 +2,9 @@ name: Frontend-CI
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - feature/test 
+  push:
+    branches:
+      - feature/test 
   #     - qa
  
 jobs:   
@@ -52,7 +52,7 @@ jobs:
         
       - name: Docker Build
         run: |
-          echo "Hello World!"
+          docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
           
   DEV_Deploy:
     if: github.ref == 'refs/heads/feature/test'
