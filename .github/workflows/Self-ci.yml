@@ -65,7 +65,7 @@ jobs:
 
       - name: Transfer
         run: |
-          az storage blob upload '${{ steps.version.outputs.builddate }}.zip' '${{ vars.BLOBSTORAGE_PATH }}?${{ secrets.BLOB_SAASTOKEN }}'
+          azcopy copy '${{ steps.version.outputs.builddate }}.zip' 'https://storademo.blob.core.windows.net/storage/${{ steps.version.outputs.builddate }}.zip'
          
         # azcopy copy '${{ steps.version.outputs.builddate }}.zip' '${{ vars.BLOBSTORAGE_PATH }}?${{ secrets.BLOB_SAASTOKEN }}'
 # azcopy copy '${{ steps.version.outputs.builddate }}.zip' 'https://storademo.blob.core.windows.net/storage?sp=racwdl&st=2024-10-07T05:54:58Z&se=2024-10-07T13:54:58Z&spr=https&sv=2022-11-02&sr=c&sig=1xaJhW%2Fv5WO7bsR5anSenuC3%2FUV2C08%2FTSC391nubRc%3D'
