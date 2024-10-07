@@ -57,6 +57,19 @@ jobs:
       - name: Zip Folder
         run: |
           zip -r app.zip app/publish
+          
+      - name: Unzip Folder
+        run: |
+          unzip -l app.zip
+
+      - name: Unzip Folder path
+        run: |
+          unzip app.zip -d /unzip_folder
+          ls -R /unzip_folder
+
+      
+
+          
 
         
       - name: Docker Build
