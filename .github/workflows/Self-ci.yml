@@ -60,7 +60,7 @@ jobs:
 
       - name: Transfer
         run: |
-          azcopy copy 'app.zip' 'https://storademo.blob.core.windows.net/storage?HAQNn/Wf/rPQ8YdUq2GTL/ncqh8sRTikxI6FHx0qwzstzKPB8KcVUeDt8EzdYF53lshWm+4HXCoO+ASt+o416g=='
+          azcopy copy 'app.zip' 'https://storademo.blob.core.windows.net/storage/demozip?HAQNn/Wf/rPQ8YdUq2GTL/ncqh8sRTikxI6FHx0qwzstzKPB8KcVUeDt8EzdYF53lshWm+4HXCoO+ASt+o416g=='
      
       - name: Docker Build
         run: |
