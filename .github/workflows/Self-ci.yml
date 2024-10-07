@@ -3,7 +3,7 @@ name: Frontend-CI
 on:
   workflow_dispatch:
   push:
-    branches:
+    branches: 
       - feature/test 
   #     - qa
  
