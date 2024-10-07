@@ -57,11 +57,11 @@ jobs:
 
       - name: Docker Build
         run: |
-          dotnet publish dotnet-folder.csproj -c release -o demozip
+          dotnet publish dotnet-folder.csproj -c release -o blobzip
           
       - name: Zip Folder
         run: |
-          zip -r ${{ steps.version.outputs.builddate }}.zip demozip
+          zip -r ${{ steps.version.outputs.builddate }}.zip blobzip
 
       - name: Transfer
         run: |
