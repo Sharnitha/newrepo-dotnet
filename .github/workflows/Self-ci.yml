@@ -55,7 +55,7 @@ jobs:
          echo "builddate=$(TZ="America/New_York" date +'%Y-%m-%d_%H_%M_%S')" >> $GITHUB_OUTPUT
         id: version  
 
-      - name: Docker Build
+      - name: Docker Build 
         run: |
           dotnet publish dotnet-folder.csproj -c release -o blobzip
           
