@@ -62,12 +62,13 @@ jobs:
         run: |
           unzip -l app.zip
 
+      - name: listing the folder
+        run: |
+          ls
+
       - name: Unzip Folder path
         run: |
-          unzip app.zip -d /unzip_folder
-          ls -R /unzip_folder
-
-      
+          unzip -o app.zip -d unzip_folder/      
 
           
 
