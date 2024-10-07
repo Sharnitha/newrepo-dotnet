@@ -106,10 +106,6 @@ RUN zip -r app.zip /src/app/publish
 
 RUN unzip -l app.zip
 
-RUN unzip app.zip -d /unzipped_folder
-
-RUN ls -R /unzipped_folder
-
 # Upload the zip file to Azure Blob Storage using curl
 # Replace <storage-account-name>, <container-name>, and <SAS-token> with your own details
 # RUN curl -X PUT -T app.zip \
