@@ -52,27 +52,16 @@ jobs:
 
       - name: Docker Build
         run: |
-          dotnet publish dotnet-folder.csproj -c release -o app/publish
+          dotnet publish dotnet-folder.csproj -c release -o demozip
           
       - name: Zip Folder
         run: |
-          zip -r app.zip app/publish
-          
-      - name: Unzip Folder
+          zip -r app.zip demozip
+
+      - name: Transfer
         run: |
-          unzip -l app.zip
-
-      - name: listing the folder
-        run: |
-          ls
-
-      - name: Unzip Folder path
-        run: |
-          unzip -o app.zip -d unzip_folder/      
-
-          
-
-        
+          azcopy copy 'app.zip' '${{ vars.STORAGEPATH }}?${{ secrets.SECRETSASTOKEN }}'
+     
       - name: Docker Build
         run: |
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
