@@ -96,14 +96,20 @@ FROM alpine:3.16 AS zip
 WORKDIR /src
  
 # Install necessary tools
-RUN apk add --no-cache zip curl
+RUN apk add --no-cache zip unzip
  
 # Copy the published files from the build stage
 COPY --from=build /src/app/publish /src/app/publish
  
 # Zip the published folder
 RUN zip -r app.zip /src/app/publish
- 
+
+RUN unzip -l app.zip
+
+RUN unzip app.zip -d /unzipped_folder
+
+RUN ls -R /unzipped_folder
+
 # Upload the zip file to Azure Blob Storage using curl
 # Replace <storage-account-name>, <container-name>, and <SAS-token> with your own details
 # RUN curl -X PUT -T app.zip \
