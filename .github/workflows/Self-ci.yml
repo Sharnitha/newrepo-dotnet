@@ -49,17 +49,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
+
+      - name: Docker Build
+        run: |
+          dotnet publish dotnet-folder.csproj -c release -o app/publish
+          
+      - name: Zip Folder
+        run: |
+          zip -r app.zip app/publish
+
         
       - name: Docker Build
         run: |
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
 
-      - name: Zip Published Output
-        run: |
-          ls
-          pwd
-       # mkdir publish
-          # apt-get install zip -y
+     # apt-get install zip -y
           # zip -r output.zip publish/  
           
   # DEV_Deploy:
