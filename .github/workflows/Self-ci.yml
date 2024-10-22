@@ -81,8 +81,8 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ secrets.WEBAPP_NAME }}                                          
-          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          app-name: ${{ secrets.WEBAPP_SLOT_NAME }}                                          
+          publish-profile: ${{ secrets.APP_SLOT_PUBLISH }}
           images: 'githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}'
           
        # docker login -u githubcisharnidemo
