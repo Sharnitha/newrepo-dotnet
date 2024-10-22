@@ -9,7 +9,7 @@ on:
       
  
 jobs:   
-  set_environment:  
+  set_environment:   
     runs-on: self-hosted
     # needs: demo 
     steps: 
