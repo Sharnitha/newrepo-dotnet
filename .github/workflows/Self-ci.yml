@@ -77,8 +77,16 @@ jobs:
         run: |
           az login
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
-          docker login -u githubcisharnidemo
-          docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
+          az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
+
+      - uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ secrets.WEBAPP_NAME }}                                          
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          images: 'githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}'
+          
+       # docker login -u githubcisharnidemo
+          # docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
 
      # apt-get install zip -y
           # zip -r output.zip publish/  
