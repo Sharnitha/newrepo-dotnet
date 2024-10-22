@@ -1,17 +1,17 @@
 [
   {
     "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-    "value": "TNmJg7VescF0eFjv6WJsVxasexjwF0KextAVdUC8Nh+ACRDMidbv",
+    "value": "djIwl/U1CrtURdrZ5yGUkJWOxR9o3R7/mzYzyEMLFl+ACRAh6gLD",
     "slotSetting": false
   },
   {
     "name": "DOCKER_REGISTRY_SERVER_URL",
-    "value": "https://githubcisharni.azurecr.io",
+    "value": "https://githubcisharnidemo.azurecr.io",
     "slotSetting": false
   },
   {
     "name": "DOCKER_REGISTRY_SERVER_USERNAME",
-    "value": "githubcisharni",
+    "value": "githubcisharnidemo",
     "slotSetting": false
   },
   {
