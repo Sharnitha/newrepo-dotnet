@@ -135,7 +135,9 @@ jobs:
           additional-denied-words: ''
 
       - name: Swap the slot
-        run: az webapp deployment slot swap --resource-group ${{ secrets.RG }} --name webappname01 --slot ${{ secrets.SLOT_NAME }} --target-slot production
+        run: |
+          az login
+          az webapp deployment slot swap --resource-group ${{ secrets.RG }} --name webappname01 --slot ${{ secrets.SLOT_NAME }} --target-slot production
 
       # - name: Azure login
       #   run: az login
