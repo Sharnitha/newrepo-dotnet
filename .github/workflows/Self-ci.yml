@@ -75,7 +75,9 @@ jobs:
      
       - name: Docker Build
         run: |
+          az login
           docker build -t githubcisharni.azurecr.io/demoenv:${{ github.run_id }} .
+          docker push githubcisharni.azurecr.io/demoenv:${{ github.run_id }} 
 
      # apt-get install zip -y
           # zip -r output.zip publish/  
