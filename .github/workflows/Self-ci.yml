@@ -77,6 +77,7 @@ jobs:
         run: |
           az login
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+          docker login -u githubcisharnidemo
           docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
 
      # apt-get install zip -y
