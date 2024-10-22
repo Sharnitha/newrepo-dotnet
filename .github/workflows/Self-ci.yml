@@ -92,7 +92,7 @@ jobs:
      # apt-get install zip -y
           # zip -r output.zip publish/  
           
-  DEV_Deploy:
+  Staging_Slot_Deploy:
     if: github.ref == 'refs/heads/feature/test'
     continue-on-error: false
     runs-on: ubuntu-latest
@@ -111,27 +111,65 @@ jobs:
         run: |
           echo "Dev Deploy"
           az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
-        # az login --service-principal -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} --tenant ${{ secrets.DOCKER_TENANT }}  
-          # az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
-          # az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
-
+       
       - uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ secrets.WEBAPP_NAME }}                                          
-          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-          images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
+          publish-profile: ${{ secrets.APP_SLOT_PUBLISH }}
+          slot-name: ${{ secrets.SLOT_NAME }}
+          images: 'githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}'
 
-  QA_Deploy:
-    if: github.ref == 'refs/heads/qa'
+  Prod_Slot_Deploy:
+    if: github.ref == 'refs/heads/feature/test'
+    continue-on-error: false
     runs-on: ubuntu-latest
-    needs: CI
-    environment: QA
+    needs: [CI]
+    environment: DEV
     env:
       workspace: ${{ github.workspace }}
     steps:
-       - name: Replacetoken
-         run: |
-           echo "qa Deploy"
+      - name: Checkout code
+        uses: actions/checkout@v4  
+      - uses: trstringer/manual-approval@v1
+        timeout-minutes: 5
+        with:
+          secret: ${{ secrets.TOKEN }}
+          approvers: Sharnitha
+          minimum-approvals: 1
+          issue-title: "Deploying v1.3.5 to deploy from deploy"
+          issue-body: "Please approve or deny the deployment of v1.3.5."
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
+
+      - name: Swap the slot
+        run: az webapp deployment slot swap --resource-group ${{ secrets.RG }} --name webappname01 --slot ${{ secrets.SLOT_NAME }} --target-slot production
+
+      # - name: Azure login
+      #   run: az login
+        
+      # - name: Replacetoken
+      #   run: |
+      #     echo "Dev Deploy"
+      #     az webapp config appsettings set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.RG }} --settings @"${{ secrets.JSONFILE }}"
+       
+      - uses: azure/webapps-deploy@v2
+        with:  
+          app-name: ${{ secrets.WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
+
+  # QA_Deploy:
+  #   if: github.ref == 'refs/heads/qa'
+  #   runs-on: ubuntu-latest
+  #   needs: CI
+  #   environment: QA
+  #   env:
+  #     workspace: ${{ github.workspace }}
+  #   steps:
+  #      - name: Replacetoken
+  #        run: |
+  #          echo "qa Deploy"
   #     - uses: trstringer/manual-approval@v1
   #       timeout-minutes: 5
   #       with:
