@@ -1,4 +1,24 @@
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY . /src
+RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+
+# Second Stage (Final)
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+WORKDIR /app
+EXPOSE 80
+COPY --from=build /src/app/publish .
+COPY entrypoint.sh ./
+RUN zip -r output.zip /src/app/publish
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends dialog \
+    && apt-get install -y --no-install-recommends openssh-server \
+    && echo "root:Docker!" | chpasswd \
+    && chmod u+x ./entrypoint.sh
+COPY sshd_config /etc/ssh/
+EXPOSE 8000 2222
+ENTRYPOINT [ "./entrypoint.sh" ]
 # WORKDIR /src
 # COPY . /src
 # RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
@@ -84,56 +104,56 @@
 # ENTRYPOINT [ "./backendentrypoint.sh" ]
 
 # Stage 1: Build the application
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# WORKDIR /src
  
-# Copy everything and build the app
-COPY . /src
-RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+# # Copy everything and build the app
+# COPY . /src
+# RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
  
-# Stage 2: Create a zip of the published app and push to Azure Blob Storage
-FROM alpine:3.16 AS zip
-WORKDIR /src
+# # Stage 2: Create a zip of the published app and push to Azure Blob Storage
+# FROM alpine:3.16 AS zip
+# WORKDIR /src
  
-# Install necessary tools
-RUN apk add --no-cache zip unzip
+# # Install necessary tools
+# RUN apk add --no-cache zip unzip
  
-# Copy the published files from the build stage
-COPY --from=build /src/app/publish /src/app/publish
+# # Copy the published files from the build stage
+# COPY --from=build /src/app/publish /src/app/publish
  
-# Zip the published folder
-RUN zip -r app.zip /src/app/publish
+# # Zip the published folder
+# RUN zip -r app.zip /src/app/publish
 
-RUN unzip -l app.zip
+# RUN unzip -l app.zip
 
-# Upload the zip file to Azure Blob Storage using curl
-# Replace <storage-account-name>, <container-name>, and <SAS-token> with your own details
-# RUN curl -X PUT -T app.zip \
-# "https://.blob.core.windows.net//app.zip?<SAS-token>"
+# # Upload the zip file to Azure Blob Storage using curl
+# # Replace <storage-account-name>, <container-name>, and <SAS-token> with your own details
+# # RUN curl -X PUT -T app.zip \
+# # "https://.blob.core.windows.net//app.zip?<SAS-token>"
  
-# Stage 3: Final stage to run the application
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy AS final
-WORKDIR /app
+# # Stage 3: Final stage to run the application
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy AS final
+# WORKDIR /app
  
-# Copy the published application from the build stage
-COPY --from=build /src/app/publish .
+# # Copy the published application from the build stage
+# COPY --from=build /src/app/publish .
  
-# Copy the entrypoint script and SSH config
-COPY entrypoint.sh ./
-COPY sshd_config /etc/ssh/
+# # Copy the entrypoint script and SSH config
+# COPY entrypoint.sh ./
+# COPY sshd_config /etc/ssh/
  
-# Install SSH and other necessary dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends dialog \
-    && apt-get install -y --no-install-recommends openssh-server \
-    && echo "root:Docker!" | chpasswd \
-&& chmod u+x ./entrypoint.sh
+# # Install SSH and other necessary dependencies
+# RUN apt-get update \
+#     && apt-get install -y --no-install-recommends dialog \
+#     && apt-get install -y --no-install-recommends openssh-server \
+#     && echo "root:Docker!" | chpasswd \
+# && chmod u+x ./entrypoint.sh
  
-# Expose ports for HTTP (80) and SSH (2222)
-EXPOSE 80 2222
+# # Expose ports for HTTP (80) and SSH (2222)
+# EXPOSE 80 2222
  
-# Start the application using your entrypoint script
-ENTRYPOINT [ "./entrypoint.sh" ]
+# # Start the application using your entrypoint script
+# ENTRYPOINT [ "./entrypoint.sh" ]
 
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # WORKDIR /src
