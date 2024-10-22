@@ -10,7 +10,6 @@ WORKDIR /app
 EXPOSE 80
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
-RUN zip -r output.zip /src/app/publish
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends openssh-server \
