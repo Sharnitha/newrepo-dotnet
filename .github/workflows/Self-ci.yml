@@ -7,8 +7,6 @@ on:
       - feature/test 
       - release/**
       
-permissions:
-  id-token: write
  
 jobs:   
   set_environment:  
@@ -95,12 +93,7 @@ jobs:
         uses: actions/checkout@v4   
 
       - name: Azure login
-        uses: azure/login@v2
-        with:
-          client-id: 37ca0f99-5f85-4eb3-897a-c9360a312e66
-          tenant-id: 84f1e4ea-8554-43e1-8709-f0b8589ea118
-          subscription-id: 80ea84e8-afce-4851-928a-9e2219724c69
-          auth-type: 'azure'
+        run: az login
         
       - name: Replacetoken
         run: |
