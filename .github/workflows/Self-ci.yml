@@ -5,9 +5,7 @@ on:
   push:
     branches:  
       - feature/test 
-      - release/*
-      
-  
+       
 jobs:   
   set_environment:   
     runs-on: ubuntu-latest
