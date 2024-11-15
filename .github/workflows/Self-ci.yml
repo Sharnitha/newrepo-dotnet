@@ -23,7 +23,7 @@ jobs:
             echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
             echo "environment=QA" >> "$GITHUB_ENV"
-          elif [ "$GITHUB_REF" == "refs/heads/release/*" ]; then
+          elif [[ "$GITHUB_REF" =~ ^refs/heads/release/.* ]]; then
             echo "environment=PROD" >> "$GITHUB_ENV"
           else  
             echo "environment=DEV" >> "$GITHUB_ENV"
@@ -124,7 +124,7 @@ jobs:
       #     images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
       
   release_Slot_Deploy:
-    if: github.ref == 'refs/heads/release/*'
+    if: startsWith(github.ref, 'refs/heads/release/')
     runs-on: ubuntu-latest
     needs: CI
     environment: ${{ needs.CI.outputs.environment }}
