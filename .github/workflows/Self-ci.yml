@@ -74,6 +74,7 @@ jobs:
       - name: Docker Build
         run: |
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+          sudo apt-get install trivy -y
           trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
     outputs:
       environment: ${{ env.environment }}
