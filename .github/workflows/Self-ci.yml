@@ -8,7 +8,7 @@ on:
        
 jobs:   
   set_environment:   
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     # needs: demo 
     steps: 
       - name: Checkout code
@@ -39,7 +39,7 @@ jobs:
   #       run: echo "Hello"
 
   CI:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: set_environment
     environment: ${{ needs.set_environment.outputs.environment }}
     env:
@@ -76,6 +76,11 @@ jobs:
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
           sudo apt-get install trivy -y
           trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
+          
+      - name: azure container registry
+        run: |
+          docker login githubcisharnidemo -u githubcisharnidemo -p Be5VXC2wxVTNE+6TmPCDhdCnCjFeuZ+CFtaRAu1k4z+ACRBzd9B0
+          docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
     outputs:
       environment: ${{ env.environment }}
        # az login
