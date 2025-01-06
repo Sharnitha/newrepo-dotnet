@@ -42,7 +42,7 @@ jobs:
         
       - name: Sleep
         run: |
-          sleep 30
+          sleep 120
         
       - name: Docker Build
         run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
