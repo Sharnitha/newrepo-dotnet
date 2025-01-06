@@ -12,5 +12,5 @@ jobs:
     # needs: demo 
     steps: 
       - name: Scheduling
-        run: docker system prune -y
+        run: docker system prune -f
         
