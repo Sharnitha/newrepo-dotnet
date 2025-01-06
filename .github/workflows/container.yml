@@ -40,6 +40,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 
         
+      - name: Sleep
+        run: |
+          sleep 30
+        
       - name: Docker Build
         run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }} .
         
