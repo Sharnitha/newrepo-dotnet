@@ -8,7 +8,7 @@ on:
         
 jobs:   
   set_environment:    
-    runs-on: self-hosted
+    runs-on: self-hosted 
     # needs: demo 
     steps: 
       - name: Checkout code
@@ -84,7 +84,7 @@ jobs:
           
       - name: Sleep
         run: |
-          sleep 30
+          sleep 120
     outputs:
       environment: ${{ env.environment }}
       
