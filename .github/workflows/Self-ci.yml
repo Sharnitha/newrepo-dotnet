@@ -81,8 +81,13 @@ jobs:
         run: |
           docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p Be5VXC2wxVTNE+6TmPCDhdCnCjFeuZ+CFtaRAu1k4z+ACRBzd9B0
           docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
+          
+      - name: Sleep
+        run: |
+          sleep 30
     outputs:
       environment: ${{ env.environment }}
+      
        # az login
           # docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
           
