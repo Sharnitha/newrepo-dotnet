@@ -5,7 +5,7 @@ on:
   push:
     branches:  
       - feature/test 
-       
+        
 jobs:   
   set_environment:   
     runs-on: self-hosted
