@@ -1,0 +1,16 @@
+name: Frontend-CI
+
+on:
+  workflow_dispatch:
+  push: 
+    branches:  
+      - feature/test 
+        
+jobs:   
+  Scheduling:    
+    runs-on: self-hosted 
+    # needs: demo 
+    steps: 
+      - name: Scheduling
+        run: docker system prune -y
+        
