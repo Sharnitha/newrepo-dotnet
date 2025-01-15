@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push: 
     branches:  
-      - feature/test 
+      - test-nonroot 
         
 jobs:   
   set_environment:    
@@ -17,7 +17,7 @@ jobs:
       - name: Determine environment based on branch
         id: set_env
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/feature/test" ]; then
+          if [ "$GITHUB_REF" == "refs/heads/test-nonroot" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
             echo "environment=QA" >> "$GITHUB_ENV"
@@ -74,17 +74,13 @@ jobs:
       - name: Docker Build
         run: |
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
-          sudo apt-get install trivy -y
-          trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
+        # sudo apt-get install trivy -y
+          # trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
           
       - name: azure container registry
         run: |
-          docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p Be5VXC2wxVTNE+6TmPCDhdCnCjFeuZ+CFtaRAu1k4z+ACRBzd9B0
+          docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p /zcgLD7ZwRWv5slJyXfKSnP9gJ9orexAhpwCKU5nzG+ACRCFB4nC
           docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
-          
-      - name: Sleep
-        run: |
-          sleep 120
     outputs:
       environment: ${{ env.environment }}
       
@@ -132,19 +128,19 @@ jobs:
       #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
       #     images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
       
-  release_Slot_Deploy:
-    if: startsWith(github.ref, 'refs/heads/release/')
-    runs-on: ubuntu-latest
-    needs: CI
-    environment: ${{ needs.CI.outputs.environment }}
-    env:
-      workspace: ${{ github.workspace }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  
+  # release_Slot_Deploy:
+  #   if: startsWith(github.ref, 'refs/heads/release/')
+  #   runs-on: ubuntu-latest
+  #   needs: CI
+  #   environment: ${{ needs.CI.outputs.environment }}
+  #   env:
+  #     workspace: ${{ github.workspace }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4  
 
-      - name: echo command
-        run: echo "Release Branch"
+  #     - name: echo command
+  #       run: echo "Release Branch"
         
   # Prod_Slot_Deploy:
   #   if: github.ref == 'refs/heads/feature/test'
