@@ -84,6 +84,7 @@ jobs:
     outputs:
       environment: ${{ env.environment }}
       
+      
        # az login
           # docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
           
@@ -93,8 +94,8 @@ jobs:
      # apt-get install zip -y
           # zip -r output.zip publish/  
           
-  Staging_Slot_Deploy:
-    if: github.ref == 'refs/heads/feature/test'
+  DeploytoAppsevice:
+    if: github.ref == 'refs/heads/test-nonroot'
     # continue-on-error: false
     runs-on: ubuntu-latest
     needs: [CI]
@@ -105,8 +106,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4  
 
-      - name: echo command
-        run: echo "Test Branch"
+      - uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ secrets.WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          images: 'githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}'
 
       # - name: Azure login
       #   run: az login
