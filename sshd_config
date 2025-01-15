@@ -8,5 +8,5 @@ StrictModes 		yes
 SyslogFacility 		DAEMON
 PasswordAuthentication 	yes
 PermitEmptyPasswords 	no
-PermitRootLogin 	yes
+PermitRootLogin 	no
 Subsystem sftp internal-sftp
