@@ -8,7 +8,7 @@ on:
         
 jobs:   
   set_environment:    
-    runs-on: self-hosted  
+    runs-on: self-hosted 
     # needs: demo 
     steps: 
       - name: Checkout code
@@ -46,34 +46,28 @@ jobs:
       #     az login --service-principal -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}  
       #     az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
 
+      # - name: Set API Key
+      #   run: |
+      #       ApiKey="Server=AZU-DEV-SQL01.demo.com;Database=test;"
+      #       echo "Original API Key: $ApiKey"
+      #       escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+      #       echo "Escaped API Key: $escaped_API_KEY"
+       
+      #       sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
+       
+      #       echo "Updated appsettings.json:"
+      #       cat appsettings.json
+          
       - name: Get secrets from Key Vault and replace placeholders
         run: |
-            ApiKey=${{ secrets.APIKEY }}
-            BaseUrl=${{ secrets.BASEURL }}
-            escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
-            sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
-            escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
-            sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
-            echo "Updated appsettings.json"
-        # Working 
-        # escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[$&]/\\&/g; s/\\/\\\\/g')
-            # sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
-            # escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
-            # sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
-            # echo "Updated appsettings.json"
-          
-      # - name: Get secrets from Key Vault and replace placeholders
-      #   run: |
-      #    BaseUrl=${{ secrets.BASEURL }}
-      #    ApiKey=${{ secrets.APIKEY }}
-
-      #    escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
-      #    sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
-      #     echo "Updated appsettings.json"
-      #   # escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
-         # sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
-      #  echo "Updated appsettings.json"
-      # #    escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+         BaseUrl=${{ secrets.BASEURL }}
+         ApiKey=${{ secrets.APIKEY }}
+         escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
+         sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
+         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+         sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
+         echo "Updated appsettings.json"
+      #    escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
       #    sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
       #    echo "Token replaced successfully!"
         # escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&/\$\;]/\\&/g')
@@ -91,5 +85,3 @@ jobs:
          # sed -i "s#{__BaseUrl__}#$BaseUrl#g" appsettings.json
          # sed -i "s#{__ApiKey__}#$ApiKey#g" appsettings.json
          # echo "Placeholders replaced successfully."
-        
-     
