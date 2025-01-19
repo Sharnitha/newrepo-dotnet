@@ -41,22 +41,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 
         
-      # - name: Azure CLI
-      #   run: | 
-      #     az login --service-principal -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}  
-      #     az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
+      - name: Azure CLI
+        run: | 
+          az login --service-principal -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}  
+          az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
 
-      # - name: Set API Key
-      #   run: |
-      #       ApiKey="Server=AZU-DEV-SQL01.demo.com;Database=test;"
-      #       echo "Original API Key: $ApiKey"
-      #       escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
-      #       echo "Escaped API Key: $escaped_API_KEY"
+      - name: Set API Key
+        run: |
+            ApiKey="Server=${{ secrets.APIKEY }}"
+            echo "Original API Key: $ApiKey"
+            escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+            echo "Escaped API Key: $escaped_API_KEY"
        
-      #       sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
+            sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
        
-      #       echo "Updated appsettings.json:"
-      #       cat appsettings.json
+            echo "Updated appsettings.json:"
+            cat appsettings.json
           
       - name: Get secrets from Key Vault and replace placeholders
         run: |
@@ -65,10 +65,11 @@ jobs:
 
          escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
          sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
-         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
-         sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
-         echo "Updated appsettings.json"
-      #    escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+          echo "Updated appsettings.json"
+        # escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+         # sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
+      #  echo "Updated appsettings.json"
+      # #    escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
       #    sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
       #    echo "Token replaced successfully!"
         # escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&/\$\;]/\\&/g')
