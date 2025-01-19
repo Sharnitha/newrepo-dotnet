@@ -60,8 +60,8 @@ jobs:
           
       - name: Get secrets from Key Vault and replace placeholders
         run: |
-           chmod 744 replace_token.sh
-           ./replace_token.sh
+           chmod 744 replace_token1.sh
+           ./replace_token1.sh
       #    escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
       #    sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
       #    echo "Token replaced successfully!"
