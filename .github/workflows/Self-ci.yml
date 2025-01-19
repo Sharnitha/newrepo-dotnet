@@ -6,7 +6,7 @@ on:
     branches:  
       - sed
         
-jobs:   
+jobs:    
   set_environment:    
     runs-on: self-hosted 
     # needs: demo 
