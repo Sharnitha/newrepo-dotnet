@@ -8,7 +8,7 @@ on:
         
 jobs:   
   set_environment:    
-    runs-on: self-hosted 
+    runs-on: self-hosted  
     # needs: demo 
     steps: 
       - name: Checkout code
