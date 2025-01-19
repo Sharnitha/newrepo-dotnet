@@ -49,7 +49,7 @@ jobs:
       - name: Get secrets from Key Vault and replace placeholders
         run: |
          BaseUrl=${{ secrets.Baseurl }}
-         ApiKey=${{ secrets.ApiKey }}
+         ApiKey=Server=AZU-DEV-SQL01.demo.com;Database=test;
 
          escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
          sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
