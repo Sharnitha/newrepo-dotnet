@@ -45,17 +45,29 @@ jobs:
       #   run: | 
       #     az login --service-principal -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}  
       #     az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
-          
-      - name: Get secrets from Key Vault and replace placeholders
-        run: |
-         BaseUrl=${{ secrets.Baseurl }}
-         ApiKey=Server=AZU-DEV-SQL01.demo.com;Database=test;
 
-         escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
-         sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
-         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
-         sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
-         echo "Token replaced successfully!"
+      - name: Set API Key
+        run: |
+            ApiKey="Server=AZU-DEV-SQL01.demo.com;Database=test;"
+            echo "Original API Key: $ApiKey"
+            escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+            echo "Escaped API Key: $escaped_API_KEY"
+       
+            sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
+       
+            echo "Updated appsettings.json:"
+            cat appsettings.json
+          
+      # - name: Get secrets from Key Vault and replace placeholders
+      #   run: |
+      #    BaseUrl=${{ secrets.Baseurl }}
+      #    ApiKey=Server=AZU-DEV-SQL01.demo.com;Database=test;
+
+      #    escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
+      #    sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
+      #    escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
+      #    sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
+      #    echo "Token replaced successfully!"
         # escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&/\$\;]/\\&/g')
          # sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
         # echo "Token replaced successfully!"
