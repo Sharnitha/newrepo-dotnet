@@ -53,7 +53,7 @@ jobs:
 
          escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$]/\\&/g')
          sed -i "s#{__BaseUrl__}#$escaped_BASE_URL#g" appsettings.json
-         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[/&/$$]/\\/g')
+         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[/&/$$]/\\&/g')
          sed -i "s#{__ApiKey__}#$escaped_API_KEY#g" appsettings.json
          echo "Token replaced successfully!"
         shell: bash
