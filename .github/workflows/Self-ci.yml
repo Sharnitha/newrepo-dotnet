@@ -48,7 +48,7 @@ jobs:
 
       - name: Get secrets from Key Vault and replace placeholders
         run: |
-            ApiKey=testgithub$123)hut@bag
+            ApiKey=${{ secrets.APIKEY }}
             BaseUrl=${{ secrets.BASEURL }}
             escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/\$/\\$/g; s/[&]/\\&/g')
             sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
