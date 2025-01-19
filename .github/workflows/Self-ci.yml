@@ -51,8 +51,10 @@ jobs:
          BaseUrl=${{ secrets.Baseurl }}
          ApiKey=${{ secrets.ApiKey }}
        
-         sed -i 's/{__BaseUrl__}/'"$BaseUrl"'/g' appsettings.json 
-         sed -i 's/{__ApiKey__}/'"$ApiKey"'/g' appsettings.json
+         # sed -i 's/{__BaseUrl__}/'"$BaseUrl"'/g' appsettings.json 
+         # sed -i 's/{__ApiKey__}/'"$ApiKey"'/g' appsettings.json
+         sed -i "s#{__BaseUrl__}#$BaseUrl#g" appsettings.json
+         sed -i "s#{__ApiKey__}#$ApiKey#g" appsettings.json
          echo "Placeholders replaced successfully."
         shell: bash
        
