@@ -50,15 +50,18 @@ jobs:
         run: |
          BaseUrl=${{ secrets.Baseurl }}
          ApiKey=${{ secrets.ApiKey }}
-       
-         # sed -i 's/{__BaseUrl__}/'"$BaseUrl"'/g' appsettings.json 
-         # sed -i 's/{__ApiKey__}/'"$ApiKey"'/g' appsettings.json
-         sed -i "s#{__BaseUrl__}#$BaseUrl#g" appsettings.json
-         sed -i "s#{__ApiKey__}#$ApiKey#g" appsettings.json
-         echo "Placeholders replaced successfully."
+
+         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&/\$]/\\&/g')
+         sed -i "s#{__ApiKey__}#$escaped_API_KEY#g" appsettings.json
+         echo "Token replaced successfully!"
         shell: bash
-       
     outputs:
       environment: ${{ env.Environments }}
+      
+         # # sed -i 's/{__BaseUrl__}/'"$BaseUrl"'/g' appsettings.json 
+         # # sed -i 's/{__ApiKey__}/'"$ApiKey"'/g' appsettings.json
+         # sed -i "s#{__BaseUrl__}#$BaseUrl#g" appsettings.json
+         # sed -i "s#{__ApiKey__}#$ApiKey#g" appsettings.json
+         # echo "Placeholders replaced successfully."
         
      
