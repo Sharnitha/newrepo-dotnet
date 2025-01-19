@@ -61,10 +61,10 @@ jobs:
       - name: Get secrets from Key Vault and replace placeholders
         run: |
          BaseUrl=${{ secrets.BASEURL }}
-         ApiKey=Data/Source="${{ secrets.APIKEY }}"
+         ApiKey="${{ secrets.APIKEY }}"
          escaped_BASE_URL=$(printf '%s' "$BaseUrl" | sed 's/[&/\$\;]/\\&/g')
          sed -i "s|{__BaseUrl__}|${escaped_BASE_URL}|g" appsettings.json
-         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/\$/\\$/g; s/[&]/\\&/g')
+         escaped_API_KEY=$(printf '%s' "$ApiKey" | sed -e 's/[&/\]/\\&/g' -e 's/\$/\\$/g')
          sed -i "s|{__ApiKey__}|${escaped_API_KEY}|g" appsettings.json
          echo "Updated appsettings.json"
       #    escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[&]/\\&/g')
