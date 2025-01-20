@@ -42,7 +42,7 @@ jobs:
     - name: Replace Token
       uses: qetza/replacetokens-action@v1
       with:
-        files: 'appsettings.json'
+        sources: 'appsettings.json'
         token-prefix: '{__' 
         token-suffix: '__}' 
       env:
