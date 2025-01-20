@@ -43,6 +43,7 @@ jobs:
       uses: qetza/replacetokens-action@v1
       with:
         sources: 'appsettings.json'
+        variables: '{"token": "value"}'
         token-prefix: '{__' 
         token-suffix: '__}' 
       env:
