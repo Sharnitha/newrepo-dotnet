@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push: 
     branches:  
-      - repl-toek
+      - repl-toek 
         
 jobs:    
   set_environment:    
