@@ -43,8 +43,8 @@ jobs:
       uses: qetza/replacetokens-action@v1
       with:
         files: 'appsettings.json'
-        tokenprefix: '{__' 
-        tokensuffix: '__}' 
+        token-prefix: '{__' 
+        token-suffix: '__}' 
       env:
           BaseUrl: ${{ secrets.BaseUrl }}
         
