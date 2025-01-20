@@ -50,7 +50,7 @@ jobs:
         tokenprefix: '{__' 
         tokensuffix: '__}' 
       env:
-        BaseUrl: ${{ secrets.BASEURL }}
+        # BaseUrl: ${{ secrets.BASEURL }}
         ApiKey: ${{ secrets.APIKEY }}
 
       # - name: Azure CLI
