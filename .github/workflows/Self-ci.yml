@@ -49,8 +49,8 @@ jobs:
       with:
         sources: 'appsettings.json'
         variables: '{"BaseUrl": "${{ secrets.BaseUrl }}", "ApiKey": "${{ secrets.ApiKey }}"}'
-        token-prefix: '{__' 
-        token-suffix: '__}' 
+        token-prefix: '{' 
+        token-suffix: '}' 
       env:
         BaseUrl: ${{ secrets.BaseUrl }}
         ApiKey: ${{ secrets.ApiKey }}
