@@ -75,9 +75,9 @@ jobs:
         # sed -i "s#{__BaseUrl__}#$escaped_BASE_URL#g" appsettings.json
          # escaped_API_KEY=$(printf '%s' "$ApiKey" | sed 's/[/&/$$]/\\&/g')
          # sed -i "s#{__ApiKey__}#$escaped_API_KEY#g" appsettings.json
-        shell: bash
-    outputs:
-      environment: ${{ env.Environments }}
+    #     shell: bash
+    # outputs:
+    #   environment: ${{ env.Environments }}
       
          # # sed -i 's/{__BaseUrl__}/'"$BaseUrl"'/g' appsettings.json 
          # # sed -i 's/{__ApiKey__}/'"$ApiKey"'/g' appsettings.json
