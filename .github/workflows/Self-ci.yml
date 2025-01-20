@@ -43,12 +43,13 @@ jobs:
       uses: qetza/replacetokens-action@v1
       with:
         sources: 'appsettings.json'
-        variables: '{"BaseUrl": "${{ secrets.BaseUrl }}"}'
+        variables: '{"BaseUrl": "${{ secrets.BaseUrl }}", "ApiKey": "${{ secrets.ApiKey }}"}'
         token-prefix: '{__' 
         token-suffix: '__}' 
       env:
-          BaseUrl: ${{ secrets.BaseUrl }}
-        
+        BaseUrl: ${{ secrets.BaseUrl }}
+        ApiKey: ${{ secrets.ApiKey }}
+          
       # - name: Azure CLI
       #   run: | 
       #     az login --service-principal -u ${{ secrets.AZ_LOGIN }} -p ${{ secrets.AZ_PASSWORD }} --tenant ${{secrets.AZ_TENANT}}  
