@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push: 
     branches:   
-      - non-root
+      - nonroot
         
 jobs:   
   set_environment:    
@@ -17,7 +17,7 @@ jobs:
       - name: Determine environment based on branch
         id: set_env
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/feature/test" ]; then
+          if [ "$GITHUB_REF" == "refs/heads/nonroot" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
             echo "environment=QA" >> "$GITHUB_ENV"
