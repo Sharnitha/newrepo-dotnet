@@ -1,29 +1,55 @@
-# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
-RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+RUN dotnet publish dotnet-folder.csproj -c release -o /src/app/publish
 
-# Second Stage (Final)
+# Final Stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
+
+# Create a non-root user with UID and GID
 ARG USERNAME=user-devops
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-COPY --from=build /src/app/publish .
-COPY entrypoint.sh ./
+
 RUN groupadd --gid $USER_GID $USERNAME \
-&& useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-&& apt-get update \
-&& apt-get install -y sudo \
-&& echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-&& chmod 0440 /etc/sudoers.d/$USERNAME
-WORKDIR /
-RUN chown -R $USERNAME /app
-WORKDIR /app
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+
+# Install OpenSSH server and necessary utilities
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        openssh-server \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure SSH: Allow non-root user to log in
+RUN echo "root:Docker!" | chpasswd \
+    && mkdir /var/run/sshd \
+    && chmod 700 /var/run/sshd \
+    && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
+    && echo "AllowUsers $USERNAME" >> /etc/ssh/sshd_config
+
+# Ensure sshd service can run in the container
+COPY sshd_config /etc/ssh/sshd_config  # Ensure custom sshd_config is copied, if needed
+
+# Copy the published application from the build stage
+COPY --from=build /src/app/publish . 
+
+# Copy and make entrypoint.sh executable
+COPY entrypoint.sh ./ 
+RUN chmod +x ./entrypoint.sh
+
+# Set permissions for the app and switch user to non-root user
+RUN chown -R $USERNAME:$USERNAME /app
 USER $USERNAME
-EXPOSE 80 
-ENTRYPOINT [ "./entrypoint.sh" ]
+
+# Expose SSH and application ports
+EXPOSE 22 80
+
+# Entry point for the container (handles starting SSH and the app)
+ENTRYPOINT ["./entrypoint.sh"]
+
 # WORKDIR /src
 # COPY . /src
 # RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
