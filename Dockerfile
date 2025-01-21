@@ -31,12 +31,12 @@ RUN echo "root:Docker!" | chpasswd \
     && echo "AllowUsers $USERNAME" >> /etc/ssh/sshd_config
 
 # Ensure sshd service can run in the container
-COPY sshd_config /etc/ssh/sshd_config  # Ensure custom sshd_config is copied, if needed
-
+  # Ensure custom sshd_config is copied, if needed
 # Copy the published application from the build stage
 COPY --from=build /src/app/publish . 
 
 # Copy and make entrypoint.sh executable
+COPY sshd_config /etc/ssh/sshd_config
 COPY entrypoint.sh ./ 
 RUN chmod +x ./entrypoint.sh
 
