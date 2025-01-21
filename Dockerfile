@@ -7,7 +7,17 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 # Second Stage (Final)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
-EXPOSE 80
+ARG USERNAME=user-devops
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+&& useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+&& apt-get update \
+&& apt-get install -y sudo \
+&& echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+&& chmod 0440 /etc/sudoers.d/$USERNAME
+USER $USERNAME
 COPY --from=build /src/app/publish .
 COPY entrypoint.sh ./
 RUN apt-get update \
@@ -16,7 +26,7 @@ RUN apt-get update \
     && echo "root:Docker!" | chpasswd \
     && chmod u+x ./entrypoint.sh
 COPY sshd_config /etc/ssh/
-EXPOSE 8000 2222
+EXPOSE 80 2222
 ENTRYPOINT [ "./entrypoint.sh" ]
 # WORKDIR /src
 # COPY . /src
