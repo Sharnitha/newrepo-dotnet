@@ -7,12 +7,12 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy AS final
 WORKDIR /app
 # COPY entrypoint.sh ./
+COPY --from=build /src/app/publish .
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends openssh-server \
     && echo "root:Docker!" | chpasswd \
     && chmod u+x ./entrypoint.sh 
-COPY --from=build /src/app/publish .
 RUN ls
 COPY sshd_config /etc/ssh/
 EXPOSE 80
