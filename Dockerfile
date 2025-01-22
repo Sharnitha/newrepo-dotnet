@@ -30,7 +30,7 @@ COPY --from=build /src/app/publish .
  
 # Start SSH and Application as the non-root user
 USER myuser
-ENTRYPOINT [ "./entrypoint.sh" ]
+CMD service ssh start && dotnet myapp.dll
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # WORKDIR /src
 # COPY . /src
