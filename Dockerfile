@@ -29,7 +29,7 @@ COPY --from=build /src/app/publish .
  
 # Start SSH and Application as the non-root user
 USER myuser
-CMD service ssh start && dotnet myapp.dll
+CMD service ssh start && dotnet dotnet-folder.dll
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # WORKDIR /src
 # COPY . /src
