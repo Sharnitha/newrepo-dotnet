@@ -6,7 +6,7 @@ RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
 # Final Stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy AS final
 WORKDIR /app
-# COPY entrypoint.sh ./
+COPY entrypoint.sh .
 COPY --from=build /src/app/publish .
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
