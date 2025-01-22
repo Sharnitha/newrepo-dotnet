@@ -45,7 +45,7 @@ RUN chown -R $USERNAME:$USERNAME /app
 USER $USERNAME
 
 # Expose SSH and application ports
-EXPOSE 22 80
+EXPOSE 80 2222
 
 # Entry point for the container (handles starting SSH and the app)
 ENTRYPOINT ["./entrypoint.sh"]
