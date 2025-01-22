@@ -13,6 +13,7 @@ RUN apt-get update \
     && echo "root:Docker!" | chpasswd \
     && chmod u+x ./entrypoint.sh 
 COPY --from=build /src/app/publish .
+RUN ls
 COPY sshd_config /etc/ssh/
 EXPOSE 80
 ENTRYPOINT [ "./entrypoint.sh" ]
