@@ -19,8 +19,7 @@ RUN useradd -m myuser && \
 # Allow non-root user to SSH (ensure it's in the sshd_config)
 RUN sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
     sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
-    sed -i '/^#AllowUsers/ a AllowUsers myuser' /etc/ssh/sshd_config && \
-    chmod u+x ./entrypoint.sh
+    sed -i '/^#AllowUsers/ a AllowUsers myuser' /etc/ssh/sshd_config
  
 # Expose ports for application and SSH
 EXPOSE 80 2222
