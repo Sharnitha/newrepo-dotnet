@@ -2,20 +2,53 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . /src
 RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
-
-# Second Stage (Final)
+ 
+# Final Stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
+ 
+# Install SSH Server
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openssh-server && \
+    mkdir -p /var/run/sshd
+ 
+# Create a non-root user (replace 'myuser' with your desired username)
+RUN useradd -m myuser && \
+    echo 'myuser:password' | chpasswd
+ 
+# Allow non-root user to SSH (ensure it's in the sshd_config)
+RUN sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
+    sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i '/^#AllowUsers/ a AllowUsers myuser' /etc/ssh/sshd_config && \
+    chmod u+x ./entrypoint.sh
+ 
+# Expose ports for application and SSH
+EXPOSE 80 2222
+ 
+# Copy application from build stage
 COPY --from=build /src/app/publish .
-COPY entrypoint.sh ./
-RUN apt-get update \
-#     && apt-get install -y --no-install-recommends dialog \
-#     && apt-get install -y --no-install-recommends openssh-server \
-#     && echo "root:Docker!" | chpasswd \
-    && chmod u+x ./entrypoint.sh
-# COPY sshd_config /etc/ssh/
-EXPOSE 80 22
+ 
+# Start SSH and Application as the non-root user
+USER myuser
 ENTRYPOINT [ "./entrypoint.sh" ]
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# WORKDIR /src
+# COPY . /src
+# RUN dotnet publish dotnet-folder.csproj -c release -o app/publish
+
+# # Second Stage (Final)
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+# WORKDIR /app
+# COPY --from=build /src/app/publish .
+# COPY entrypoint.sh ./
+# RUN apt-get update \
+# #     && apt-get install -y --no-install-recommends dialog \
+# #     && apt-get install -y --no-install-recommends openssh-server \
+# #     && echo "root:Docker!" | chpasswd \
+#     && chmod u+x ./entrypoint.sh
+# # COPY sshd_config /etc/ssh/
+# EXPOSE 80 22
+# ENTRYPOINT [ "./entrypoint.sh" ]
 
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # WORKDIR /src
