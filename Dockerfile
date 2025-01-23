@@ -21,9 +21,9 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # # Copy the published application from the build stage
 COPY --from=build /src/app/publish .
 
-# # Copy and make entrypoint.sh executable
-COPY entrypoint.sh ./
-RUN chmod +x ./entrypoint.sh
+# # Copy and make backendentrypoint.sh executable
+COPY backendentrypoint.sh ./
+RUN chmod +x ./backendentrypoint.sh
 
 # # Remove sudo package and lock the user account (disable sudo)
 RUN usermod -L $USERNAME  # Lock the user to prevent sudo access
@@ -37,8 +37,8 @@ USER $USERNAME
 # # Expose port for the application
 EXPOSE 80
 
-# # Set the entrypoint to the shell script (if any)
-ENTRYPOINT [ "./entrypoint.sh" ]
+# # Set the backendentrypoint to the shell script (if any)
+ENTRYPOINT [ "./backendentrypoint.sh" ]
 
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # WORKDIR /src
@@ -48,17 +48,17 @@ ENTRYPOINT [ "./entrypoint.sh" ]
 # # Final Stage
 # FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy AS final
 # WORKDIR /app
-# COPY entrypoint.sh .
+# COPY backendentrypoint.sh .
 # COPY --from=build /src/app/publish .
 # RUN apt-get update \
 #     && apt-get install -y --no-install-recommends dialog \
 #     && apt-get install -y --no-install-recommends openssh-server \
 #     && echo "root:Docker!" | chpasswd \
-#     && chmod u+x entrypoint.sh 
+#     && chmod u+x backendentrypoint.sh 
 # RUN ls
 # COPY sshd_config /etc/ssh/
 # EXPOSE 80
-# ENTRYPOINT [ "./entrypoint.sh" ]
+# backendentrypoint [ "./backendentrypoint.sh" ]
 
 
 # # -------------------
@@ -86,9 +86,9 @@ ENTRYPOINT [ "./entrypoint.sh" ]
 # # # Copy the published application from the build stage
 # # COPY --from=build /src/app/publish .
 
-# # # Copy and make entrypoint.sh executable
-# # COPY entrypoint.sh ./
-# # RUN chmod +x ./entrypoint.sh
+# # # Copy and make backendentrypoint.sh executable
+# # COPY backendentrypoint.sh ./
+# # RUN chmod +x ./backendentrypoint.sh
 
 # # # Remove sudo package and lock the user account (disable sudo)
 # # RUN usermod -L $USERNAME  # Lock the user to prevent sudo access
@@ -102,5 +102,5 @@ ENTRYPOINT [ "./entrypoint.sh" ]
 # # # Expose port for the application
 # # EXPOSE 80
 
-# # # Set the entrypoint to the shell script (if any)
-# # ENTRYPOINT [ "./entrypoint.sh" ]
+# # # Set the backendentrypoint to the shell script (if any)
+# # backendentrypoint [ "./backendentrypoint.sh" ]
