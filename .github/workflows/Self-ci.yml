@@ -2,9 +2,9 @@ name: Frontend-CI
 
 on:
   workflow_dispatch: 
-  # push: 
-  #   branches:   
-  #     - nonroot
+  push: 
+    branches:   
+      - nonroot
         
 jobs:   
   set_environment:    
