@@ -78,7 +78,7 @@ jobs:
           
       - name: azure container registry
         run: |
-          docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p SwTuoj5hSZKd6/WqJkAbROs+IDUVF6is+F+qzREaoT+ACRC0kIKs
+          docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p bgon2AeD74aB3FiK4jdlpSvy/1FAiXcQJ/HJhz3lfh+ACRA1lJGZ
           docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
           
       
