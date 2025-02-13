@@ -8,7 +8,7 @@ on:
         
 jobs:   
   set_environment:    
-    runs-on: self-hosted 
+    runs-on: ubuntu-latest
     # needs: demo 
     steps: 
       - name: Checkout code
@@ -39,7 +39,7 @@ jobs:
   #       run: echo "Hello"
 
   CI:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: set_environment
     environment: ${{ needs.set_environment.outputs.environment }}
     env:
@@ -76,10 +76,10 @@ jobs:
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
        # trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
           
-      - name: azure container registry
-        run: |
-          docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p bgon2AeD74aB3FiK4jdlpSvy/1FAiXcQJ/HJhz3lfh+ACRA1lJGZ
-          docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
+      # - name: azure container registry
+      #   run: |
+      #     docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p bgon2AeD74aB3FiK4jdlpSvy/1FAiXcQJ/HJhz3lfh+ACRA1lJGZ
+      #     docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
           
       
        # az login
@@ -91,20 +91,20 @@ jobs:
      # apt-get install zip -y
           # zip -r output.zip publish/  
           
-  Staging_Slot_Deploy:
-    if: github.ref == 'refs/heads/feature/test'
-    # continue-on-error: false
-    runs-on: ubuntu-latest
-    needs: [CI]
-    environment: ${{ needs.CI.outputs.environment }}
-    env:
-      workspace: ${{ github.workspace }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  
+  # Staging_Slot_Deploy:
+  #   if: github.ref == 'refs/heads/feature/test'
+  #   # continue-on-error: false
+  #   runs-on: ubuntu-latest
+  #   needs: [CI]
+  #   environment: ${{ needs.CI.outputs.environment }}
+  #   env:
+  #     workspace: ${{ github.workspace }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4  
 
-      - name: echo command
-        run: echo "Test Branch"
+  #     - name: echo command
+  #       run: echo "Test Branch"
 
       # - name: Azure login
       #   run: az login
@@ -126,19 +126,19 @@ jobs:
       #     publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
       #     images: '${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_REPO }}:${{ github.run_id }}'
       
-  release_Slot_Deploy:
-    if: startsWith(github.ref, 'refs/heads/release/')
-    runs-on: ubuntu-latest
-    needs: CI
-    environment: ${{ needs.CI.outputs.environment }}
-    env:
-      workspace: ${{ github.workspace }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  
+  # release_Slot_Deploy:
+  #   if: startsWith(github.ref, 'refs/heads/release/')
+  #   runs-on: ubuntu-latest
+  #   needs: CI
+  #   environment: ${{ needs.CI.outputs.environment }}
+  #   env:
+  #     workspace: ${{ github.workspace }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4  
 
-      - name: echo command
-        run: echo "Release Branch"
+  #     - name: echo command
+  #       run: echo "Release Branch"
         
   # Prod_Slot_Deploy:
   #   if: github.ref == 'refs/heads/feature/test'
