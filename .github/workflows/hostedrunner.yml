@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+jobs:
+  Test_Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: test
+        run : echo "Test"
+  Ecam_Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Example
+        run : echo "Example-Test"
+      
