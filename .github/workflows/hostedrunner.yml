@@ -18,11 +18,11 @@ jobs:
         
   Ecam_Build:
     runs-on: ubuntu-latest
+    needs: Test_Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Example
         run : echo "Example-Test"
-      - name: sleep
-        run: sleep 10
+
       
