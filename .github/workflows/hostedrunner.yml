@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - main
+    - nonroot
 jobs:
   Test_Build:
     runs-on: ubuntu-latest
