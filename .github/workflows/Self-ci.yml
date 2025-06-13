@@ -68,10 +68,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 
       - name: Docker Build
+        env:
+         WORD: ${{ secrets.WORD }}
         run: |
           echo "Hi"
-          echo "${{ secrets.WORD }} , I'm in ofc."
-      # - name: "Set current date as env variable"
+          MESSAGE="$WORD, I'm in ofc."
+          echo "$MESSAGE" > secret_used.txt
+          cat secret_used.txt
+       # - name: "Set current date as env variable"
       #   run: |
       #    echo "builddate=$(TZ="America/New_York" date +'%Y-%m-%d_%H_%M_%S')" >> $GITHUB_OUTPUT
       #   id: version  
