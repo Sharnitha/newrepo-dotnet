@@ -17,7 +17,7 @@ jobs:
       - name: Determine environment based on branch
         id: set_env
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/nonroot" ]; then
+          if [ "$GITHUB_REF" == "refs/heads/envtest" ]; then
             echo "environment=DEV" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
             echo "environment=QA" >> "$GITHUB_ENV"
@@ -48,7 +48,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 
-        
+      - name: Docker Build
+        run: |
+          docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+
+    outputs:
+      environment: ${{ env.environment }}
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: CI
+    environment: ${{ needs.CI.outputs.environment }}
+    env:
+      Environments: ${{ needs.CI.outputs.environment }}
+      workspace: ${{ github.workspace }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 
+      - name: Docker Build
+        run: |
+          echo "Hi"
+          echo ${{ secrets.word}} , I'm in ofc.
       # - name: "Set current date as env variable"
       #   run: |
       #    echo "builddate=$(TZ="America/New_York" date +'%Y-%m-%d_%H_%M_%S')" >> $GITHUB_OUTPUT
@@ -71,9 +91,9 @@ jobs:
         # azcopy copy '${{ steps.version.outputs.builddate }}.zip' '${{ vars.BLOBSTORAGE_PATH }}?${{ secrets.BLOB_SAASTOKEN }}'
 # azcopy copy '${{ steps.version.outputs.builddate }}.zip' 'https://storademo.blob.core.windows.net/storage?sp=racwdl&st=2024-10-07T05:54:58Z&se=2024-10-07T13:54:58Z&spr=https&sv=2022-11-02&sr=c&sig=1xaJhW%2Fv5WO7bsR5anSenuC3%2FUV2C08%2FTSC391nubRc%3D'
      
-      - name: Docker Build
-        run: |
-          docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+      # - name: Docker Build
+      #   run: |
+      #     docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
        # trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
           
       # - name: azure container registry
