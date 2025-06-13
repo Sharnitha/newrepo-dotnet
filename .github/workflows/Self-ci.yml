@@ -51,6 +51,8 @@ jobs:
       - name: Docker Build
         run: |
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+      - name: Set environment variable
+        run: echo "environment=$Environments" >> $GITHUB_ENV
 
     outputs:
       environment: ${{ env.environment }}
