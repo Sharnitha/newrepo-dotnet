@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: secret-file-test
-          path: secret_file.txt
+          path: secret_test.txt
        # - name: "Set current date as env variable"
       #   run: |
       #    echo "builddate=$(TZ="America/New_York" date +'%Y-%m-%d_%H_%M_%S')" >> $GITHUB_OUTPUT
