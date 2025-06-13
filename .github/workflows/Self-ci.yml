@@ -68,7 +68,7 @@ jobs:
       - name: Docker Build
         run: |
           echo "Hi"
-          echo "${{ secrets.word}} , I'm in ofc."
+          echo "${{ secrets.WORD }} , I'm in ofc."
       # - name: "Set current date as env variable"
       #   run: |
       #    echo "builddate=$(TZ="America/New_York" date +'%Y-%m-%d_%H_%M_%S')" >> $GITHUB_OUTPUT
