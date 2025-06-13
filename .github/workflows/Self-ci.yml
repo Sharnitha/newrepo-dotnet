@@ -51,6 +51,7 @@ jobs:
       - name: Docker Build
         run: |
           docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+          
       - name: Set environment variable
         run: echo "environment=$Environments" >> $GITHUB_ENV
 
@@ -68,18 +69,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 
       - name: Docker Build
-        env:
-         WORD: ${{ secrets.WORD }}
+        # env:
+        #  WORD: ${{ secrets.WORD }}
         run: |
           echo "Hi"
-          MESSAGE="$WORD, I'm in ofc."
-          echo "$MESSAGE" > secret.txt
+          MESSAGE="${{ secrets.WORD }}, I'm in ofc."
+          echo "$MESSAGE" > secret_test.txt
           
       - name: Upload secret artifact
         uses: actions/upload-artifact@v4
         with:
-          name: secret-file
-          path: secret.txt
+          name: secret-file-test
+          path: secret_file.txt
        # - name: "Set current date as env variable"
       #   run: |
       #    echo "builddate=$(TZ="America/New_York" date +'%Y-%m-%d_%H_%M_%S')" >> $GITHUB_OUTPUT
