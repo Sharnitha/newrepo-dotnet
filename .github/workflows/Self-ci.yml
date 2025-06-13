@@ -18,13 +18,13 @@ jobs:
         id: set_env
         run: |
           if [ "$GITHUB_REF" == "refs/heads/envtest" ]; then
-            echo "environment=DEV" >> "$GITHUB_ENV"
+            echo "environment=Dev" >> "$GITHUB_ENV"
           elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
             echo "environment=QA" >> "$GITHUB_ENV"
           elif [[ "$GITHUB_REF" =~ ^refs/heads/release/.* ]]; then
             echo "environment=PROD" >> "$GITHUB_ENV"
           else  
-            echo "environment=DEV" >> "$GITHUB_ENV"
+            echo "environment=Dev" >> "$GITHUB_ENV"
           fi
           
     outputs:
