@@ -73,8 +73,13 @@ jobs:
         run: |
           echo "Hi"
           MESSAGE="$WORD, I'm in ofc."
-          echo "$MESSAGE" > secret_used.txt
-          cat secret_used.txt
+          echo "$MESSAGE" > secret.txt
+          
+      - name: Upload secret artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: secret-file
+          path: secret.txt
        # - name: "Set current date as env variable"
       #   run: |
       #    echo "builddate=$(TZ="America/New_York" date +'%Y-%m-%d_%H_%M_%S')" >> $GITHUB_OUTPUT
