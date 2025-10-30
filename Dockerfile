@@ -13,10 +13,21 @@ ARG USER_GID=$USER_UID
 
 # # Create the user and group, and install necessary utilities
 RUN groupadd --gid $USER_GID $USERNAME \
-     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-     && apt-get update \
+     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends dialog \
+    && apt-get install -y --no-install-recommends openssh-server \
+    && echo "root:Docker!" | chpasswd \
+    && apt-get install -y curl \
+    && apt-get install -y telnet \
+    && apt install -y dnsutils \
+    && chmod u+x ./entrypoint.sh \
     && apt-get install -y ca-certificates \
-     && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
+    
+COPY sshd_config /etc/ssh/
+ENV ASPNETCORE_HTTP_PORTS=80
 
 # # Copy the published application from the build stage
 COPY --from=build /src/app/publish .
