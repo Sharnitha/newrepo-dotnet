@@ -4,15 +4,15 @@ on:
   workflow_dispatch: 
   push: 
     branches:   
-      - nonroot
+      - sharnitest-3010
         
 jobs:   
   set_environment:    
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     # needs: demo 
     steps: 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
   
       - name: Determine environment based on branch
         id: set_env
@@ -73,7 +73,9 @@ jobs:
      
       - name: Docker Build
         run: |
-          docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+          docker build -t sharnitha.azurecr.io/demoenv:${{ github.run_id }} .
+          docker login sharnitha.azurecr.io -u sharnitha -p CbDA0Q9X39xNWe79fKf9jimNWIk5BoHtfznkoDB16d+ACRCOg253
+          docker push sharnitha.azurecr.io/demoenv:${{ github.run_id }} 
        # trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
           
       # - name: azure container registry
