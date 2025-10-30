@@ -22,7 +22,6 @@ RUN apt-get update \
     && apt-get install -y curl \
     && apt-get install -y telnet \
     && apt install -y dnsutils \
-    && chmod u+x ./entrypoint.sh \
     && apt-get install -y ca-certificates \
     && rm -rf /var/lib/apt/lists/*
     
