@@ -73,13 +73,13 @@ jobs:
      
       - name: Docker Build
         run: |
-          docker build -t githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} .
+          docker build -t githubcidemo.azurecr.io/demoenv:${{ github.run_id }} .
        # trivy image --severity "HIGH,CRITICAL" --vuln-type "os,library" --exit-code "0" githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }}
           
-      # - name: azure container registry
-      #   run: |
-      #     docker login githubcisharnidemo.azurecr.io -u githubcisharnidemo -p bgon2AeD74aB3FiK4jdlpSvy/1FAiXcQJ/HJhz3lfh+ACRA1lJGZ
-      #     docker push githubcisharnidemo.azurecr.io/demoenv:${{ github.run_id }} 
+      - name: azure container registry
+        run: |
+          docker login githubcidemo.azurecr.io -u githubcisharnidemo -p yu9XhDhgiYNAZJ6uXvOYL8HOohd34lKytOadZv3YbV+ACRB5b6qR
+          docker push githubcidemo.azurecr.io/demoenv:${{ github.run_id }} 
           
       
        # az login
