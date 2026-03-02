@@ -1,0 +1,78 @@
+name: CI Workflow
+on:
+  workflow_dispatch: 
+  # push:
+  #   branches:
+  #   - test-zip
+
+permissions:
+  contents: write
+  
+jobs:   
+  set_environment:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Determine environment based on branch
+        id: set_env
+        run: |
+          if ($env:GITHUB_REF -eq "refs/heads/test-zip") {
+            $env:environment = "DEV"
+          } elseif ($env:GITHUB_REF -match "refs/heads/prod") {
+            $env:environment = "PROD"
+          } else {
+            $env:environment = "DEV"
+          }
+          echo "environment=$env:environment" >> $env:GITHUB_ENV
+      
+  build-and-deploy:
+    runs-on:
+      group: self-hosted
+    permissions:
+      contents: write
+    needs: set_environment
+    environment: ${{ needs.set_environment.outputs.environment }}
+    env:
+      Environments: ${{ needs.set_environment.outputs.environment }}
+      workspace: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET version
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+        env: 
+          DOTNET_INSTALL_DIR: D:\Software\dotnet
+
+      - name: dotnet build and publish
+        run: |
+          dotnet publish -c Release -r win-x64 --self-contained true -o ./artifactstestingl
+      - name: Zip for deployment
+        run: |
+          cd artifactstestingl
+          zip -r ../releasetest.zip .
+
+
+      - name: Deploy to Dev Azure Web App
+        if: github.ref_name == 'test-zip'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'testzipdeploy01'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./releasetest.zip
+
+      - name: Create GitHub Release
+        if: success()
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          $TAG_NAME = "v1.0.${{ github.run_number }}"
+          
+          gh release create $TAG_NAME ./releasetest.zip `
+            --title "Release $TAG_NAME" `
+            --notes "Build from branch ${{ github.ref_name }}. Ready for prod release." `
+            --target ${{ github.sha }}
