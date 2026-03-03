@@ -1,9 +1,6 @@
 name: Select and Deploy Release
 on:
   workflow_dispatch:
-  push: 
-    branches:
-    - test-zip
     inputs:
       release_tag:
         type: string
