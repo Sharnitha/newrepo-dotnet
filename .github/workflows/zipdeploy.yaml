@@ -69,14 +69,13 @@ jobs:
           package: ./releasetest.zip
 
       - name: Create GitHub Release
-        if: success()
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.TOKEN }}
         run: |
-          $TAG_NAME = "v1.0.${{ github.run_number }}"
-          
-          gh release create $TAG_NAME ./releasetest.zip `
-            --title "Release $TAG_NAME" `
-            --notes "Build from branch ${{ github.ref_name }}. Ready for prod release." `
+          TAG_NAME="v1.0.${{ github.run_number }}"
+
+          gh release create "$TAG_NAME" ./releasetest.zip \
+            --title "Release $TAG_NAME" \
+            --notes "Build from branch ${{ github.ref_name }}. Ready for prod release." \
             --target ${{ github.sha }}
