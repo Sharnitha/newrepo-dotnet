@@ -44,9 +44,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 6.0.x
-        env: 
-          DOTNET_INSTALL_DIR: D:\Software\dotnet
-
+          
       - name: dotnet build and publish
         run: |
           dotnet publish -c Release -r win-x64 --self-contained true -o ./artifactstestingl
