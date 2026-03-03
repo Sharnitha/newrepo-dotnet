@@ -20,4 +20,3 @@ jobs:
         run: |
           echo "Deploying release: ${{ inputs.release_tag }}"
           # Add steps here to download/use assets from this specific release
-`
