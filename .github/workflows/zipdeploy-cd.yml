@@ -13,7 +13,36 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Use the selected release tag
+        
+      # - name: Use the selected release tag
+      #   run: |
+      #     echo "Deploying release: ${{ inputs.release_tag }}
+
+      - name: Determine Release Tag
+        id: vars
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          echo "Deploying release: ${{ inputs.release_tag }}"
-          # Add steps here to download/use assets from this specific release
+          if [ "${{ github.event.inputs.release_tag }}" == "latest" ]; then
+            # Get the tag name of the latest release
+            TAG=$(gh release view --json tagName --template '{{.tagName}}')
+          else
+            TAG="${{ github.event.inputs.release_tag }}"
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Selected Tag: $TAG"
+
+      - name: Download Release Asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Downloads the build artifact (e.g., build.zip) from the specific release
+          gh release download ${{ steps.vars.outputs.tag }} --pattern '*releasetest.zip' --dir ./deployment-artfiact
+
+      - name: Deploy to Prod Azure Web App
+        if: github.ref_name == 'test-zip'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'testzipdeploy01'
+          publish-profile: ${{ secrets.ZIP_APPSERVICE_PUBLISH_TOKEN }}
+          package: ./releasetest.zip
