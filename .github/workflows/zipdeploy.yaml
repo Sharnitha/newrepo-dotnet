@@ -18,14 +18,15 @@ jobs:
       - name: Determine environment based on branch
         id: set_env
         run: |
-          if ($env:GITHUB_REF -eq "refs/heads/test-zip") {
-            $env:environment = "DEV"
-          } elseif ($env:GITHUB_REF -match "refs/heads/prod") {
-            $env:environment = "PROD"
-          } else {
-            $env:environment = "DEV"
-          }
-          echo "environment=$env:environment" >> $env:GITHUB_ENV
+          if [ "$GITHUB_REF" == "refs/heads/test-zip" ]; then
+            echo "environment=DEV" >> "$GITHUB_ENV"
+          elif [ "$GITHUB_REF" == "refs/heads/qa" ]; then
+            echo "environment=QA" >> "$GITHUB_ENV"
+          elif [[ "$GITHUB_REF" =~ ^refs/heads/release/.* ]]; then
+            echo "environment=PROD" >> "$GITHUB_ENV"
+          else  
+            echo "environment=DEV" >> "$GITHUB_ENV"
+          fi
       
   build-and-deploy:
     runs-on:
