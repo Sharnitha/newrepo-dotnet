@@ -1,0 +1,20 @@
+name: Select and Deploy Release
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        type: string
+        description: 'The tag of the release to use (e.g., v1.0.1)'
+        required: true
+        default: 'latest'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Use the selected release tag
+        run: |
+          echo "Deploying release: ${{ inputs.release_tag }}"
+          # Add steps here to download/use assets from this specific release
+`
