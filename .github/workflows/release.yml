@@ -137,6 +137,7 @@ jobs:
       - name: Display Values
         run: |
           echo "Release Version : ${{ steps.version.outputs.version }}"
-          echo "Associated Tag" : v${{ steps.version.outputs.version }}"
-          echo "Stage Image     : ${{ steps.image.outputs.image }}"
+          echo "Associated Tag : v${{ steps.version.outputs.version }}"
+          echo "Stage Image    : ${{ steps.image.outputs.image }}"
+          echo "Stage Image Tag: ${{ steps.image.outputs.image_tag }}"
           
