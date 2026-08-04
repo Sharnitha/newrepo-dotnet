@@ -32,7 +32,7 @@ jobs:
       - name: Extract Version
         id: version
         run: | 
-          BRANCH="${{ steps.branch.outputs.branch }}"
+          BRANCH="${{ steps.branch.outputs.source_branch }}"
           if [[ "$BRANCH" =~ ^release/ ]]; then
             VERSION="${BRANCH#release/}"    
             echo "version=$VERSION" >> $GITHUB_OUTPUT
