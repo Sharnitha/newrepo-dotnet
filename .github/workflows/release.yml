@@ -1,0 +1,69 @@
+name: Create Release Tag
+
+on:
+  pull_request:
+    branches:
+      - demotestbranch
+
+permissions:
+  contents: write
+
+jobs:
+  create-tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Source Branch
+        id: source_branch
+        run: |
+          echo "branch=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
+
+      - name: Extract Version
+        id: version
+        run: |
+          BRANCH="${{ steps.source_branch.outputs.branch }}"
+
+          if [[ "$BRANCH" =~ ^release/ ]]; then
+            VERSION="${BRANCH#release/}"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "Not a release branch"
+            exit 1
+          fi
+
+      - name: Check If Tag Exists
+        id: tag_check
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+
+          if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Git Tag
+        if: steps.tag_check.outputs.exists == 'false'
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+
+          git config user.name "Sharnitha"
+          git config user.email "sharnitha@github.com"
+
+          git tag "$TAG"
+          git push origin "$TAG"
+          
+      - name: Create Git Tag
+        if: steps.tag_check.outputs.exists == 'true'
+        run: |
+          echo "Already tag is available"
+          
+      - name: Display Tag
+        run: |
+          echo "Created tag: v${{ steps.version.outputs.version }}"
