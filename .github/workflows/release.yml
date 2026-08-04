@@ -91,7 +91,7 @@ jobs:
           
       - name: Display Tag
         run: |
-          echo "Created tag: v${{ steps.version.outputs.version }}"
+          echo "Created tag: v${{ steps.version.outputs.version }}-test"
       
       - name: Get Stage Image
         id: image
@@ -130,7 +130,7 @@ jobs:
         run: |
           gh release create \
             v${{ steps.version.outputs.version }}-test \
-            --title "Release v${{ steps.version.outputs.version }}" \
+            --title "Release v${{ steps.version.outputs.version }}-test" \
             --generate-notes \
             --notes-file release-notes.md
 
