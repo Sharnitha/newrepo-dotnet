@@ -1,18 +1,12 @@
 name: Create Release Tag
 
 on:
-  pull_request:
+  push:
     branches:
       - demotestbranch
-    types:
-     - closed
-
-permissions:
-  contents: write
-
+      
 jobs:
   create-tag:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -21,18 +15,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get Source Branch
-        id: source_branch
+      - name: Get source branch
+        id: branch
         run: |
-          echo "branch=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
+          MSG=$(git log -1 --pretty=%B)
+          echo "$MSG"
+
+          SOURCE_BRANCH=$(echo "$MSG" | sed -n 's|.*from .*/\(.*\)|\1|p')
+
+          echo "source_branch=$SOURCE_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Print
+        run: |
+          echo "Source branch: ${{ steps.branch.outputs.source_branch }}"
 
       - name: Extract Version
         id: version
-        run: |
-          BRANCH="${{ steps.source_branch.outputs.branch }}"
-
+        run: | 
+          BRANCH="${{ steps.branch.outputs.branch }}"
           if [[ "$BRANCH" =~ ^release/ ]]; then
-            VERSION="${BRANCH#release/}"
+            VERSION="${BRANCH#release/}"    
             echo "version=$VERSION" >> $GITHUB_OUTPUT
           else
             echo "Not a release branch"
