@@ -87,6 +87,7 @@ jobs:
         if: steps.tag_check.outputs.exists == 'true'
         run: |
           echo "Already tag is available"
+          exit 1
           
       - name: Display Tag
         run: |
