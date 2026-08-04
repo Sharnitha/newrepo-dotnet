@@ -19,28 +19,32 @@ jobs:
         id: branch
         run: |
           MSG=$(git log -1 --pretty=%B)
+      
+          echo "Commit Message:"
           echo "$MSG"
-
-          SOURCE_BRANCH=$(echo "$MSG" | sed -n 's|.*from .*/\(.*\)|\1|p')
-
-          echo "source_branch=$SOURCE_BRANCH" >> $GITHUB_OUTPUT
-
-      - name: Print
-        run: |
-          echo "Source branch: ${{ steps.branch.outputs.source_branch }}"
+      
+          BRANCH=$(echo "$MSG" | head -n1 | sed -n 's|.*from .*/\(.*\)|\1|p')
+      
+          echo "Branch: $BRANCH"
+      
+          echo "source_branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Extract Version
         id: version
-        run: | 
+        run: |
           BRANCH="${{ steps.branch.outputs.source_branch }}"
+      
           if [[ "$BRANCH" =~ ^release/ ]]; then
-            VERSION="${BRANCH#release/}"    
+            VERSION="${BRANCH#release/}"
+      
             echo "version=$VERSION" >> $GITHUB_OUTPUT
+      
+            echo "Version: $VERSION"
           else
-            echo "Not a release branch"
+            echo "Not a release branch: $BRANCH"
             exit 1
           fi
-
+          
       - name: Check If Tag Exists
         id: tag_check
         run: |
