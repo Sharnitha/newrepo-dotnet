@@ -64,7 +64,7 @@ jobs:
       - name: Check If Tag Exists
         id: tag_check
         run: |
-          TAG="v${{ steps.version.outputs.version }}"
+          TAG="v${{ steps.version.outputs.version }}-test"
 
           if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
             echo "exists=true" >> $GITHUB_OUTPUT
@@ -75,7 +75,7 @@ jobs:
       - name: Create Git Tag
         if: steps.tag_check.outputs.exists == 'false'
         run: |
-          TAG="v${{ steps.version.outputs.version }}"
+          TAG="v${{ steps.version.outputs.version }}-test"
 
           git config user.name "Sharnitha"
           git config user.email "sharnitha@github.com"
@@ -129,7 +129,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create \
-            v${{ steps.version.outputs.version }} \
+            v${{ steps.version.outputs.version }}-test \
             --title "Release v${{ steps.version.outputs.version }}" \
             --generate-notes \
             --notes-file release-notes.md
