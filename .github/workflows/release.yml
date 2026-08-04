@@ -113,14 +113,15 @@ jobs:
           cat > release-notes.md <<EOF
           ## Deployment Metadata
 
-          Release Branch:
+          Source Branch:
           release/${{ steps.version.outputs.version }}
 
           Stage Image:
           ${{ steps.image.outputs.image }}
 
-          Stage Image Tag:
-          ${{ steps.image.outputs.image_tag }}
+          Release Associated Tag
+          v${{ steps.version.outputs.version }}
+
           EOF
 
       - name: Create GitHub Release
@@ -136,5 +137,6 @@ jobs:
       - name: Display Values
         run: |
           echo "Release Version : ${{ steps.version.outputs.version }}"
+          echo "Associated Tag" : v${{ steps.version.outputs.version }}"
           echo "Stage Image     : ${{ steps.image.outputs.image }}"
-          echo "Stage Image Tag : ${{ steps.image.outputs.image_tag }}"
+          
